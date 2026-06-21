@@ -1,0 +1,88 @@
+<div class="clientes-page">
+  
+  <div class="top-bar">
+    <div class="search-container">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input 
+        type="text" 
+        [formControl]="searchControl" 
+        placeholder="Buscar por DNI o nombres"
+        class="search-input"
+      >
+    </div>
+    
+    <button class="btn-primary" (click)="abrirModalRegistro()">Registrar Cliente</button>
+  </div>
+
+  <div class="table-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>PROPIETARIO / CLIENTE</th>
+          <th>DNI / DOCUMENTO</th>
+          <th>TELÉFONO</th>
+          <th>MASCOTAS ASOCIADAS</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (cargando) {
+          <tr>
+            <td colspan="5" class="text-center loading-text">Cargando información...</td>
+          </tr>
+        } 
+        
+        @else if (clientes.length === 0) {
+          <tr>
+            <td colspan="5" class="text-center empty-text">No se encontraron clientes.</td>
+          </tr>
+        } 
+        
+        @else {
+          @for (cliente of clientes; track cliente.idPersona) {
+            <tr>
+              <td>
+                <div class="owner-info">
+                  <span class="owner-name">{{ cliente.nombres }} {{ cliente.apellidos }}</span>
+                  <span class="owner-email">{{ cliente.email }}</span>
+                </div>
+              </td>
+              <td class="font-medium">{{ cliente.dni }}</td>
+              <td class="font-medium">{{ cliente.celular || 'No registrado' }}</td>
+              <td>
+                <span class="badge-mascotas">{{ cliente.totalMascotas }}</span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-outline" (click)="abrirModalEdicion(cliente.idPersona)">Editar</button>
+                  <button class="btn-outline" (click)="abrirModalMascotas(cliente)">Ver Mascotas</button>
+                  <button class="btn-outline">Nueva Cita</button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (mostrarModalCliente) {
+  <app-cliente-modal 
+    [clienteId]="clienteSeleccionadoId" 
+    (cerrarModal)="cerrarModal()" 
+    (operacionExitosa)="onOperacionExitosa()">
+  </app-cliente-modal>
+}
+
+@if (mostrarMascotasModal && clienteSeleccionadoParaMascotas) {
+  <app-mascotas-lista-modal
+    [idCliente]="clienteSeleccionadoParaMascotas.idPersona"
+    [nombrePropietario]="clienteSeleccionadoParaMascotas.nombres + ' ' + clienteSeleccionadoParaMascotas.apellidos"
+    [dniPropietario]="clienteSeleccionadoParaMascotas.dni"
+    (cerrar)="cerrarModalMascotas()">
+  </app-mascotas-lista-modal>
+}
+

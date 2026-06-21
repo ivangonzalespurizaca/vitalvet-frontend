@@ -1,0 +1,30 @@
+<header class="header-container">
+  <div class="header-left">
+    <span class="brand">{{ titulo }}</span>
+  </div>
+
+  <div class="header-right">
+    @if (usuario) {
+      <button class="notification-btn">
+        <span class="bell-icon">🔔</span>
+        <span class="badge">1</span> </button>
+
+      <div class="user-profile" [routerLink]="['/perfil']" style="cursor: pointer;">
+        <div class="user-info">
+          <span class="user-name">{{ usuario.nombres }} {{ usuario.apellidos }}</span>
+          <span class="user-role">{{ usuario.rol }}</span>
+        </div>
+        <div class="avatar" 
+            [style.backgroundImage]="usuario.fotoUrl ? 'url(' + usuario.fotoUrl + ')' : 'none'">
+          @if (!usuario.fotoUrl) {
+            {{ iniciales }}
+          }
+        </div>
+      </div>
+
+      <button (click)="logout()" class="logout-btn">
+        Cerrar Sesión
+      </button>
+    }
+  </div>
+</header>

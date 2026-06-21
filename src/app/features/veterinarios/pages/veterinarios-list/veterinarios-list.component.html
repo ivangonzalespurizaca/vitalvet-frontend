@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="header">
+    <h2>Lista de Veterinarios</h2>
+    <span class="badge">{{ veterinarios.length }} Registrados</span>
+    <button class="btn-primary" (click)="abrirModalRegistro()">Registrar Veterinario</button>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" [formControl]="searchControl" placeholder="Buscar por DNI o nombres...">
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>FOTO</th>
+        <th>VETERINARIO</th>
+        <th>DNI</th>
+        <th>Nº COLEGIATURA</th>
+        <th>ESPECIALIDAD</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (v of veterinarios; track v.idVeterinario) {
+        <tr>
+          <td><img [src]="v.fotoUrl" class="avatar" alt="Foto"></td>
+          <td>
+            <span class="nombre">{{ v.nombres }} {{ v.apellidos }}</span>
+            <small>{{ v.email }}</small>
+          </td>
+          <td>{{ v.dni }}</td>
+          <td>{{ v.nroColegiatura }}</td>
+          <td>{{ v.especialidad }}</td>
+          <td><span [class]="v.activo ? 'status-active' : 'status-inactive'">{{ v.activo ? 'Activo' : 'Inactivo' }}</span></td>
+          <td>
+            <button class="btn-outline" [routerLink]="['/veterinarios/horarios', v.idVeterinario]">
+                Horarios
+            </button>
+            <button class="btn-outline" (click)="abrirModalEdicion(v.idVeterinario)">Editar</button>
+            <button 
+                [class]="v.activo ? 'btn-outline-danger' : 'btn-outline'" 
+                (click)="cambiarEstado(v)">
+                {{ v.activo ? 'Desactivar' : 'Activar' }}
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (mostrarModal) {
+  <app-veterinario-modal 
+    [veterinarioId]="veterinarioIdSeleccionado"
+    (cerrar)="mostrarModal = false"
+    (operacionExitosa)="onOperacionExitosa()">
+  </app-veterinario-modal>
+}

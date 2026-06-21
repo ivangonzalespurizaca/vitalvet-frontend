@@ -1,0 +1,82 @@
+<div class="container">
+  <h2>Lista de Comprobantes de Pago</h2>
+
+<form [formGroup]="filtroForm" class="filter-bar">
+  <div class="filters-row">
+    <select formControlName="tipo" class="form-select">
+      <option value="">Todos los tipos</option>
+      <option value="BOLETA">Boleta de Pago</option>
+      <option value="FACTURA">Factura</option>
+    </select>
+    
+    <div class="date-range">
+      <input type="date" formControlName="inicio" class="form-input">
+      <span>al</span>
+      <input type="date" formControlName="fin" class="form-input">
+    </div>
+    
+    <div class="button-group">
+      <button type="button" class="btn-primary" (click)="cargarComprobantes()">Filtrar</button>
+      <button type="button" class="btn-secondary" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</form>
+
+  <table class="citas-table">
+    <thead>
+      <tr>
+        <th>DOCUMENTO/ SERIE</th>
+        <th>CLIENTE</th>
+        <th>FECHA DE PAGO</th>
+        <th>MEDIO DE PAGO</th>
+        <th>MONTO TOTAL</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of comprobantes; track c.idComprobante) {
+        <tr>
+          <td><strong>{{ c.codigoComprobante }}</strong><br><small>{{ c.tipoComprobante }}</small></td>
+          <td><strong>{{ c.nombreCliente }}</strong><br><small>DNI: {{ c.dniCliente }}</small></td>
+          <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}<br><small>{{ c.fechaPago | date:'shortTime' }}</small></td>
+          <td><span class="badge">{{ c.metodoPago }}</span></td>
+          <td><strong>{{ c.montoTotal | currency:'PEN':'S/ ' }}</strong></td>
+          <td><button class="btn-outline" (click)="verDetalle(c.idComprobante)">Detalle</button></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="6" class="text-center">No hay comprobantes encontrados.</td></tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="footer-stats">
+    <p>Comprobantes Emitidos: <strong>{{ stats.emitidos }}</strong></p>
+    <p>Total Recaudado: <strong>{{ stats.total | currency:'PEN':'S/ ' }}</strong></p>
+  </div>
+</div>
+
+@if (selectedComprobante) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="ticket-header">
+        <h4 style="margin:0">VITAL VET S.A.C.</h4>
+        <small>RUC: 20604829182</small>
+        <p style="font-weight: bold; margin-top:10px;">{{ selectedComprobante.tipoComprobante }}<br>{{ selectedComprobante.codigoComprobante }}</p>
+      </div>
+
+      <div class="ticket-body">
+        <div class="ticket-row"><span>Cliente:</span> <span>{{ selectedComprobante.nombreCliente }}</span></div>
+        <div class="ticket-row"><span>DNI:</span> <span>{{ selectedComprobante.dniCliente }}</span></div>
+        <div class="ticket-row"><span>Fecha:</span> <span>{{ selectedComprobante.fechaPago | date:'dd/MM/yyyy' }}</span></div>
+        <hr style="border: 1px dashed #eee">
+        <div class="ticket-row"><span>Subtotal:</span> <span>{{ selectedComprobante.montoSubtotal | currency:'PEN':'S/ ' }}</span></div>
+        <div class="ticket-row"><span>I.G.V (18%):</span> <span>{{ selectedComprobante.montoImpuesto | currency:'PEN':'S/ ' }}</span></div>
+        <div class="ticket-row total-row"><span>TOTAL:</span> <span>{{ selectedComprobante.montoTotal | currency:'PEN':'S/ ' }}</span></div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 2rem;">
+        <button class="btn-primary" style="width: 100%" (click)="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,20 @@
+<div style="padding: 2rem; font-family: sans-serif; max-width: 800px; margin: 0 auto;">
+  <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h1 style="margin: 0; color: #007bff;">¡Hola Médico Veterinario, {{ perfil?.nombres }}!</h1>
+      <p style="margin: 0.5rem 0 0; color: #666; font-weight: bold; text-transform: uppercase;">Rol Detectado: {{ perfil?.rol }}</p>
+    </div>
+    <button (click)="onLogout()" style="background-color: #dc3545; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+      Cerrar Sesión
+    </button>
+  </header>
+
+  <main style="background-color: #f4fcf7; border: 1px solid #c3e6cb; border-radius: 8px; padding: 1.5rem;">
+    <h3 style="margin-top: 0; color: #155724;">Claims Profesionales Inyectados desde tu Java (JwtUtil):</h3>
+    <ul style="line-height: 1.8; color: #155724;">
+      <li><strong>N° Colegiatura (CMP):</strong> {{ perfil?.numColegiatura || 'No asignado' }}</li>
+      <li><strong>Especialidad Médica:</strong> {{ perfil?.especialidad || 'General / Ninguna' }}</li>
+      <li><strong>ID Veterinario en BD:</strong> {{ perfil?.idVeterinario }}</li>
+    </ul>
+  </main>
+</div>

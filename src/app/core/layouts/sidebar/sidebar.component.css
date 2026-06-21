@@ -1,0 +1,44 @@
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda la altura */
+  padding-top: 1.5rem;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  padding: 0 1.5rem 2rem 1.5rem;
+  color: #111;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li a {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sidebar li a:hover {
+  background-color: #f4f7f6;
+  color: #111;
+}
+
+/* 🌟 Clase que Angular aplica automáticamente cuando la ruta coincide */
+.active-link {
+  background-color: #eef2ff !important;
+  color: #4f46e5 !important; /* Un azul profesional */
+  border-right: 4px solid #4f46e5;
+}

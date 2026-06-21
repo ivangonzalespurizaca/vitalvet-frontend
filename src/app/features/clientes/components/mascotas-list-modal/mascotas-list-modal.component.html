@@ -1,0 +1,28 @@
+<div class="modal-overlay" (click)="cerrar.emit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h2>Mascotas Asociadas</h2>
+        <p>Propietario: <strong>{{ nombrePropietario }} (DNI: {{ dniPropietario }})</strong></p>
+      </div>
+    </div>
+
+    @if (cargando) { <p>Cargando mascotas...</p> }
+    @else {
+      <div class="mascotas-list">
+        @for (m of mascotas; track m.idMascota) {
+          <div class="mascota-card">
+            <div class="mascota-info">
+              <span class="nombre">{{ m.nombreMascota }}</span>
+              <span class="detalles">{{ m.nombreEspecie }} . {{ m.nombreRaza }}</span>
+            </div>
+          </div>
+        } @empty {
+          <p>No tiene mascotas registradas.</p>
+        }
+      </div>
+    }
+
+    <button class="btn-cancel" (click)="cerrar.emit()">Cerrar</button>
+  </div>
+</div>

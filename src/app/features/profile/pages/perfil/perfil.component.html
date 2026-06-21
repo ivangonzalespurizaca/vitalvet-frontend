@@ -1,0 +1,91 @@
+<div class="perfil-page">
+  <div class="header-section">
+    <h2>Mi Perfil</h2>
+  </div>
+
+  <div class="content-section">
+    
+    <div class="avatar-column">
+      <div class="avatar-circle">
+        @if (fotoPreviewUrl) {
+          <img [src]="fotoPreviewUrl" alt="Preview" class="avatar-img">
+        } @else if (fotoUrlActual) {
+          <img [src]="fotoUrlActual" alt="Foto Perfil" class="avatar-img">
+        } @else {
+          <span class="avatar-initials">{{ iniciales }}</span>
+        }
+      </div>
+      
+      <input 
+        type="file" 
+        #fileInput 
+        (change)="onArchivoSeleccionado($event)" 
+        accept="image/*" 
+        style="display: none;"
+      >
+      <button class="btn-outline" (click)="fileInput.click()">Cambiar Foto</button>
+    </div>
+
+    <div class="form-column">
+      <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Rol de Usuario</label>
+            <input type="text" formControlName="rol" class="input-readonly">
+          </div>
+          <div class="form-group">
+            <label>DNI / Documento</label>
+            <input type="text" formControlName="dni" class="input-readonly">
+          </div>
+          <div class="form-group full-width">
+            <label>Correo Electrónico</label>
+            <input type="email" formControlName="email" class="input-readonly">
+          </div>
+
+          <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" formControlName="nombres" class="input-editable">
+            @if (perfilForm.get('nombres')?.invalid && perfilForm.get('nombres')?.touched) {
+              <span class="error-text">Los nombres son requeridos.</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" formControlName="apellidos" class="input-editable">
+            @if (perfilForm.get('apellidos')?.invalid && perfilForm.get('apellidos')?.touched) {
+              <span class="error-text">Los apellidos son requeridos.</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Teléfono Celular</label>
+            <input type="text" formControlName="celular" class="input-editable">
+          </div>
+        </div>
+
+        @if (esVeterinario) {
+          <div class="vet-section">
+            <h3 class="section-title">Información Profesional</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>N° Colegiatura (CMP)</label>
+                <input type="text" value="CMP 84920" disabled class="input-readonly">
+              </div>
+              <div class="form-group">
+                <label>Especialidad Médica</label>
+                <input type="text" value="Cirugía General" disabled class="input-readonly">
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="form-actions">
+          <button type="button" class="btn-outline">Cambiar Contraseña</button>
+          <button type="submit" class="btn-primary" [disabled]="cargando">
+            {{ cargando ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

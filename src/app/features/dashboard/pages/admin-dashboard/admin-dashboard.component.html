@@ -1,0 +1,35 @@
+<div style="padding: 2rem; font-family: sans-serif; max-width: 800px; margin: 0 auto;">
+  
+  <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h1 style="margin: 0; color: #333;">¡Bienvenido, {{ perfil?.nombres }} {{ perfil?.apellidos }}!</h1>
+      <p style="margin: 0.5rem 0 0; color: #666; font-weight: bold; text-transform: uppercase;">
+        Panel de Control: {{ perfil?.rol }}
+      </p>
+    </div>
+    
+    <button (click)="onLogout()" style="background-color: #dc3545; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+      Cerrar Sesión
+    </button>
+  </header>
+
+  <main style="background-color: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+    <h3 style="margin-top: 0; color: #2d3748;">Datos de Sesión Verificados (JWT Claims)</h3>
+    
+    <ul style="line-height: 1.8; color: #4a5568;">
+      <li><strong>Identificador de Usuario:</strong> {{ perfil?.idUsuario }}</li>
+      <li><strong>Identificador de Persona:</strong> {{ perfil?.idPersona }}</li>
+      <li><strong>Documento de Identidad (DNI):</strong> {{ perfil?.dni }}</li>
+      <li><strong>Correo Electrónico (Sub):</strong> {{ perfil?.sub }}</li>
+      <li><strong>Teléfono Celular:</strong> {{ perfil?.celular }}</li>
+      <li><strong>Género:</strong> {{ perfil?.genero }}</li>
+    </ul>
+
+    <div style="margin-top: 1.5rem; padding: 1rem; background-color: #ebf8ff; border-left: 4px solid #3182ce; border-radius: 4px;">
+      <p style="margin: 0; color: #2b6cb0; font-size: 0.9rem;">
+        💡 <strong>Nota de Arquitectura:</strong> Si ves tus datos impresos arriba, significa que el Login mandó las credenciales al Gateway, capturó el token, `jwt-decode` abrió los claims de Spring Boot con éxito y el Redireccionador te despachó a la pantalla correcta de Administrador.
+      </p>
+    </div>
+  </main>
+
+</div>

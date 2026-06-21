@@ -1,0 +1,114 @@
+/* Contenedor Principal */
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Tarjetas (Cards) */
+.datos-vet, .tabla-horarios, .form-horario {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  border: 1px solid #f0f0f0;
+}
+
+/* Grid de Datos del Veterinario */
+.grid-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.grid-fields input {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+/* Layout Principal (Tabla + Formulario) */
+.main-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #f8f9fa;
+  text-align: left;
+  padding: 12px;
+  color: #555;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Formulario */
+.form-horario label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-horario input, .form-horario select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* Botones */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary { background: #007bff; color: white; width: 100%; margin-top: 1.5rem; }
+.btn-primary:hover { background: #0056b3; }
+
+.btn-secondary { background: #6c757d; color: white; }
+.btn-danger { background: #dc3545; color: white; font-size: 0.85rem; padding: 6px 12px; }
+.btn-danger:hover { background: #a71d2a; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-layout { grid-template-columns: 1fr; }
+}
+
+.form-horario select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+}

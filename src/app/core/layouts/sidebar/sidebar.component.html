@@ -1,0 +1,14 @@
+<nav class="sidebar">
+  <div class="logo">VITAL VET</div>
+  
+  <ul>
+    @for (item of filteredMenuItems(); track item.route) {
+      <li>
+        <a [routerLink]="item.route" routerLinkActive="active-link">
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+  
+</nav>

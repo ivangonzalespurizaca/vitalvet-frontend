@@ -1,0 +1,122 @@
+<div class="container">
+  <div class="header-actions">
+    <button routerLink="/admin/citas" class="btn-secondary">← Volver al Listado</button>
+  </div>
+  
+  <h2>Paso 1: Registro de Cita</h2>
+
+  <form [formGroup]="formulario" class="form-container">
+    <div class="grid-layout">
+      
+      <div class="form-group">
+        <label>Veterinario</label>
+        <select formControlName="idVeterinario" (change)="cargarHorariosVeterinario(); cargarSlots()">
+            <option value="" disabled>Seleccione Veterinario...</option>
+            @for (v of veterinarios; track v.idVeterinario) {
+                <option [value]="v.idVeterinario">{{v.nombres}} {{v.apellidos}} - {{v.especialidad}}</option>
+            }
+        </select>
+      </div>
+
+      @if (horariosVeterinario.length > 0) {
+        <div class="turnos-box">
+            <h4 class="turnos-title">TURNOS SEMANALES DE ATENCIÓN</h4>
+            <div class="turnos-grid">
+                @for (h of horariosVeterinario; track h.idHorario) {
+                    <span class="badge">
+                        {{ h.diaSemana | titlecase }} ({{ h.horaInicio }} - {{ h.horaFin }})
+                    </span>
+                }
+            </div>
+        </div>
+      }
+
+      <div class="form-group">
+        <label>DNI del Cliente</label>
+        <input type="text" formControlName="dniCliente" placeholder="Ej: 12345678" (blur)="buscarCliente()">
+      </div>
+
+      @if (cliente) {
+        <div class="info-box">
+          <p><strong>Propietario:</strong> {{cliente.nombres}} {{cliente.apellidos}}</p>
+          <p><strong>Mascota:</strong></p>
+          <select formControlName="idMascota">
+            <option value="" disabled>Seleccione mascota...</option>
+            @for (m of mascotas; track m.idMascota) {
+              <option [value]="m.idMascota">{{m.nombreMascota}} ({{m.nombreRaza}})</option>
+            }
+          </select>
+        </div>
+      }
+
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" formControlName="fecha" (change)="cargarSlots()">
+      </div>
+
+      <div class="form-group full-width">
+        <label>Motivo de la Cita</label>
+        <textarea formControlName="motivo" rows="3" placeholder="Describe brevemente el motivo..."></textarea>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Bloques de Horarios Disponibles</label>
+        <div class="slots-container">
+          @if (slots.length > 0) {
+            @for (s of slots; track s.hora) {
+                <button 
+                  type="button"
+                  [class.selected]="formulario.value.hora === s.hora"
+                  [disabled]="!s.disponible"
+                  (click)="seleccionarHora(s.hora)"
+                  class="btn-slot">
+                  {{ s.hora }}
+                </button>
+            }
+          } @else {
+            <p class="empty-msg">No hay horarios disponibles para esta fecha.</p>
+          }
+        </div>
+      </div>
+    </div> <button type="button" class="btn-primary" (click)="abrirModalPago()" [disabled]="formulario.invalid">
+      Reservar Cita
+    </button>
+  </form> </div> @if (mostrarModalPago) {
+  <div class="modal-overlay" [formGroup]="formulario"> 
+    <div class="modal-content">
+      <h3>Paso 2: Registro de Pago y Caja</h3>
+      
+      <div class="summary-box">
+        <p><strong>Código de Cita:</strong> <span class="right">PENDIENTE</span></p>
+        <p><strong>Propietario:</strong> {{cliente?.nombres}} {{cliente?.apellidos}}</p>
+        <p><strong>Paciente Mascota:</strong> {{ obtenerNombreMascotaSeleccionada() }}</p>
+        <p><strong>Veterinario:</strong> {{ obtenerNombreVeterinarioSeleccionado() }}</p>
+        <hr class="dashed-line">
+        <p class="total"><strong>Total Neto a Cobrar:</strong> S/ {{montoFijo}}</p>
+      </div>
+      
+      <div class="form-group">
+        <label>Tipo de Comprobante</label>
+        <select formControlName="tipoDocumento">
+          <option value="BOLETA">Boleta de Pago</option>
+          <option value="FACTURA">Factura</option>
+          <option value="RECIBO_INTERNO">Recibo Interno</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Método de Pago</label>
+        <select formControlName="metodoPago">
+          <option value="EFECTIVO">Efectivo (Caja Física)</option>
+          <option value="TARJETA_DEBITO">Tarjeta Debito</option>
+          <option value="YAPE_PLIN">Billetera Digital(YAPE/PLIN)</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="mostrarModalPago = false">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmarCita()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+}

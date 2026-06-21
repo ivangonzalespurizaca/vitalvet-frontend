@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="header">
+    <h2>Planificación de Horarios</h2>
+    <button class="btn-secondary" routerLink="/veterinarios">Volver al Listado</button>
+  </div>
+
+  @if (veterinarioData) {
+    <div class="datos-vet">
+      <h3>Datos del Veterinario</h3>
+      <div class="grid-fields">
+        <input readonly [value]="veterinarioData.dni" placeholder="DNI">
+        <input readonly [value]="veterinarioData.nombreCompleto" placeholder="Nombre">
+        <input readonly [value]="veterinarioData.especialidad" placeholder="Especialidad">
+      </div>
+    </div>
+
+    <div class="main-layout">
+      <div class="tabla-horarios">
+        <table>
+          <thead>
+            <tr><th>DÍA</th><th>ENTRADA</th><th>SALIDA</th><th>ACCIÓN</th></tr>
+          </thead>
+            <tbody>
+            @if (horarios.length > 0) {
+                @for (h of horarios; track h.idHorario) {
+                <tr>
+                    <td>{{ h.diaSemana }}</td>
+                    <td>{{ h.horaInicio }}</td>
+                    <td>{{ h.horaFin }}</td>
+                    <td>
+                    <button (click)="eliminar(h.idHorario)" class="btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+                }
+            } @else {
+                <tr>
+                <td colspan="4" class="text-center-message">
+                    No hay horarios disponibles para este veterinario.
+                </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+      </div>
+
+      <form [formGroup]="formulario" (ngSubmit)="guardarHorario()" class="form-horario">
+        <h3>Nuevo Horario</h3>
+        
+        <select formControlName="diaSemana">
+          <option value="" disabled>Seleccione día...</option>
+          @for (d of dias; track d) { <option [value]="d">{{ d }}</option> }
+        </select>
+
+        <label>Hora de Entrada</label>
+        <select formControlName="hourStart">
+          @for (h of hours; track h) { <option [value]="h">{{ h }}:00</option> }
+        </select>
+
+        <label>Hora de Salida</label>
+        <select formControlName="hourEnd">
+          @for (h of hours; track h) { <option [value]="h">{{ h }}:00</option> }
+        </select>
+
+        <button type="submit" class="btn-primary">Guardar Horario</button>
+      </form>
+    </div>
+  }
+</div>
