@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
+  { 
+    path: '', 
+    redirectTo: 'login', 
+    pathMatch: 'full' 
+  },
   // =========================
   // RUTAS PÚBLICAS
   // =========================
@@ -95,6 +100,13 @@ export const routes: Routes = [
         loadComponent: () => import('./features/comprobantes/pages/comprobantes/comprobantes.component')
           .then(m => m.ComprobantesListComponent),
         data: { titulo: 'Comprobantes de Pago', roles: ['ADMINISTRADOR'] }
+      },
+      {
+        path: 'veterinario/consultas',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/consultas/pages/consultas-list/consultas-list.component')
+          .then(m => m.ConsultasListComponent),
+        data: { titulo: 'Consultas Médicas', roles: ['VETERINARIO'] }
       }
     ]
   },

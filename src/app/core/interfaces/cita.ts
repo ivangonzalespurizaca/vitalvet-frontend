@@ -1,6 +1,6 @@
 import { ApiResponse } from './api-response';
 
-export type TipoEstadoCita = 'PENDIENTE' | 'CONFIRMADA' | 'COMPLETADA' | 'CANCELADA';
+export type TipoEstadoCita = 'PAGADA' | 'COMPLETADA' | 'CANCELADA';
 
 export interface SlotDTO {
   hora: string;
