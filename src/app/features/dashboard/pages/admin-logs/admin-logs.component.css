@@ -1,0 +1,176 @@
+/* Contenedor principal de la vista */
+.logs-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sección superior de filtros en una sola fila */
+.filtros-header {
+  display: flex;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 25px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Inputs y Selects redondos */
+.filter-group input, 
+.filter-group select {
+  height: 38px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 0 15px;
+  font-size: 13px;
+  color: #333;
+  background-color: #fdfdfd;
+  outline: none;
+  width: 100%;
+}
+
+/* Buscador por ID con icono */
+.input-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.btn-search-icon {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #7f8c8d;
+  cursor: pointer;
+}
+
+.btn-limpiar {
+  height: 38px;
+  padding: 0 20px;
+  border-radius: 20px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.btn-limpiar:hover {
+  background: #f1f5f9;
+}
+
+/* Estilos de la Tabla */
+.table-responsive {
+  background: white;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #f1f3f5;
+  color: #2c3e50;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 16px 20px;
+  letter-spacing: 0.5px;
+}
+
+.custom-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+/* Columna Fecha quebrada */
+.cell-date {
+  display: flex;
+  flex-direction: column;
+}
+.date-day {
+  font-weight: 600;
+  color: #2c3e50;
+}
+.date-time {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 2px;
+}
+
+/* Columna de Usuario */
+.user-name {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
+}
+.user-id {
+  font-size: 11px;
+  color: #95a5a6;
+  display: block;
+}
+
+/* Estilo Óvalo (Badge / Pill) de la imagen */
+.badge-pill {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: lowercase; /* Mantiene minúsculas para tablas */
+}
+
+.tab-pill {
+  background-color: #f1f3f5;
+  color: #495057;
+}
+
+.action-pill {
+  background-color: #e9ecef;
+  color: #343a40;
+  text-transform: uppercase; /* Para que INSERT/UPDATE se vea en mayúsculas */
+  letter-spacing: 0.5px;
+}
+
+.cell-desc {
+  color: #495057;
+  font-size: 12.5px;
+  max-width: 300px;
+}
+
+.loading-text {
+  color: #95a5a6;
+  font-style: italic;
+}
+
+.no-records {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 30px !important;
+}

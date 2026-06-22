@@ -40,6 +40,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/pages/dashboard-redirect/dashboard-redirect.component').then(m => m.DashboardRedirectComponent),
         data: { titulo: 'Bienvenido a Vital Vet' }
       },
+    
+      {
+        path: 'admin/logs',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/dashboard/pages/admin-logs/admin-logs.component').then(m => m.AdminLogsComponent),
+        data: { titulo: 'Logs de Control', roles: ['ADMINISTRADOR'] }
+      }
+      ,
       {
         path: 'admin/dashboard',
         canActivate: [roleGuard],
