@@ -50,9 +50,11 @@
         <button class="btn-outline" (click)="verDetalle(c.idCita)">Detalle</button>
         
         @if (c.estado === 'COMPLETADA') {
-          <button class="btn-primary">
-            Calificar
+          @if (c.estado === 'COMPLETADA') {
+           <button class="btn-primary" (click)="abrirCalificar(c)">
+          Calificar
           </button>
+         }
         }
       </td>
   } @empty {
@@ -91,6 +93,64 @@
       </div>
 
       <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+}
+
+@if (mostrarModalCalificar && citaACalificar) {
+  <div class="modal-overlay">
+    <div class="modal-content calificar-modal">
+      
+      <div class="modal-header-premium">
+        <div class="icon-badge">⭐⭐⭐</div>
+        <h3>Calificar Atención</h3>
+        <p class="subtitle">Cita: <span>{{ citaACalificar.codigoCita }}</span></p>
+      </div>
+
+      <div class="modal-body-premium">
+        <p class="prompt-text">
+          ¿Cómo calificarías la atención brindada a <strong>{{ citaACalificar.nombreMascota }}</strong> por el Dr(a). <strong>{{ citaACalificar.nombreMedico }}</strong>?
+        </p>
+
+        <div class="rating-container">
+          <label class="rating-label">Tu puntuación:</label>
+          <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5" [(ngModel)]="puntuacionSeleccionada" /><label for="star5" title="Excelente">★</label>
+            <input type="radio" id="star4" name="rating" value="4" [(ngModel)]="puntuacionSeleccionada" /><label for="star4" title="Bueno">★</label>
+            <input type="radio" id="star3" name="rating" value="3" [(ngModel)]="puntuacionSeleccionada" /><label for="star3" title="Regular">★</label>
+            <input type="radio" id="star2" name="rating" value="2" [(ngModel)]="puntuacionSeleccionada" /><label for="star2" title="Malo">★</label>
+            <input type="radio" id="star1" name="rating" value="1" [(ngModel)]="puntuacionSeleccionada" /><label for="star1" title="Pésimo">★</label>
+          </div>
+          <span class="rating-value-text">
+            @switch (puntuacionSeleccionada) {
+              @case (5) { ¡Excelente servicio! }
+              @case (4) { Muy buena atención }
+              @case (3) { Regular / Aceptable }
+              @case (2) { Pudo ser mejor }
+              @case (1) { Insatisfecho }
+            }
+          </span>
+        </div>
+
+        <div class="form-group-premium">
+          <label for="comentario" class="form-label">Reseña u opinión adicional:</label>
+          <textarea 
+            id="comentario" 
+            [(ngModel)]="comentarioCalificacion" 
+            placeholder="Cuéntanos qué tal te pareció la atención, el trato con tu mascota, etc..." 
+            rows="4" 
+            class="form-control-premium">
+          </textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer-premium">
+        <button class="btn-premium-cancel" (click)="cerrarCalificar()">Tal vez luego</button>
+        <button class="btn-premium-submit" (click)="guardarCalificacion()">
+          Enviar Calificación
+        </button>
+      </div>
+
     </div>
   </div>
 }

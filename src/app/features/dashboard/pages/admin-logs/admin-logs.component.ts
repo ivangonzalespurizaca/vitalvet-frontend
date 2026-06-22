@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AdminLogsService } from '../../../../core/services/admin-logs.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
+import { ComentariosSoapService } from '../../../../core/services/comentario-soap.service';
 
 @Component({
   selector: 'app-admin-logs',
@@ -15,6 +16,11 @@ import { ClienteService } from '../../../../core/services/cliente.service';
 export class AdminLogsComponent implements OnInit {
 
   logs: any[] = [];
+  comentariosSoap: any[] = [];
+  mostrarModalSoap = false;
+  cargandoSoap = false;
+
+
 
   filtros = {
     usuarioOrId: '',
@@ -25,7 +31,8 @@ export class AdminLogsComponent implements OnInit {
 
   constructor(
     private adminLogsService: AdminLogsService,
-    private clienteService: ClienteService // Corregido a minúscula por convención de buenas prácticas
+    private clienteService: ClienteService ,
+    private soapService: ComentariosSoapService// Corregido a minúscula por convención de buenas prácticas
   ) {}
 
   ngOnInit(): void {
@@ -99,5 +106,26 @@ export class AdminLogsComponent implements OnInit {
       fecha: ''
     };
     this.listarLogs();
+  }
+
+  verDetalleSoap() {
+    this.mostrarModalSoap = true;
+    this.cargandoSoap = true;
+    this.comentariosSoap = [];
+
+    this.soapService.obtenerComentariosSoap().subscribe({
+      next: (data) => {
+        this.comentariosSoap = data;
+        this.cargandoSoap = false;
+      },
+      error: (err) => {
+        console.error('Error al traer datos SOAP:', err);
+        this.cargandoSoap = false;
+      }
+    });
+  }
+
+  cerrarModal() {
+    this.mostrarModalSoap = false;
   }
 }

@@ -124,3 +124,204 @@ input[type="text"] {
   cursor: pointer;
   margin-top: 1rem;
 }
+
+/* --- ESTILOS DEL MODAL DE CALIFICACIÓN PREMIUM --- */
+
+.calificar-modal {
+  max-width: 480px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  padding: 0 !important; /* Controlamos el padding por secciones interno */
+  overflow: hidden;
+  background: #ffffff;
+  animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Encabezado */
+.modal-header-premium {
+  background: linear-gradient(135deg, #f4f6f9 0%, #e9ecef 100%);
+  padding: 24px;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-header-premium .icon-badge {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.modal-header-premium h3 {
+  margin: 0;
+  color: #212529;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.modal-header-premium .subtitle {
+  margin: 4px 0 0 0;
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.modal-header-premium .subtitle span {
+  background: #3b82f6;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Cuerpo */
+.modal-body-premium {
+  padding: 24px;
+}
+
+.prompt-text {
+  color: #495057;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Contenedor de Estrellas */
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.rating-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Magia de Estrellas en CSS Puro (Invertidas para controlar hover de izquierda a derecha) */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 4px;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2.25rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #fbbf24; /* Color Dorado/Amarillo Premium */
+}
+
+.star-rating label:active {
+  transform: scale(0.9);
+}
+
+.rating-value-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Formulario Inputs */
+.form-group-premium {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-control-premium {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1e293b;
+  resize: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control-premium:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Footer / Botones */
+.modal-footer-premium {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-premium-cancel {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-premium-cancel:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.btn-premium-submit {
+  background: #10b981; /* Verde esmeralda moderno para éxito */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-premium-submit:hover {
+  background: #059669;
+}
+
+.btn-premium-submit:active {
+  transform: translateY(1px);
+}

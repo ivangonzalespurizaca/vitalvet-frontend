@@ -58,7 +58,7 @@
           <th>TABLA AFECTADA</th>
           <th>ACCIÓN SQL</th>
           <th>DESCRIPCIÓN</th>
-        </tr>
+          <th>ACCIONES</th> </tr>
       </thead>
 
       <tbody>
@@ -95,10 +95,12 @@
             {{ log.descripcion }}
           </td>
 
+          
+
         </tr>
 
         <tr *ngIf="logs.length === 0">
-          <td colspan="5" class="no-records">
+          <td colspan="6" class="no-records">
             No existen registros
           </td>
         </tr>
@@ -106,4 +108,48 @@
     </table>
   </div>
 
+</div>
+
+<td class="cell-actions">
+            <button 
+              class="btn-ver-soap" 
+              (click)="verDetalleSoap()"
+              title="Ver XML SOAP">
+              📋 Ver Comentarios
+            </button>
+          </td>
+
+
+<div class="modal-overlay" *ngIf="mostrarModalSoap">
+  <div class="modal-content">
+    
+    <div class="modal-header">
+      <h3>💬 Comentarios del Servidor SOAP</h3>
+      <button class="btn-cerrar-modal" (click)="cerrarModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="cargandoSoap" class="soap-loading">
+        <p>Consultando e integrando payload SOAP...</p>
+      </div>
+
+      <div *ngIf="!cargandoSoap && comentariosSoap.length > 0" class="cards-container">
+        <div class="comentario-card" *ngFor="let com of comentariosSoap">
+          <div class="card-user-info">
+            <strong>Veterinario:</strong> {{ com.nombreVeterinario }}
+            <span class="coment-id">#{{ com.idComentario }}</span>
+          </div>
+          <p class="card-opinion">"{{ com.opinion }}"</p>
+          <div class="card-stars">
+            <span *ngFor="let star of [].constructor(com.estrellas)">⭐</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!cargandoSoap && comentariosSoap.length === 0">
+        <p class="no-records">No se encontraron comentarios en la respuesta SOAP.</p>
+      </div>
+    </div>
+
+  </div>
 </div>
