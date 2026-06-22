@@ -1,0 +1,34 @@
+<div class="header-info">
+  <h2>Consulta Médica: {{ nombreMascota }}</h2>
+  <p><strong>Motivo:</strong> {{ motivoConsulta }}</p>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <input formControlName="pesoActual" placeholder="Peso (KG)" type="number">
+  <input formControlName="temperatura" placeholder="Temperatura (C)" type="number">
+  <textarea formControlName="diagnostico" placeholder="Diagnóstico"></textarea>
+  <textarea formControlName="recomendaciones" placeholder="Recomendaciones"></textarea>
+
+  <hr>
+  <h3>Aplicar Vacunas</h3>
+
+  <div formArrayName="vacunas">
+    <div *ngFor="let v of vacunasControls; let i = index" [formGroupName]="i" class="vacuna-row">
+      
+      <select formControlName="idVacuna">
+        <option [ngValue]="null" disabled>Seleccionar vacuna</option>
+        <option *ngFor="let cat of vacunasDisponibles" [value]="cat.idVacuna">
+          {{ cat.nombreVacuna }}
+        </option>
+      </select>
+
+      <input formControlName="nroDosis" placeholder="Dosis Tipo">
+      <input formControlName="proximaDosis" type="date" placeholder="Fecha">
+      
+      <button type="button" class="btn-remove" (click)="quitarVacuna(i)">Quitar</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="agregarVacuna()">+ Agregar Vacuna</button>
+  <button type="submit" [disabled]="form.invalid">Guardar Consulta</button>
+</form>

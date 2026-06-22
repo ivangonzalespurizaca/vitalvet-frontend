@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../interfaces/api-response';
 import { HorarioResponse } from '../interfaces/horario';
 import { HorarioRequest } from '../interfaces/horario';
+import { AgendaBloqueResponseDTO } from '../interfaces/agenda';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,11 @@ export class HorarioService {
   // Eliminar un horario
   eliminarHorario(idHorario: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${idHorario}`);
+  }
+
+  obtenerAgenda(fecha: string): Observable<ApiResponse<AgendaBloqueResponseDTO[]>> {
+    return this.http.get<ApiResponse<AgendaBloqueResponseDTO[]>>(`${this.apiUrl}/mi-agenda`, {
+      params: { fecha }
+    });
   }
 }

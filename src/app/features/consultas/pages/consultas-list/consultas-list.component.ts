@@ -1,8 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'; // <-- Importa esto
 import { CitaService } from '../../../../core/services/cita.service';
-import { CitaPanelResponse } from '../../../../core/interfaces/cita';
+import { CitaPanelResponse, CitaDetalleResponse } from '../../../../core/interfaces/cita';
 
 @Component({
   standalone: true,
@@ -13,6 +14,9 @@ import { CitaPanelResponse } from '../../../../core/interfaces/cita';
 export class ConsultasListComponent implements OnInit {
   private citaService = inject(CitaService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  detalleSeleccionado: CitaDetalleResponse | null = null; 
+  mostrarModalDetalle = false;
   
   citas: CitaPanelResponse[] = [];
   estadoActual: string = '';
@@ -38,15 +42,36 @@ export class ConsultasListComponent implements OnInit {
       error: () => alert('Error al cargar consultas')
     });
   }
-  atenderCita(id: number) {
-    console.log('Atendiendo cita:', id);
-    // Aquí irá tu lógica de navegación
+  atenderCita(c: CitaPanelResponse) {
+    // Asegúrate de que c.idMascota exista.
+    // Si no está, tendrás que obtenerlo (ej. c.mascota.id)
+    const idMascota = c.idMascota; 
+    
+    this.router.navigate(['/veterinario/consultas/registrar', idMascota], {
+      queryParams: { 
+        idCita: c.idCita,
+        mascota: c.nombreMascota, 
+        motivo: c.motivo          
+      }
+    });
   }
 
-  verFicha(id: number) {
-    console.log('Ver ficha:', id);
-    // Aquí irá tu lógica de visualización
+  verFicha(idCita: number) {
+    // Asumiendo que tienes un método en tu servicio para traer el detalle de la consulta
+    this.citaService.obtenerDetalleCita(idCita).subscribe({
+      next: (res) => {
+        this.detalleSeleccionado = res.data;
+        this.mostrarModalDetalle = true;
+      },
+      error: () => alert('No se pudo cargar el detalle de la consulta')
+    });
+  }
+
+  cerrarDetalle() {
+    this.mostrarModalDetalle = false;
+    this.detalleSeleccionado = null;
   }
 
   // Métodos de navegación igual que antes...
 }
+

@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="search-box">
+    <input [(ngModel)]="dni" placeholder="Buscar por DNI...">
+    <button (click)="buscar()">Buscar</button>
+  </div>
+
+  <div class="owner-info" *ngIf="resultado">
+    <h4>Propietario: {{ resultado.nombres }} {{ resultado.apellidos }}</h4>
+    <p>DNI: {{ resultado.dni }} | Celular: {{ resultado.celular }}</p>
+  </div>
+
+
+  <div class="layout">
+    <div class="pets-list">
+      <h3>Mascotas Registradas</h3>
+      <div *ngFor="let m of resultado?.mascotas" class="pet-card" (click)="cargarCarnet(m)">
+        <strong>{{ m.nombreMascota }}</strong>
+        <p>{{ m.nombreRaza }}</p>
+      </div>
+    </div>
+
+    <div class="carnet-section" *ngIf="carnet">
+      <h3>Carnet Clínico: {{ carnet.nombreMascota }}</h3>
+      <table>
+        <tr *ngFor="let v of carnet.vacunas">
+          <td>{{ v.nombreVacuna }}</td>
+          <td>{{ v.dosis }}</td>
+          <td>{{ v.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
+          <td>{{ v.estado }}</td>
+        </tr>
+      </table>
+
+      <div class="register-form">
+        <select [(ngModel)]="nuevaVacuna.idVacuna">
+          <option *ngFor="let v of catalogoVacunas" [value]="v.idVacuna">{{v.nombreVacuna}}</option>
+        </select>
+        <input [(ngModel)]="nuevaVacuna.dosisTipo" placeholder="Dosis">
+        <input type="date" [(ngModel)]="nuevaVacuna.fecha">
+        <button (click)="registrar()">Aplicar</button>
+      </div>
+    </div>
+  </div>
+</div>

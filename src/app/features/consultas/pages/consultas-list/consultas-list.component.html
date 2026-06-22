@@ -33,7 +33,7 @@
             <td><span class="badge" [class.pagada]="c.estado === 'PAGADA'">{{ c.estado }}</span></td>
             <td>
             @if (c.estado === 'PAGADA') {
-                <button class="btn-primary" (click)="atenderCita(c.idCita)">Atender</button>
+                <button class="btn-primary" (click)="atenderCita(c)">Atender</button>
             } @else {
                 <button class="btn-outline" (click)="verFicha(c.idCita)">Ver Ficha</button>
             }
@@ -45,3 +45,36 @@
     </tbody>
     </table>
 </div>
+
+@if (mostrarModalDetalle && detalleSeleccionado) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h3>Cita: {{ detalleSeleccionado.codigoCita }}</h3>
+
+      <div class="section">
+        <h4>INFORMACIÓN DEL SERVICIO</h4>
+        <div class="info-grid">
+          <p><strong>Mascota:</strong> {{ detalleSeleccionado.nombreMascota }}</p>
+          <p><strong>Médico:</strong> {{ detalleSeleccionado.nombreMedico }}</p>
+          <p><strong>Fecha:</strong> {{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Motivo:</strong> {{ detalleSeleccionado.motivo }}</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4>CONSTANTES Y DIAGNÓSTICO</h4>
+        @if (detalleSeleccionado.consulta) {
+          <div class="info-grid">
+            <p><strong>Peso:</strong> {{ detalleSeleccionado.consulta.pesoActual }} Kg</p>
+            <p><strong>Temp:</strong> {{ detalleSeleccionado.consulta.temperatura }} C</p>
+            <p class="full-width"><strong>Diagnóstico:</strong> {{ detalleSeleccionado.consulta.diagnostico }}</p>
+          </div>
+        } @else {
+          <p class="empty-msg">Consulta no registrada o pendiente de atención.</p>
+        }
+      </div>
+
+      <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+}
