@@ -34,7 +34,7 @@ export class SidebarComponent {
     { label: 'Inicio / Dashboard', route: '/cliente/dashboard', roles: ['CLIENTE'] },
     { label: 'Mis Mascotas', route: '/cliente/mis-mascotas', roles: ['CLIENTE'] },
     { label: 'Mis Citas', route: '/cliente/mis-citas', roles: ['CLIENTE'] },
-    { label: 'Pagos Realizados', route: '/cliente/mis-pagos', roles: ['CLIENTE'] }
+    { label: 'Pagos Realizados', route: '/cliente/mis-comprobantes', roles: ['CLIENTE'] }
   ];
 
   // Filtramos los items basándonos en el rol del usuario autenticado

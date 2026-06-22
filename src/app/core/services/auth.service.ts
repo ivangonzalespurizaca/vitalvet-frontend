@@ -64,6 +64,13 @@ export class AuthService {
     return profile ? JSON.parse(profile) : null;
   }
 
+  // En tu AuthService
+  getIdPersona(): number | null {
+    const profile = this.getUserProfile();
+    // Retornamos idPersona si existe, de lo contrario null
+    return profile ? profile.idPersona : null;
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user_profile');

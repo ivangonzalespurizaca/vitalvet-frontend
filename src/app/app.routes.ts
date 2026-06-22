@@ -135,6 +135,20 @@ export const routes: Routes = [
         loadComponent: () => import('./features/citas/pages/mis-citas/mis-citas.component')
           .then(m => m.MisCitasComponent),
         data: { titulo: 'Mis Citas', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-citas/registrar', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/citas/pages/registrar-citas-cliente/registrar-citas-cliente.component')
+          .then(m => m.RegistrarCitaClienteComponent), // Nombre exacto de la clase
+        data: { titulo: 'Registrar Citas', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-comprobantes', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/comprobantes/pages/mis-comprobantes/mis-comprobantes.component')
+          .then(m => m.MisComprobantesComponent), // Nombre exacto de la clase
+        data: { titulo: 'Mis Comprobantes', roles: ['CLIENTE'] }
       }
     ]
   },

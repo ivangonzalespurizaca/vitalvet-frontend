@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Mis Comprobantes</h2>
+
+  <form [formGroup]="filtroForm" class="filter-bar">
+    <select formControlName="tipo">
+      <option value="">Todos los tipos</option>
+      <option value="BOLETA">Boleta</option>
+      <option value="FACTURA">Factura</option>
+    </select>
+    <input type="date" formControlName="inicio">
+    <input type="date" formControlName="fin">
+    <button (click)="cargarMisComprobantes()">Filtrar</button>
+  </form>
+
+  <table class="citas-table">
+    <thead>
+      <tr>
+        <th>NÚMERO</th>
+        <th>FECHA</th>
+        <th>MÉTODO</th>
+        <th>TOTAL</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of comprobantes; track c.idComprobante) {
+        <tr>
+          <td>{{ c.codigoComprobante }}</td>
+          <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}</td>
+          <td>{{ c.metodoPago }}</td>
+          <td>{{ c.montoTotal | currency:'PEN':'S/ ' }}</td>
+          <td><button (click)="verDetalle(c.idComprobante)">Ver Ticket</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (selectedComprobante) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h4>Ticket VITAL VET</h4>
+      <p><strong>Total:</strong> {{ selectedComprobante.montoTotal | currency:'PEN':'S/ ' }}</p>
+      <button (click)="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
+}
