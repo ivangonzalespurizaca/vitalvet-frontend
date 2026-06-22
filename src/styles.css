@@ -1,4 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Importamos una tipografía profesional que se lee increíble en pantallas */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Paleta de colores VitalVet */
+  --color-primary: #1a5f7a;
+  --color-secondary: #00897b;
+  --color-accent: #00a8a8;
+  --color-bg: #f0f2f5;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-muted: #6b7280;
+  --color-danger: #e11d48;
+  
+  /* Sistema de espaciado y sombras consistente */
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
 
 * {
   margin: 0;
@@ -7,8 +26,33 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-color: #f9f9f9; /* Color de fondo suave para toda la app */
-  color: #1f2937; /* Un gris muy oscuro, más agradable a la vista que el negro puro */
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6; /* Mejora la lectura de párrafos */
+}
+
+/* Scrollbar estilizado para navegadores modernos */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Clases utilitarias globales para mantener consistencia */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
 }

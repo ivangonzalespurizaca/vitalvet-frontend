@@ -1,0 +1,31 @@
+.container { max-width: 800px; margin: 2rem auto; padding: 2rem; }
+.form-container { background: white; padding: 2.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+.grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.full-width { grid-column: span 2; }
+
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+label { font-weight: 700; color: #64748b; font-size: 0.75rem; text-transform: uppercase; }
+select, input, textarea { padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.95rem; }
+
+.btn-slot {
+  padding: 0.7rem 1.2rem; border-radius: 10px; border: 1px solid #e2e8f0;
+  background: white; cursor: pointer; transition: 0.3s;
+}
+.btn-slot.selected { background: #0f766e; color: white; border-color: #0f766e; }
+.btn-slot:disabled { background: #f1f5f9; color: #cbd5e1; cursor: not-allowed; }
+
+.btn-primary { 
+  width: 100%; margin-top: 2rem; padding: 1rem; background: #0f766e; 
+  color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
+}
+
+/* Modal igual al anterior */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+.modal-content { background: white; padding: 2.5rem; border-radius: 20px; width: 450px; }
+.modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+.btn-cancel { flex: 1; padding: 0.9rem; background: #f1f5f9; border: none; border-radius: 10px; cursor: pointer; }

@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="header">
+    <h2>Reservar Nueva Cita</h2>
+  </div>
+
+  <form [formGroup]="formulario" class="form-container">
+    <div class="grid-layout">
+      
+      <div class="form-group">
+        <label>Veterinario</label>
+        <select formControlName="idVeterinario" (change)="cargarHorariosVeterinario(); cargarSlots()">
+            <option value="" disabled>Seleccione especialista...</option>
+            @for (v of veterinarios; track v.idVeterinario) {
+                <option [value]="v.idVeterinario">{{v.nombres}} {{v.apellidos}} - {{v.especialidad}}</option>
+            }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Mascota</label>
+        <select formControlName="idMascota">
+          <option value="" disabled>Mis mascotas...</option>
+          @for (m of mascotas; track m.idMascota) {
+            <option [value]="m.idMascota">{{m.nombreMascota}} ({{m.nombreRaza}})</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Fecha de Cita</label>
+        <input type="date" formControlName="fecha" (change)="cargarSlots()">
+      </div>
+
+      <div class="form-group full-width">
+        <label>Motivo</label>
+        <textarea formControlName="motivo" rows="2" placeholder="Breve motivo de la consulta..."></textarea>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Horarios Disponibles</label>
+        <div class="slots-container">
+          @for (s of slots; track s.hora) {
+            <button type="button" 
+                    [class.selected]="formulario.value.hora === s.hora"
+                    [disabled]="!s.disponible"
+                    (click)="formulario.patchValue({hora: s.hora})" 
+                    class="btn-slot">
+              {{ s.hora }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="mostrarModalPago = true">
+      Reservar y Pagar S/ {{montoFijo}}
+    </button>
+  </form>
+</div>
+
+@if (mostrarModalPago) {
+  <div class="modal-overlay" (click)="mostrarModalPago = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Paso 2: Checkout</h3>
+      
+      <div class="section">
+        <h4>RESUMEN DE LA CITA</h4>
+        <div class="info-grid">
+          <p><strong>Especialista:</strong> {{ obtenerNombreVeterinarioSeleccionado() }}</p>
+          <p><strong>Mascota:</strong> {{ obtenerNombreMascotaSeleccionada() }}</p>
+          <p><strong>Fecha:</strong> {{ formulario.value.fecha }}</p>
+          <p><strong>Hora:</strong> {{ formulario.value.hora }}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="mostrarModalPago = false">Cancelar</button>
+        <button class="btn-primary" style="width: 100%;" (click)="confirmarCita()">Pagar y Confirmar</button>
+      </div>
+    </div>
+  </div>
+}

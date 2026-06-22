@@ -1,0 +1,379 @@
+/* ==========================================================================
+   1. CONTENEDOR PRINCIPAL Y FILTROS
+   ========================================================================== */
+
+/* Contenedor principal de la vista */
+.logs-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sección superior de filtros en una sola fila */
+.filtros-header {
+  display: flex;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 25px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Inputs y Selects redondos */
+.filter-group input, 
+.filter-group select {
+  height: 38px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 0 15px;
+  font-size: 13px;
+  color: #333;
+  background-color: #fdfdfd;
+  outline: none;
+  width: 100%;
+}
+
+/* Buscador por ID con icono */
+.input-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.btn-search-icon {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #7f8c8d;
+  cursor: pointer;
+}
+
+.btn-limpiar {
+  height: 38px;
+  padding: 0 20px;
+  border-radius: 20px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.btn-limpiar:hover {
+  background: #f1f5f9;
+}
+
+/* ==========================================================================
+   2. ESTILOS DE LA TABLA Y NUEVAS ACCIONES
+   ========================================================================== */
+
+/* Estilos de la Tabla */
+.table-responsive {
+  background: white;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #f1f3f5;
+  color: #2c3e50;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 16px 20px;
+  letter-spacing: 0.5px;
+}
+
+.custom-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f3f5;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+/* Columna de Acción (Botón Ver Comentarios) */
+.cell-actions {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Botón estilizado acorde a tus botones redondos actuales */
+.btn-ver-soap {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid #2c3e50;
+  background: white;
+  color: #2c3e50;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-ver-soap:hover {
+  background: #2c3e50;
+  color: white;
+}
+
+/* Columna Fecha quebrada */
+.cell-date {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-day {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.date-time {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 2px;
+}
+
+/* Columna de Usuario */
+.user-name {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.user-id {
+  font-size: 11px;
+  color: #95a5a6;
+  display: block;
+}
+
+/* Estilo Óvalo (Badge / Pill) */
+.badge-pill {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.tab-pill {
+  background-color: #f1f3f5;
+  color: #495057;
+}
+
+.action-pill {
+  background-color: #e9ecef;
+  color: #343a40;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cell-desc {
+  color: #495057;
+  font-size: 12.5px;
+  max-width: 300px;
+}
+
+.loading-text {
+  color: #95a5a6;
+  font-style: italic;
+}
+
+.no-records {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 30px !important;
+}
+
+/* ==========================================================================
+   3. VENTANA MODAL (SOAP COMENTARIOS)
+   ========================================================================== */
+
+/* Fondo oscuro translúcido con desenfoque suave */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(44, 62, 80, 0.5); /* Reutiliza tu color corporativo #2c3e50 con transparencia */
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Caja de la modal refinada */
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: scaleUp 0.2s ease-out;
+}
+
+.modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f3f5;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #2c3e50;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.btn-cerrar-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #95a5a6;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.btn-cerrar-modal:hover {
+  color: #e74c3c;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  background-color: #fdfdfd;
+}
+
+/* Contenedor de Tarjetas de Comentarios SOAP */
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.comentario-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.comentario-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+}
+
+.card-user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.card-user-info strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.coment-id {
+  color: #a0aec0;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.card-opinion {
+  font-style: italic;
+  color: #4a5568;
+  margin: 8px 0;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.card-stars {
+  font-size: 11px;
+  margin-top: 4px;
+  display: flex;
+  gap: 2px;
+}
+
+/* Spinner animado para la carga SOAP */
+.soap-loading {
+  text-align: center;
+  padding: 40px 0;
+  color: #7f8c8d;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2c3e50;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ==========================================================================
+   4. ANIMACIONES
+   ========================================================================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

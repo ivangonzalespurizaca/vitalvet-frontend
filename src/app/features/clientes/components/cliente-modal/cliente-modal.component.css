@@ -1,44 +1,34 @@
-/* ==========================================
-   Fondo oscuro y centrado del modal
-   ========================================== */
+/* --- Overlay y Contenedor --- */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro semi-transparente */
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Para que quede por encima de todo el resto de la página */
-  backdrop-filter: blur(2px); /* Un toque elegante de desenfoque */
+  z-index: 1050;
+  backdrop-filter: blur(2px);
 }
 
-/* ==========================================
-   Caja blanca del contenido
-   ========================================== */
 .modal-content {
   background-color: #ffffff;
   width: 90%;
   max-width: 650px;
-  max-height: 90vh; /* Para que no se salga de la pantalla si es muy alto */
-  overflow-y: auto; /* Muestra scroll interno si es necesario */
-  border-radius: 12px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
   animation: modalFadeIn 0.3s ease-out;
 }
 
-/* Animación para que aparezca suavemente */
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   Cabecera (Título y Botón cerrar)
-   ========================================== */
+/* --- Cabecera --- */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -48,131 +38,57 @@
   margin-bottom: 20px;
 }
 
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #111827;
-  font-weight: 600;
-}
+.modal-header h2 { margin: 0; font-size: 1.25rem; color: #111827; }
 
 .btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #6b7280;
-  cursor: pointer;
-  transition: color 0.2s;
+  background: none; border: none; font-size: 1.5rem; color: #6b7280;
+  cursor: pointer; transition: color 0.2s;
 }
+.btn-close:hover { color: #ef4444; }
 
-.btn-close:hover {
-  color: #ef4444; /* Rojo al pasar el mouse */
-}
-
-/* ==========================================
-   Estructura del Formulario
-   ========================================== */
+/* --- Formulario --- */
 .section-title {
-  font-size: 0.95rem;
-  color: #3b82f6; /* Azulito para destacar las secciones */
-  margin-bottom: 12px;
+  font-size: 0.8rem;
+  color: #0f766e; /* Color corporativo */
+  margin-bottom: 16px;
   text-transform: uppercase;
-  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-weight: 800;
 }
 
-.mascota-section {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px dashed #d1d5db; /* Separador entre cliente y mascota */
+.grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 0.85rem; font-weight: 600; color: #374151; }
+
+.form-group input, .form-group select {
+  padding: 12px; border: 1px solid #d1d5db;
+  border-radius: 10px; font-size: 0.95rem; outline: none;
 }
 
-.grid-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas */
-  gap: 16px;
-}
+.form-group input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,0.1); }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-.form-group input,
-.form-group select {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.error-text {
-  color: #ef4444;
-  font-size: 0.75rem;
-  margin-top: -2px;
-}
-
-/* ==========================================
-   Botones Inferiores
-   ========================================== */
+/* --- Botones (Forzados a habilitados) --- */
 .modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 30px;
+  display: flex; justify-content: flex-end; gap: 12px; margin-top: 30px;
 }
 
 .btn-cancel {
-  padding: 10px 16px;
-  background-color: white;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  color: #4b5563;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-cancel:hover {
-  background-color: #f3f4f6;
+  padding: 10px 20px; background: white; border: 1px solid #e2e8f0;
+  border-radius: 10px; color: #4b5563; font-weight: 600; cursor: pointer;
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background-color: #3b82f6;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  padding: 10px 20px; background: #0f766e; border: none;
+  border-radius: 10px; color: white; font-weight: 600; 
+  cursor: pointer; pointer-events: auto !important; /* Fuerza habilitación */
 }
 
-.btn-primary:hover {
-  background-color: #2563eb;
-}
-
+/* Elimina el efecto visual de bloqueo */
 .btn-primary:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
+  background-color: #0f766e !important;
+  opacity: 0.8;
+  cursor: pointer !important;
 }
 
-.loading-state {
-  text-align: center;
-  padding: 40px;
-  color: #6b7280;
-  font-weight: 500;
-}
+.loading-state { text-align: center; padding: 40px; color: #6b7280; }

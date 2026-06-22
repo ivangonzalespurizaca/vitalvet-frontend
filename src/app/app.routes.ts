@@ -40,6 +40,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/pages/dashboard-redirect/dashboard-redirect.component').then(m => m.DashboardRedirectComponent),
         data: { titulo: 'Bienvenido a Vital Vet' }
       },
+    
+      {
+        path: 'admin/logs',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/dashboard/pages/admin-logs/admin-logs.component').then(m => m.AdminLogsComponent),
+        data: { titulo: 'Logs de Control', roles: ['ADMINISTRADOR'] }
+      }
+      ,
       {
         path: 'admin/dashboard',
         canActivate: [roleGuard],
@@ -125,6 +133,48 @@ export const routes: Routes = [
         loadComponent: () => import('./features/consultas/pages/consultas-list/consultas-list.component')
           .then(m => m.ConsultasListComponent),
         data: { titulo: 'Consultas Médicas', roles: ['VETERINARIO'] }
+      },
+      {
+        path: 'veterinario/consultas/registrar/:idMascota', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/consultas/pages/registrar-consulta/registrar-consulta.component')
+          .then(m => m.RegistrarConsultaComponent),
+        data: { titulo: 'Registrar Consulta Médica', roles: ['VETERINARIO'] }
+      },
+      {
+        path: 'veterinario/gestion-vacunas', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/vacunacion/pages/vacunacion/vacunacion.component')
+          .then(m => m.VacunacionComponent),
+        data: { titulo: 'Gestión de Vacunas', roles: ['VETERINARIO'] }
+      },
+      {
+        path: 'veterinario/mi-agenda', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/agenda/pages/agenda/agenda.component')
+          .then(m => m.AgendaComponent),
+        data: { titulo: 'Mi agenda', roles: ['VETERINARIO'] }
+      },
+      {
+        path: 'cliente/mis-citas', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/citas/pages/mis-citas/mis-citas.component')
+          .then(m => m.MisCitasComponent),
+        data: { titulo: 'Mis Citas', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-citas/registrar', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/citas/pages/registrar-citas-cliente/registrar-citas-cliente.component')
+          .then(m => m.RegistrarCitaClienteComponent), // Nombre exacto de la clase
+        data: { titulo: 'Registrar Citas', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-comprobantes', 
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/comprobantes/pages/mis-comprobantes/mis-comprobantes.component')
+          .then(m => m.MisComprobantesComponent), // Nombre exacto de la clase
+        data: { titulo: 'Mis Comprobantes', roles: ['CLIENTE'] }
       }
     ]
   },

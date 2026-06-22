@@ -1,0 +1,156 @@
+<div class="container">
+  <div class="header">
+    <h2>Citas Médicas</h2>
+    <button class="btn-primary" routerLink="/cliente/mis-citas/registrar">Registrar Cita Presencial</button>
+  </div>
+
+  <div class="controls-bar">
+    <input type="text" [formControl]="searchControl" placeholder="Buscar por mascota...">
+    
+    <div class="tabs">
+      <button [class.active]="estadoFiltro === ''" (click)="filtrarPorEstado('')">Todas las Citas</button>
+      <button [class.active]="estadoFiltro === 'PAGADA'" (click)="filtrarPorEstado('PAGADA')">Pagado</button>
+      <button [class.active]="estadoFiltro === 'COMPLETADA'" (click)="filtrarPorEstado('COMPLETADA')">Completada</button>
+    </div>
+  </div>
+
+  <table class="citas-table">
+    <thead>
+      <tr>
+        <th>CÓDIGO</th>
+        <th>MASCOTA</th>
+        <th>PROPIETARIO</th>
+        <th>MEDICO</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+<tbody>
+  @for (c of citas; track c.idCita) {
+    <tr>
+      <td>{{ c.codigoCita }}</td>
+      <td>
+        <strong>{{ c.nombreMascota || 'Sin nombre' }}</strong><br>
+        <small>{{ c.razaMascota || 'N/A' }}</small>
+      </td>
+      <td>
+        <strong>{{ c.nombrePropietario || 'Sin dueño' }}</strong><br>
+        <small>DNI: {{ c.dniPropietario || '-' }}</small>
+      </td>
+      <td>
+        <strong>{{ c.nombreMedico || 'No asignado' }}</strong><br>
+        <small>{{ c.fecha }} - {{ c.hora }}</small>
+      </td>
+      <td>
+        <span [class]="'badge-' + (c.estado ? c.estado.toLowerCase() : 'default')">
+            {{ c.estado }}
+        </span>
+      </td>
+      <td>
+        <button class="btn-outline" (click)="verDetalle(c.idCita)">Detalle</button>
+        
+        @if (c.estado === 'COMPLETADA') {
+          @if (c.estado === 'COMPLETADA') {
+           <button class="btn-primary" (click)="abrirCalificar(c)">
+          Calificar
+          </button>
+         }
+        }
+      </td>
+  } @empty {
+    <tr><td colspan="6" class="text-center">No se encontraron citas.</td></tr>
+  }
+</tbody>
+  </table>
+</div>
+
+@if (mostrarModalDetalle && detalleSeleccionado) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h3>Cita: {{ detalleSeleccionado.codigoCita }}</h3>
+
+      <div class="section">
+        <h4>INFORMACIÓN DEL SERVICIO</h4>
+        <div class="info-grid">
+          <p><strong>Mascota:</strong> {{ detalleSeleccionado.nombreMascota }}</p>
+          <p><strong>Médico:</strong> {{ detalleSeleccionado.nombreMedico }}</p>
+          <p><strong>Fecha:</strong> {{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Motivo:</strong> {{ detalleSeleccionado.motivo }}</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4>CONSTANTES Y DIAGNÓSTICO</h4>
+        @if (detalleSeleccionado.consulta) {
+          <div class="info-grid">
+            <p><strong>Peso:</strong> {{ detalleSeleccionado.consulta.pesoActual }} Kg</p>
+            <p><strong>Temp:</strong> {{ detalleSeleccionado.consulta.temperatura }} C</p>
+            <p class="full-width"><strong>Diagnóstico:</strong> {{ detalleSeleccionado.consulta.diagnostico }}</p>
+          </div>
+        } @else {
+          <p class="empty-msg">Consulta no registrada o pendiente de atención.</p>
+        }
+      </div>
+
+      <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+}
+
+@if (mostrarModalCalificar && citaACalificar) {
+  <div class="modal-overlay">
+    <div class="modal-content calificar-modal">
+      
+      <div class="modal-header-premium">
+        <div class="icon-badge">⭐⭐⭐</div>
+        <h3>Calificar Atención</h3>
+        <p class="subtitle">Cita: <span>{{ citaACalificar.codigoCita }}</span></p>
+      </div>
+
+      <div class="modal-body-premium">
+        <p class="prompt-text">
+          ¿Cómo calificarías la atención brindada a <strong>{{ citaACalificar.nombreMascota }}</strong> por el Dr(a). <strong>{{ citaACalificar.nombreMedico }}</strong>?
+        </p>
+
+        <div class="rating-container">
+          <label class="rating-label">Tu puntuación:</label>
+          <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5" [(ngModel)]="puntuacionSeleccionada" /><label for="star5" title="Excelente">★</label>
+            <input type="radio" id="star4" name="rating" value="4" [(ngModel)]="puntuacionSeleccionada" /><label for="star4" title="Bueno">★</label>
+            <input type="radio" id="star3" name="rating" value="3" [(ngModel)]="puntuacionSeleccionada" /><label for="star3" title="Regular">★</label>
+            <input type="radio" id="star2" name="rating" value="2" [(ngModel)]="puntuacionSeleccionada" /><label for="star2" title="Malo">★</label>
+            <input type="radio" id="star1" name="rating" value="1" [(ngModel)]="puntuacionSeleccionada" /><label for="star1" title="Pésimo">★</label>
+          </div>
+          <span class="rating-value-text">
+            @switch (puntuacionSeleccionada) {
+              @case (5) { ¡Excelente servicio! }
+              @case (4) { Muy buena atención }
+              @case (3) { Regular / Aceptable }
+              @case (2) { Pudo ser mejor }
+              @case (1) { Insatisfecho }
+            }
+          </span>
+        </div>
+
+        <div class="form-group-premium">
+          <label for="comentario" class="form-label">Reseña u opinión adicional:</label>
+          <textarea 
+            id="comentario" 
+            [(ngModel)]="comentarioCalificacion" 
+            placeholder="Cuéntanos qué tal te pareció la atención, el trato con tu mascota, etc..." 
+            rows="4" 
+            class="form-control-premium">
+          </textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer-premium">
+        <button class="btn-premium-cancel" (click)="cerrarCalificar()">Tal vez luego</button>
+        <button class="btn-premium-submit" (click)="guardarCalificacion()">
+          Enviar Calificación
+        </button>
+      </div>
+
+    </div>
+  </div>
+}

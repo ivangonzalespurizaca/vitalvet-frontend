@@ -1,47 +1,91 @@
 <div class="container">
-  <h2>Lista de Consultas</h2>
-
-  <form [formGroup]="busquedaForm" class="search-bar">
-    <input type="text" formControlName="criterio" placeholder="Buscar por mascota o dueño..." (input)="cargarCitas()">
-  </form>
-
-  <div class="filter-tabs">
-    <button [class.active]="estadoActual === ''" (click)="cargarCitas('')">Todas</button>
-    <button [class.active]="estadoActual === 'PAGADA'" (click)="cargarCitas('PAGADA')">En Espera</button>
-    <button [class.active]="estadoActual === 'COMPLETADA'" (click)="cargarCitas('COMPLETADA')">Atendidos</button>
+  <div class="header">
+    <h2>Lista de Consultas</h2>
   </div>
 
-    <table class="consultas-table">
+  <form [formGroup]="busquedaForm" class="controls-bar">
+    <input type="text" formControlName="criterio" placeholder="Buscar por mascota o dueño..." (input)="cargarCitas()">
+    
+    <div class="tabs">
+      <button [class.active]="estadoActual === ''" (click)="cargarCitas('')">Todas</button>
+      <button [class.active]="estadoActual === 'PAGADA'" (click)="cargarCitas('PAGADA')">En Espera</button>
+      <button [class.active]="estadoActual === 'COMPLETADA'" (click)="cargarCitas('COMPLETADA')">Atendidos</button>
+    </div>
+  </form>
+
+  <table class="citas-table">
     <thead>
-        <tr>
-        <th>CÓDIGO</th> <th>HORA</th>
+      <tr>
+        <th>CÓDIGO</th>
+        <th>HORA</th>
         <th>MASCOTA / DUEÑO</th>
-        <th>MOTIVO DE CONSULTA</th>
+        <th>MOTIVO</th>
         <th>ESTADO</th>
         <th>ACCIONES</th>
-        </tr>
+      </tr>
     </thead>
     <tbody>
-        @for (c of citas; track c.idCita) {
+      @for (c of citas; track c.idCita) {
         <tr>
-            <td><strong>{{ c.codigoCita }}</strong></td> <td>{{ c.hora }}</td>
-            <td>
-            <strong>{{ c.nombreMascota }} - {{ c.razaMascota }}</strong><br>
-            <small>Prop: {{ c.nombrePropietario }}</small>
-            </td>
-            <td>{{ c.motivo }}</td>
-            <td><span class="badge" [class.pagada]="c.estado === 'PAGADA'">{{ c.estado }}</span></td>
-            <td>
+          <td><strong>{{ c.codigoCita }}</strong></td>
+          <td>{{ c.hora }}</td>
+
+<td>
+  <strong>{{ c.nombreMascota }} - {{ c.razaMascota }}</strong><br>
+  <small style="color: #64748b;">
+    Prop: {{ c.nombrePropietario }} 
+    <span style="font-weight: 600;">| DNI: {{ c.dniPropietario || 'N/A' }}</span>
+  </small>
+</td>
+
+          <td>{{ c.motivo }}</td>
+          <td>
+            <span [class]="c.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">{{ c.estado }}</span>
+          </td>
+          <td>
             @if (c.estado === 'PAGADA') {
-                <button class="btn-primary" (click)="atenderCita(c.idCita)">Atender</button>
+              <button class="btn-primary" (click)="atenderCita(c)">Atender</button>
             } @else {
-                <button class="btn-outline" (click)="verFicha(c.idCita)">Ver Ficha</button>
+              <button class="btn-outline" (click)="verFicha(c.idCita)">Ver Ficha</button>
             }
-            </td>
+          </td>
         </tr>
-        } @empty {
+      } @empty {
         <tr><td colspan="6" class="text-center">No hay consultas registradas.</td></tr>
-        }
+      }
     </tbody>
-    </table>
+  </table>
 </div>
+
+@if (mostrarModalDetalle && detalleSeleccionado) {
+  <div class="modal-overlay" (click)="cerrarDetalle()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Cita: {{ detalleSeleccionado.codigoCita }}</h3>
+      
+      <div class="section">
+        <h4>INFORMACIÓN DEL SERVICIO</h4>
+        <div class="info-grid">
+          <p><strong>Mascota:</strong> {{ detalleSeleccionado.nombreMascota }}</p>
+          <p><strong>Médico:</strong> {{ detalleSeleccionado.nombreMedico }}</p>
+          <p><strong>Fecha:</strong> {{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</p>
+          <p class="full-width"><strong>Motivo:</strong> {{ detalleSeleccionado.motivo }}</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4>CONSTANTES Y DIAGNÓSTICO</h4>
+        @if (detalleSeleccionado.consulta) {
+          <div class="info-grid">
+            <p><strong>Peso:</strong> {{ detalleSeleccionado.consulta.pesoActual }} Kg</p>
+            <p><strong>Temp:</strong> {{ detalleSeleccionado.consulta.temperatura }} C</p>
+            <p class="full-width"><strong>Diagnóstico:</strong> {{ detalleSeleccionado.consulta.diagnostico }}</p>
+          </div>
+        } @else {
+          <p style="color: #94a3b8; font-size: 0.9rem;">Consulta no registrada o pendiente.</p>
+        }
+      </div>
+
+      <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+}

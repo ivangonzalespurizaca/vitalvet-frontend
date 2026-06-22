@@ -1,0 +1,34 @@
+/* Limpieza básica */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Evita scrolls dobles en toda la página */
+}
+
+/* El contenedor principal que ocupa el 100% de la ventana */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* El Header queda fuera del scroll */
+app-header {
+  flex-shrink: 0;
+}
+
+/* El wrapper que contiene sidebar y contenido */
+.main-wrapper {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* Mantiene el sidebar y contenido juntos */
+}
+
+/* Solo el contenido tiene scroll */
+.content-area {
+  flex: 1;
+  overflow-y: auto; /* ESTO es lo que permite que el header se quede quieto */
+  background-color: #ffffff;
+  padding: 2rem;
+}

@@ -1,0 +1,29 @@
+/* --- Reutilización de estilos de sistema --- */
+.container { max-width: 1250px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.header { margin-bottom: 2rem; }
+.header h2 { font-size: 1.6rem; color: #1e293b; }
+
+/* --- Filtros --- */
+.controls-bar { display: flex; margin-bottom: 2rem; }
+.filter-group { display: flex; gap: 0.5rem; }
+.filter-group select, .filter-group input { padding: 0.85rem 1.2rem; border: 1px solid #e2e8f0; border-radius: 12px; background: white; }
+
+/* --- Tabla --- */
+.citas-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.citas-table th { text-align: left; padding: 1rem; color: #64748b; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #f1f5f9; }
+.citas-table td { padding: 1.2rem 1rem; border-bottom: 1px solid #f1f5f9; }
+.citas-table tr:hover { background: #f8fafc; }
+
+/* --- Secciones del Modal --- */
+.highlight-section { background: #0f766e0a !important; }
+.total-text { font-size: 1.2rem; font-weight: 800; color: #0f766e; }
+
+/* --- Botones --- */
+.btn-primary { background: #0f766e; color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.btn-outline { background: white; border: 1px solid #e2e8f0; color: #475569; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.badge-pagada { background: #dcfce7; color: #065f46; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+
+/* --- Modal --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-content { background: white; padding: 2.5rem; border-radius: 20px; width: 500px; max-width: 90%; }
+.btn-cancel { width: 100%; padding: 0.9rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; font-weight: 700; color: #475569; margin-top: 1rem; }

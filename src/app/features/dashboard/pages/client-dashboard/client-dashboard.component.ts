@@ -1,23 +1,38 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AuthService, CustomJwtPayload } from '../../../../core/services/auth.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ClienteDashboard } from '../../../../core/interfaces/dashboard';
+import { DashboardService } from '../../../../core/services/dashboard.service';
 
 @Component({
-  selector: 'app-client-dashboard',
+  selector: 'app-dashboard-cliente',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './client-dashboard.component.html',
-  styleUrl: './client-dashboard.component.css'
+  styleUrls: ['./client-dashboard.component.css']
 })
 export class ClientDashboardComponent implements OnInit {
-  private authService = inject(AuthService);
-  perfil: CustomJwtPayload | null = null;
+  private dashboardService = inject(DashboardService);
+  
+  datos: ClienteDashboard | null = null;
+  cargando: boolean = true;
+  error: string | null = null;
 
   ngOnInit(): void {
-    this.perfil = this.authService.getUserProfile();
+    this.cargarDatos();
   }
 
-  onLogout(): void {
-    this.authService.logout();
-    window.location.reload();
+  cargarDatos() {
+    this.dashboardService.obtenerDashboardCliente().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.datos = response.data;
+        }
+        this.cargando = false;
+      },
+      error: (err) => {
+        this.error = "No se pudieron cargar los datos del panel.";
+        this.cargando = false;
+      }
+    });
   }
 }

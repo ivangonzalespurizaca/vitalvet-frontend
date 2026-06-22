@@ -86,9 +86,9 @@
 
         <div class="modal-actions">
           <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn-primary" [disabled]="cargando || formulario.invalid">
-            {{ cargando ? 'Procesando...' : (esModoEdicion ? 'Actualizar Cliente' : 'Registrar Todo') }}
-          </button>
+<button type="submit" class="btn-primary" [disabled]="cargando">
+  {{ cargando ? 'Procesando...' : (esModoEdicion ? 'Actualizar Cliente' : 'Registrar Todo') }}
+</button>
         </div>
 
       </form>

@@ -1,4 +1,50 @@
-<div class="card" style="background-color: #FFF3CD; padding: 24px;">
-  <h1>Vista de Cliente Activada</h1>
-  <p>Tu token se leyó de forma transparente. Como eres un <strong>CLIENTE</strong>, tu microservicio no inyectó datos de colegiatura, por lo que Angular te muestra este panel limpio para gestionar a tus mascotas.</p>
+<div class="dashboard-container" *ngIf="!cargando && datos">
+  
+  <div class="header-card">
+    <h1>¡Bienvenido(a), {{ datos.nombreCliente }}!</h1>
+    <p>Gestiona la salud y citas de tus mascotas desde aquí.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <small>Mascotas</small>
+      <h3>{{ datos.cantidadMascotas }}</h3>
+    </div>
+    <div class="stat-card">
+      <small>Próximas Citas</small>
+      <h3>{{ datos.proximasCitas.length }}</h3>
+    </div>
+    <div class="stat-card">
+      <small>Alertas de Vacunas</small>
+      <h3>{{ datos.vacunasProximas.length }}</h3>
+    </div>
+  </div>
+
+  <div class="sections">
+    <section>
+      <h2>🗓️ Próximas Citas</h2>
+      <div class="card-item" *ngFor="let cita of datos.proximasCitas">
+        <div class="info-content">
+          <strong>{{ cita.nombreMascota }}</strong>
+          <small>{{ cita.fecha }} | {{ cita.hora }} | {{ cita.motivo }}</small>
+        </div>
+        <span class="badge" [ngClass]="cita.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">
+          {{ cita.estado }}
+        </span>
+      </div>
+      <p *ngIf="datos.proximasCitas.length === 0" class="empty-msg">No hay citas pendientes.</p>
+    </section>
+
+    <section>
+      <h2>💉 Vacunas Próximas</h2>
+      <div class="card-item" *ngFor="let v of datos.vacunasProximas">
+        <div class="info-content">
+          <strong>{{ v.nombreVacuna }}</strong>
+          <small>{{ v.nombreMascota }} | Vence: {{ v.fechaVencimiento }}</small>
+        </div>
+        <span class="badge badge-alerta">{{ v.nivelAlerta }}</span>
+      </div>
+      <p *ngIf="datos.vacunasProximas.length === 0" class="empty-msg">Todas las vacunas están al día.</p>
+    </section>
+  </div>
 </div>

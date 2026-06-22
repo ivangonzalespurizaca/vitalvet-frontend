@@ -1,0 +1,83 @@
+/* Contenedor principal */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-info {
+  margin-bottom: 25px;
+  border-left: 4px solid #4f46e5;
+  padding-left: 15px;
+}
+
+.header-info h2 {
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Estilos de formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Importante para el padding */
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Fila de vacunas */
+.vacuna-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Botones */
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"] {
+  background: #4f46e5;
+  color: white;
+  margin-top: 10px;
+}
+
+button[type="submit"]:disabled {
+  background: #cbd5e1;
+}
+
+button.btn-remove {
+  background: #ef4444;
+  color: white;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}

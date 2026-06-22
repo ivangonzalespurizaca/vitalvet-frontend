@@ -1,20 +1,49 @@
-<div style="padding: 2rem; font-family: sans-serif; max-width: 800px; margin: 0 auto;">
-  <header style="border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <h1 style="margin: 0; color: #007bff;">¡Hola Médico Veterinario, {{ perfil?.nombres }}!</h1>
-      <p style="margin: 0.5rem 0 0; color: #666; font-weight: bold; text-transform: uppercase;">Rol Detectado: {{ perfil?.rol }}</p>
-    </div>
-    <button (click)="onLogout()" style="background-color: #dc3545; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
-      Cerrar Sesión
-    </button>
+<div class="container" *ngIf="!cargando && datos">
+  <header class="dashboard-header">
+    <h1>Panel del Veterinario</h1>
+    <p>Gestiona tu agenda y pacientes para hoy.</p>
   </header>
 
-  <main style="background-color: #f4fcf7; border: 1px solid #c3e6cb; border-radius: 8px; padding: 1.5rem;">
-    <h3 style="margin-top: 0; color: #155724;">Claims Profesionales Inyectados desde tu Java (JwtUtil):</h3>
-    <ul style="line-height: 1.8; color: #155724;">
-      <li><strong>N° Colegiatura (CMP):</strong> {{ perfil?.numColegiatura || 'No asignado' }}</li>
-      <li><strong>Especialidad Médica:</strong> {{ perfil?.especialidad || 'General / Ninguna' }}</li>
-      <li><strong>ID Veterinario en BD:</strong> {{ perfil?.idVeterinario }}</li>
-    </ul>
-  </main>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <small>En Espera</small>
+      <div class="stat-value">{{ datos.pacientesEnEspera }}</div>
+    </div>
+    <div class="stat-card">
+      <small>Atendidos Hoy</small>
+      <div class="stat-value">{{ datos.pacientesAtendidosHoy }}</div>
+    </div>
+    <div class="stat-card">
+      <small>Siguiente Paciente</small>
+      <div class="stat-value" style="font-size: 1.2rem; margin-top: 1.5rem;">{{ datos.siguientePaciente || 'Ninguno' }}</div>
+    </div>
+  </div>
+
+  <div class="sections-grid">
+    <section class="content-card">
+      <h2>🗓️ Próximas Citas</h2>
+      @for (c of datos.proximasCitas; track c.fecha) {
+        <div class="card-item">
+          <div class="info-content">
+            <strong>{{ c.nombreMascota }}</strong>
+            <small>{{ c.fecha }} - {{ c.hora }}</small>
+          </div>
+          <span class="badge">{{ c.motivo }}</span>
+        </div>
+      }
+    </section>
+
+    <section class="content-card">
+      <h2>🩺 Atenciones Recientes</h2>
+      @for (a of datos.atencionesRecientes; track a.fecha) {
+        <div class="card-item">
+          <div class="info-content">
+            <strong>{{ a.nombreMascota }}</strong>
+            <small>{{ a.fecha }}</small>
+          </div>
+          <span class="badge badge-pagada">Completado</span>
+        </div>
+      }
+    </section>
+  </div>
 </div>

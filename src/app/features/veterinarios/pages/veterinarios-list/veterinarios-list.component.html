@@ -1,15 +1,17 @@
 <div class="container">
   <div class="header">
     <h2>Lista de Veterinarios</h2>
-    <span class="badge">{{ veterinarios.length }} Registrados</span>
-    <button class="btn-primary" (click)="abrirModalRegistro()">Registrar Veterinario</button>
+    <span class="badge-pagada">{{ veterinarios.length }} Registrados</span>
+    <button class="btn-primary" (click)="abrirModalRegistro()">+ Registrar Veterinario</button>
   </div>
 
-  <div class="search-bar">
-    <input type="text" [formControl]="searchControl" placeholder="Buscar por DNI o nombres...">
+  <div class="controls-bar">
+    <div class="search-container" style="position: relative; width: 350px;">
+      <input type="text" [formControl]="searchControl" placeholder="Buscar por DNI o nombres..." style="width: 100%;">
+    </div>
   </div>
 
-  <table>
+  <table class="citas-table">
     <thead>
       <tr>
         <th>FOTO</th>
@@ -24,24 +26,24 @@
     <tbody>
       @for (v of veterinarios; track v.idVeterinario) {
         <tr>
-          <td><img [src]="v.fotoUrl" class="avatar" alt="Foto"></td>
+          <td><img [src]="v.fotoUrl" class="avatar-sm" alt="Foto"></td>
           <td>
-            <span class="nombre">{{ v.nombres }} {{ v.apellidos }}</span>
-            <small>{{ v.email }}</small>
+            <strong>{{ v.nombres }} {{ v.apellidos }}</strong><br>
+            <small style="color: #64748b;">{{ v.email }}</small>
           </td>
           <td>{{ v.dni }}</td>
           <td>{{ v.nroColegiatura }}</td>
           <td>{{ v.especialidad }}</td>
-          <td><span [class]="v.activo ? 'status-active' : 'status-inactive'">{{ v.activo ? 'Activo' : 'Inactivo' }}</span></td>
           <td>
-            <button class="btn-outline" [routerLink]="['/veterinarios/horarios', v.idVeterinario]">
-                Horarios
-            </button>
+            <span [class]="v.activo ? 'badge-pagada' : 'badge-pendiente'">
+              {{ v.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-outline" [routerLink]="['/veterinarios/horarios', v.idVeterinario]">Horarios</button>
             <button class="btn-outline" (click)="abrirModalEdicion(v.idVeterinario)">Editar</button>
-            <button 
-                [class]="v.activo ? 'btn-outline-danger' : 'btn-outline'" 
-                (click)="cambiarEstado(v)">
-                {{ v.activo ? 'Desactivar' : 'Activar' }}
+            <button class="btn-outline" (click)="cambiarEstado(v)">
+              {{ v.activo ? 'Desactivar' : 'Activar' }}
             </button>
           </td>
         </tr>
