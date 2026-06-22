@@ -1,56 +1,107 @@
-/* --- Contenedor Principal --- */
-.container { padding: 2rem; background-color: #ffffff; min-height: 100vh; }
-h2 { color: #1e293b; margin-bottom: 2rem; }
-
-/* --- Barra de Búsqueda --- */
-.search-bar { margin-bottom: 2rem; }
-.search-bar input {
-  padding: 10px; border: 1px solid #e2e8f0;
-  border-radius: 8px; margin-left: 10px;
+/* --- Contenedor --- */
+.container { 
+  max-width: 1250px; 
+  margin: 2rem auto; 
+  padding: 2.5rem; 
+  background: #ffffff; 
+  border-radius: 24px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
 }
 
-/* --- Lista de Agenda --- */
-.agenda-list { display: flex; flex-direction: column; gap: 15px; }
+/* --- Lista de Agenda (Más espaciado) --- */
+.agenda-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.5rem; /* Aumentado el espacio entre bloques */
+  margin-top: 2rem;
+}
 
-.bloque-item {
-  display: grid;
-  grid-template-columns: 100px 1fr; /* Hora | Contenido */
+/* --- Tarjeta de Agenda --- */
+.agenda-item {
+  display: flex; 
   align-items: center;
+  gap: 2rem; 
+  padding: 1.8rem 2rem; /* Más espacio vertical (1.8rem) */
+  border: 1px solid #e2e8f0; 
+  border-radius: 16px; 
+  background: white;
 }
 
-.hora { font-weight: bold; color: #334155; }
-
-/* --- Estilos del Bloque --- */
-.contenido {
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 15px 20px;
-  background: #f8fafc;
+.hora-col { 
+  min-width: 100px; 
+  font-weight: 800; 
+  color: #0f766e; 
 }
 
-/* Cita Ocupada */
-.cita-ocupada {
-  border-left: 5px solid #6366f1; /* Borde de color */
-  padding-left: 15px;
+.contenido-col { 
+  flex-grow: 1; 
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  justify-content: space-between; /* Empuja el botón a la derecha */
 }
 
-/* Bloque Libre */
-.bloque-libre {
-  color: #94a3b8;
-  font-style: italic;
+/* --- Estilo de la cita --- */
+.cita-ocupada { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%;
+  border-left: 4px solid #0f766e; 
+  padding-left: 1.5rem;
 }
 
-/* --- Botón --- */
-.btn-primary {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+.bloque-libre { 
+  color: #94a3b8; 
+  font-style: italic; 
+  border-left: 4px solid #f1f5f9; 
+  padding-left: 1.5rem;
+}
+
+/* --- Botón unificado con el resto del sistema --- */
+.btn-outline { 
+  background: white; 
+  border: 1px solid #e2e8f0; 
+  color: #475569; 
+  padding: 0.6rem 1.2rem; 
+  border-radius: 10px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  transition: all 0.2s;
+}
+
+.btn-outline:hover { 
+  background: #f8fafc; 
+  border-color: #cbd5e1; 
+}
+
+/* --- Ajuste profesional y compacto para el selector de fecha --- */
+.date-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reducido de 15px a 10px */
+}
+
+.date-picker-wrapper label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.85rem; /* Ligeramente más pequeño */
+}
+
+.date-picker-wrapper input[type="date"] {
+  padding: 0.6rem 0.9rem; /* Reducido para hacerlo más compacto */
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px; /* Radio de borde ligeramente más pequeño */
+  font-size: 0.9rem;    /* Fuente más pequeña */
+  color: #1e293b;
+  background-color: #f8fafc;
   cursor: pointer;
-  width: fit-content;
-  align-self: flex-end;
+  transition: all 0.2s ease;
+  width: auto; /* Permite que el input se ajuste a su contenido mínimo */
+}
+
+.date-picker-wrapper input[type="date"]:focus {
+  border-color: #0f766e;
+  background-color: white;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); /* Sombra más sutil */
 }

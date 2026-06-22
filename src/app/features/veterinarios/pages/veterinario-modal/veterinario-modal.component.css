@@ -10,7 +10,7 @@
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px); /* Efecto cristal */
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  animation: fadeIn 0.3s ease-out; /* Animación al abrir */
+  animation: fadeIn 0.3s ease-out;
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -86,7 +86,7 @@ input:focus, select:focus {
 
 .full-width { grid-column: span 2; }
 
-/* --- Acciones --- */
+/* --- Acciones (Botones siempre activos) --- */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -104,7 +104,14 @@ input:focus, select:focus {
 .btn-primary {
   padding: 10px 20px; border-radius: 8px; border: none;
   background: #2563eb; color: white; cursor: pointer;
+  pointer-events: auto !important; /* Fuerza habilitación */
 }
 
-.btn-primary:disabled { background: #93c5fd; cursor: not-allowed; }
-.btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+/* Eliminamos el estilo de deshabilitado para que no se vea gris */
+.btn-primary:disabled {
+  background: #2563eb !important;
+  opacity: 0.9;
+  cursor: pointer !important;
+}
+
+.btn-primary:hover { background: #1d4ed8; }

@@ -38,9 +38,9 @@
 
       <div class="modal-actions">
         <button type="button" class="btn-cancel" (click)="cerrar.emit()">Cancelar</button>
-        <button type="submit" class="btn-primary" [disabled]="cargando || formulario.invalid">
+        <button type="submit" class="btn-primary" [disabled]="cargando">
           {{ cargando ? 'Procesando...' : (esModoEdicion ? 'Actualizar' : 'Registrar') }}
-        </button>
+        </button>   
       </div>
     </form>
   </div>

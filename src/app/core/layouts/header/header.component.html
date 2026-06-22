@@ -5,19 +5,16 @@
 
   <div class="header-right">
     @if (usuario) {
-      <button class="notification-btn">
-        <span class="bell-icon">🔔</span>
-        <span class="badge">1</span> </button>
-
-      <div class="user-profile" [routerLink]="['/perfil']" style="cursor: pointer;">
+      <div class="user-profile" [routerLink]="['/perfil']">
         <div class="user-info">
           <span class="user-name">{{ usuario.nombres }} {{ usuario.apellidos }}</span>
           <span class="user-role">{{ usuario.rol }}</span>
         </div>
+        
         <div class="avatar" 
-            [style.backgroundImage]="usuario.fotoUrl ? 'url(' + usuario.fotoUrl + ')' : 'none'">
+             [style.background-image]="usuario.fotoUrl ? 'url(' + usuario.fotoUrl + ')' : null">
           @if (!usuario.fotoUrl) {
-            {{ iniciales }}
+            <span>{{ iniciales }}</span>
           }
         </div>
       </div>

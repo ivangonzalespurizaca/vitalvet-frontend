@@ -1,14 +1,13 @@
 <div class="container">
   <div class="search-box">
     <input [(ngModel)]="dni" placeholder="Buscar por DNI...">
-    <button (click)="buscar()">Buscar</button>
+    <button class="btn-primary" (click)="buscar()">Buscar</button>
   </div>
 
   <div class="owner-info" *ngIf="resultado">
     <h4>Propietario: {{ resultado.nombres }} {{ resultado.apellidos }}</h4>
     <p>DNI: {{ resultado.dni }} | Celular: {{ resultado.celular }}</p>
   </div>
-
 
   <div class="layout">
     <div class="pets-list">
@@ -21,13 +20,18 @@
 
     <div class="carnet-section" *ngIf="carnet">
       <h3>Carnet Clínico: {{ carnet.nombreMascota }}</h3>
-      <table>
-        <tr *ngFor="let v of carnet.vacunas">
-          <td>{{ v.nombreVacuna }}</td>
-          <td>{{ v.dosis }}</td>
-          <td>{{ v.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
-          <td>{{ v.estado }}</td>
-        </tr>
+      <table class="citas-table">
+        <thead>
+          <tr><th>VACUNA</th><th>DOSIS</th><th>FECHA</th><th>ESTADO</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of carnet.vacunas">
+            <td>{{ v.nombreVacuna }}</td>
+            <td>{{ v.dosis }}</td>
+            <td>{{ v.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
+            <td><span class="badge-pagada">{{ v.estado }}</span></td>
+          </tr>
+        </tbody>
       </table>
 
       <div class="register-form">
@@ -36,7 +40,7 @@
         </select>
         <input [(ngModel)]="nuevaVacuna.dosisTipo" placeholder="Dosis">
         <input type="date" [(ngModel)]="nuevaVacuna.fecha">
-        <button (click)="registrar()">Aplicar</button>
+        <button class="btn-primary" (click)="registrar()">Aplicar</button>
       </div>
     </div>
   </div>

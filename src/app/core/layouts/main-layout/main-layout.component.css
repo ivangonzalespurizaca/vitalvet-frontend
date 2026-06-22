@@ -1,18 +1,22 @@
+/* main-layout.component.css */
 .layout-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh; /* Fuerza a ocupar exactamente la altura de la pantalla */
+  width: 100vw;  /* Fuerza a ocupar el ancho total */
+  overflow: hidden; /* IMPORTANTE: Esto evita que aparezcan barras de scroll en toda la página */
 }
 
 .main-content {
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* Asegura que no se desborde */
-  overflow: hidden; 
+  min-width: 0; /* Permite que el contenido se encoja correctamente */
+  overflow: hidden; /* El contenedor del header y contenido no debe hacer scroll */
 }
 
 .page-body {
   flex: 1;
+  overflow-y: auto; /* ESTO ES LA CLAVE: El scroll ocurre solo aquí dentro */
+  background-color: #ffffff;
   padding: 2rem;
-  background-color: #f4f7f6;
 }

@@ -1,28 +1,43 @@
 <div class="container">
-  <h2>Mi Agenda</h2>
-  
-  <div class="search-bar">
-    <label>Buscar por Fecha:</label>
-    <input type="date" [(ngModel)]="fechaSeleccionada" (change)="cargarAgenda()">
+  <div class="header">
+<div class="container">
+  <div class="header">
+    <div class="date-picker-wrapper">
+      <label>Buscar por Fecha:</label>
+      <input type="date" [(ngModel)]="fechaSeleccionada" (change)="cargarAgenda()">
+    </div>
   </div>
 
   <div class="agenda-list">
-    <div *ngFor="let b of bloques" class="bloque-item" [ngClass]="{'disponible': b.disponible}">
-      <div class="hora">{{ b.hora }}</div>
-      
-      <div class="contenido">
-        @if (!b.disponible) {
-          <div class="cita-ocupada" [style.border-left-color]="b.disponible ? 'transparent' : (b.hora === '09:00 AM' ? '#6366f1' : '#22c55e')">
-            <strong>{{ b.nombreMascota }}</strong> . {{ b.razaMascota }} (Prop: {{ b.nombrePropietario }})
-            <p>{{ b.motivoConsulta }}</p>
-            <button [class]="b.hora === '12:00 PM' ? 'btn-primary' : 'btn-outline'">
-            {{ b.hora === '12:00 PM' ? 'Realizar Consulta' : 'Ver Ficha' }}
-            </button>
-          </div>
-        } @else {
-          <div class="bloque-libre">Bloque Libre / Sin Cita Programada</div>
-        }
-      </div>
     </div>
+</div>
+
+  <div class="agenda-list">
+    @for (b of bloques; track b.hora) {
+      <div class="agenda-item" [class.libre]="b.disponible">
+        <div class="hora-col">
+          <strong>{{ b.hora }}</strong>
+        </div>
+
+        <div class="contenido-col">
+          @if (!b.disponible) {
+            <div class="cita-ocupada">
+              <div>
+                <strong>{{ b.nombreMascota }}</strong> - {{ b.razaMascota }}
+                <p style="margin: 4px 0; color: #64748b;">Dueño: {{ b.nombrePropietario }}</p>
+                <p class="motivo">{{ b.motivoConsulta }}</p>
+              </div>
+              <button [class]="b.hora === '12:00 PM' ? 'btn-primary' : 'btn-outline'">
+                {{ b.hora === '12:00 PM' ? 'Realizar Consulta' : 'Ver Ficha' }}
+              </button>
+            </div>
+          } @else {
+            <div class="bloque-libre">
+              <span>Espacio disponible</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
   </div>
 </div>

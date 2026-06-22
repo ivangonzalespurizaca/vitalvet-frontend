@@ -1,5 +1,7 @@
 <div class="container">
-  <h2>Reservar Nueva Cita</h2>
+  <div class="header">
+    <h2>Reservar Nueva Cita</h2>
+  </div>
 
   <form [formGroup]="formulario" class="form-container">
     <div class="grid-layout">
@@ -15,7 +17,7 @@
       </div>
 
       <div class="form-group">
-        <label>Seleccione su Mascota</label>
+        <label>Mascota</label>
         <select formControlName="idMascota">
           <option value="" disabled>Mis mascotas...</option>
           @for (m of mascotas; track m.idMascota) {
@@ -50,37 +52,30 @@
       </div>
     </div>
 
-    <button type="button" class="btn-primary" (click)="mostrarModalPago = true" [disabled]="formulario.invalid">
+    <button type="button" class="btn-primary" (click)="mostrarModalPago = true">
       Reservar y Pagar S/ {{montoFijo}}
     </button>
   </form>
 </div>
 
 @if (mostrarModalPago) {
-  <div class="modal-overlay"> 
-    <div class="modal-content">
-      <h3>Paso 2: Checkout Seguro</h3>
+  <div class="modal-overlay" (click)="mostrarModalPago = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Paso 2: Checkout</h3>
       
-      <div class="summary-box">
-        <p><strong>Especialista:</strong> {{ obtenerNombreVeterinarioSeleccionado() }}</p>
-        <p><strong>Mascota:</strong> {{ obtenerNombreMascotaSeleccionada() }}</p>
-        <p><strong>Fecha:</strong> {{ formulario.value.fecha }} a las {{ formulario.value.hora }}</p>
-        <hr class="dashed-line">
-        <p class="total"><strong>Total de Servicio:</strong> S/ {{montoFijo}}</p>
-      </div>
-      
-      <div class="form-group">
-        <label>Número de tarjeta</label>
-        <input type="text" placeholder="**** **** **** ****" disabled>
-      </div>
-      <div class="row">
-        <div class="form-group"><label>MM/AA</label><input type="text" placeholder="MM/AA" disabled></div>
-        <div class="form-group"><label>CVV</label><input type="text" placeholder="CVV" disabled></div>
+      <div class="section">
+        <h4>RESUMEN DE LA CITA</h4>
+        <div class="info-grid">
+          <p><strong>Especialista:</strong> {{ obtenerNombreVeterinarioSeleccionado() }}</p>
+          <p><strong>Mascota:</strong> {{ obtenerNombreMascotaSeleccionada() }}</p>
+          <p><strong>Fecha:</strong> {{ formulario.value.fecha }}</p>
+          <p><strong>Hora:</strong> {{ formulario.value.hora }}</p>
+        </div>
       </div>
 
       <div class="modal-actions">
         <button class="btn-cancel" (click)="mostrarModalPago = false">Cancelar</button>
-        <button class="btn-confirm" (click)="confirmarCita()">Actualizar / Pagar</button>
+        <button class="btn-primary" style="width: 100%;" (click)="confirmarCita()">Pagar y Confirmar</button>
       </div>
     </div>
   </div>

@@ -1,163 +1,25 @@
-/* --- Contenedor Principal --- */
-.container {
-  padding: 2rem;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-}
+/* --- Reutilización Global --- */
+.container { max-width: 1250px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 
-/* --- Barra de Filtros --- */
-.filter-bar {
-  background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
-  border: 1px solid #eaedef;
-}
+.controls-bar { margin-bottom: 2rem; }
+.filter-group { display: flex; gap: 0.5rem; }
+.filter-group select, .filter-group input { padding: 0.85rem 1.2rem; border: 1px solid #e2e8f0; border-radius: 12px; }
 
-.filters-row {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  flex-wrap: wrap;
-}
+.citas-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.citas-table th { text-align: left; padding: 1rem; color: #64748b; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #f1f5f9; }
+.citas-table td { padding: 1.2rem 1rem; border-bottom: 1px solid #f1f5f9; }
+.citas-table tr:hover { background: #f8fafc; }
 
-.form-select, .form-input {
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  outline: none;
-}
+.btn-primary { background: #0f766e; color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.btn-outline { background: white; border: 1px solid #e2e8f0; color: #475569; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
 
-.button-group {
-  display: flex;
-  gap: 10px;
-}
+.badge-pagada { background: #dcfce7; color: #065f46; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
-/* --- Botones --- */
-.btn-primary, .btn-secondary, .btn-outline {
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s;
-}
-
-.btn-primary { background: #0d6efd; color: white; }
-.btn-primary:hover { background: #0b5ed7; }
-
-.btn-secondary { background: #6c757d; color: white; }
-.btn-secondary:hover { background: #5a6268; }
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid #0d6efd;
-  color: #0d6efd;
-}
-
-/* --- Tabla --- */
-.citas-table { 
-  width: 100%; 
-  border-collapse: separate; 
-  border-spacing: 0 8px; 
-  background: transparent;
-}
-
-.citas-table th { 
-  color: #6c757d; 
-  font-size: 0.8rem; 
-  text-transform: uppercase; 
-  padding: 10px; 
-  text-align: left;
-}
-
-.citas-table td { 
-  background: #fff; 
-  padding: 15px; 
-  border-top: 1px solid #eee; 
-  border-bottom: 1px solid #eee; 
-}
-
-.citas-table td:first-child { border-left: 1px solid #eee; border-radius: 8px 0 0 8px; }
-.citas-table td:last-child { border-right: 1px solid #eee; border-radius: 0 8px 8px 0; }
-
-.badge {
-  background: #e9ecef;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-}
-
-/* --- Estilos Modernos del Modal --- */
-.modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(15, 23, 42, 0.5); /* Azul muy oscuro para el overlay */
-  backdrop-filter: blur(4px); /* Efecto cristal */
-  display: flex; justify-content: center; align-items: center; z-index: 1000;
-}
-
-.modal-content {
-  background: white; 
-  width: 400px; 
-  padding: 2.5rem;
-  border-radius: 16px; /* Bordes redondeados modernos */
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  text-align: center; 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif; /* Tipografía moderna */
-}
-
-.ticket-header { 
-  margin-bottom: 1.5rem; 
-}
-
-.ticket-header h4 { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0; }
-.ticket-header small { color: #64748b; font-size: 0.85rem; }
-
-.ticket-body { 
-  text-align: left; 
-  font-size: 0.95rem; 
-  color: #334155;
-  background: #f8fafc; /* Fondo suave para los datos */
-  padding: 1.25rem;
-  border-radius: 12px;
-}
-
-.ticket-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.ticket-row span:first-child { color: #64748b; }
-.ticket-row span:last-child { font-weight: 600; }
-
-.total-row { 
-  border-top: 1px solid #e2e8f0; 
-  margin-top: 15px; 
-  padding-top: 15px; 
-  font-size: 1.2rem; 
-  color: #0f172a; 
-}
-
-/* Botón de cierre moderno */
-.btn-primary { 
-  background: #0f172a; /* Azul noche para elegancia */
-  color: white; 
-  width: 100%;
-  margin-top: 1.5rem;
-  border-radius: 8px;
-  padding: 12px;
-}
-
-.btn-primary:hover { background: #1e293b; }
-
-/* --- Ajuste rápido para la tabla y filtros --- */
-.filter-bar {
-  border-radius: 12px; /* Más redondeado */
-  border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.citas-table { border-spacing: 0 12px; }
-.citas-table td { 
-  padding: 18px; 
-  border-top: none; 
-  border-bottom: none; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
+/* --- Estadísticas y Modal --- */
+.footer-stats { display: flex; gap: 2rem; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #f1f5f9; color: #475569; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-content { background: white; padding: 2.5rem; border-radius: 20px; width: 500px; }
+.btn-cancel { width: 100%; padding: 0.9rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; font-weight: 700; margin-top: 1rem; }
+.total-row { font-size: 1.2rem; font-weight: 800; color: #0f766e; }
+.dashed-line { border: none; border-top: 1px dashed #e2e8f0; margin: 1rem 0; }

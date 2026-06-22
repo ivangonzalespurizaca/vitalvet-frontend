@@ -1,44 +1,82 @@
 .sidebar {
-  width: 250px;
+  width: 260px;
   background-color: #ffffff;
-  border-right: 1px solid #eaeaea;
+  border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Ocupa toda la altura */
-  padding-top: 1.5rem;
+  height: 100%;
 }
 
 .logo {
   font-weight: 800;
-  font-size: 1.5rem;
-  padding: 0 1.5rem 2rem 1.5rem;
-  color: #111;
+  font-size: 1.6rem;
+  padding: 2.5rem 1.5rem;
+  color: #1a5f7a; /* Azul VitalVet */
   text-align: center;
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
+  padding: 0 1rem;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .sidebar li a {
-  display: block;
-  padding: 1rem 1.5rem;
-  color: #666;
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  color: #4b5563; /* Gris profesional */
   text-decoration: none;
   font-weight: 500;
+  border-radius: 12px;
+  gap: 10px;
   transition: all 0.2s ease;
 }
 
-.sidebar li a:hover {
-  background-color: #f4f7f6;
-  color: #111;
+/* Iconos de Lucide */
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  stroke-width: 2.5px; /* Iconos un poco más gruesos para que resalten */
 }
 
-/* 🌟 Clase que Angular aplica automáticamente cuando la ruta coincide */
+.sidebar li a:hover {
+  background-color: #f0f9f8;
+  color: #00897b; /* Verde VitalVet */
+}
+
+/* Estado Activo */
 .active-link {
-  background-color: #eef2ff !important;
-  color: #4f46e5 !important; /* Un azul profesional */
-  border-right: 4px solid #4f46e5;
+  background-color: #e0f2f1 !important;
+  color: #00897b !important;
+  font-weight: 600 !important;
+}
+
+.active-link .menu-icon {
+  color: #00897b;
+}
+
+.logo-container {
+  padding: 2rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.brand-logo {
+  max-width: 180px; /* Ajusta este valor según el tamaño deseado */
+  width: 100%;      /* Asegura que no sobrepase el contenedor */
+  height: auto;     /* Mantiene la proporción original */
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Opcional: Un efecto sutil al pasar el mouse por el logo */
+.brand-logo:hover {
+  transform: scale(1.05);
 }

@@ -1,0 +1,79 @@
+/* --- Contenedor Principal --- */
+.dashboard-container { 
+  max-width: 1300px; 
+  margin: 2rem auto; 
+  padding: 2rem; 
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- Header --- */
+.header-card { 
+  margin-bottom: 2rem; 
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+.header-card h1 { color: #1e293b; font-size: 1.8rem; margin: 0; }
+.header-card p { color: #64748b; margin: 5px 0 0 0; }
+
+/* --- Grid de Estadísticas --- */
+.stats-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 2rem; 
+  margin-bottom: 3rem; 
+}
+.stat-card { 
+  background: white; 
+  padding: 2.5rem 1.5rem;
+  border-radius: 16px; 
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  text-align: center;
+  border: 1px solid #f1f5f9;
+}
+.stat-card small { color: #94a3b8; text-transform: uppercase; font-weight: 700; font-size: 0.75rem; }
+.stat-card h3 { margin: 10px 0 0 0; font-size: 2rem; color: #0f766e; }
+
+/* --- Secciones (Grid de 2) --- */
+.sections { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 2rem; 
+}
+.sections section { 
+  background: white; 
+  padding: 1.5rem; 
+  border-radius: 16px; 
+  border: 1px solid #f1f5f9;
+}
+.sections h2 { font-size: 1.2rem; color: #334155; margin-bottom: 1.5rem; }
+
+/* --- Card Item (Listado) --- */
+.card-item { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 1rem 0; 
+  border-bottom: 1px solid #f8fafc; 
+}
+.info-content { display: flex; flex-direction: column; }
+.info-content strong { color: #1e293b; }
+.info-content small { color: #64748b; font-size: 0.85rem; }
+
+/* --- Badges --- */
+.badge { 
+  padding: 0.3rem 0.7rem; 
+  border-radius: 6px; 
+  font-size: 0.75rem; 
+  font-weight: 700; 
+  text-transform: uppercase;
+}
+.badge-pagada { background: #dcfce7; color: #065f46; }
+.badge-completada { background: #e0f2fe; color: #0369a1; }
+.badge-alerta { background: #fee2e2; color: #991b1b; }
+
+.empty-msg { color: #94a3b8; font-style: italic; font-size: 0.9rem; margin-top: 1rem; }
+
+/* --- Responsividad --- */
+@media (max-width: 768px) {
+  .stats-grid, .sections { grid-template-columns: 1fr; }
+}
