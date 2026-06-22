@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../interfaces/api-response';
-import { MascotasResponse } from '../interfaces/mascota-response'; // Asegúrate de tener este import
+import { MascotasResponse } from '../interfaces/mascota-response';
+import { CarnetVacunaDTO } from '../interfaces/carnet';
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +23,10 @@ export class VacunacionService {
         map(res => res.data) // Extraemos el objeto MascotasResponse de la respuesta
       );
   }
+
+  obtenerCarnetPorMascota(idMascota: number, estado: string = 'TODAS'): Observable<ApiResponse<CarnetVacunaDTO>> {
+    return this.http.get<ApiResponse<CarnetVacunaDTO>>(`${this.apiUrl}/mascota/${idMascota}/carnet?estado=${estado}`);
+  }
 }
+
+

@@ -1,3 +1,13 @@
+export interface MascotaRequestDTO {
+  nombreMascota: string;
+  idRaza: number;
+  sexo: 'MACHO' | 'HEMBRA';
+  fechaNacimiento: string;
+  pesoActual: number;
+  fotoUrl: string;
+  idCliente?: number; // Opcional porque en el PUT de edición no lo envías
+}
+
 export interface MascotaResponseDTO {
   idMascota: number;
   codigoMascota: string;
