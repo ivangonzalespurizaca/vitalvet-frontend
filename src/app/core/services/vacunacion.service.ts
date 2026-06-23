@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../interfaces/api-response';
 import { MascotasResponse } from '../interfaces/mascota-response';
-import { CarnetVacunaDTO, VacunaRegistroRequestDTO } from '../interfaces/vacuna-gestion';
+import { VacunaRegistroRequestDTO } from '../interfaces/vacuna-gestion';
+import { CarnetVacunaDTO} from '../interfaces/carnet';
 
 @Injectable({
   providedIn: 'root'

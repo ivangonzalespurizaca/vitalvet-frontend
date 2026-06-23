@@ -33,18 +33,6 @@ export interface VacunaResponseDTO {
   estado: 'APLICADA' | 'PROGRAMADA';
 }
 
-export interface CarnetVacunaDTO {
-  nombreMascota: string;
-  codigoMascota: string;
-  sexo: 'MACHO' | 'HEMBRA' ;
-  fechaNacimiento: string;
-  pesoActual: number;
-  fotoUrl: string;
-  nombreEspecie: string;
-  nombreRaza: string;
-  vacunas: VacunaResponseDTO[];
-}
-
 export interface VacunaRegistroRequestDTO {
   idVacuna: number;
   dosisTipo: string;

@@ -1,160 +1,52 @@
-<div class="container mx-auto p-6">
-
-  <div class="flex justify-between items-center mb-8">
-    <div>
-      <h1 class="text-3xl font-bold text-gray-800">Mis Mascotas</h1>
-      <p class="text-gray-600">Gestiona el historial clínico y carnet de tus compañeros.</p>
-    </div>
-    <button (click)="abrirFormularioRegistro()"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition flex items-center gap-2">
-      <span>➕ Registrar Mascota</span>
-    </button>
+<div class="container">
+  <div class="header">
+    <h2>Mis Mascotas</h2>
+    <button class="btn-primary" (click)="abrirFormularioRegistro()">➕ Registrar Mascota</button>
   </div>
 
-  <div *ngIf="cargando" class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-    <span class="ml-3 text-gray-600">Cargando tus mascotas...</span>
+  <div *ngIf="cargando" class="loading-state">Cargando tus mascotas...</div>
+
+  <div *ngIf="!cargando && mascotas.length === 0" class="empty-state">
+    <p>{{ errorMensaje || 'Aún no tienes mascotas registradas.' }}</p>
   </div>
 
-  <div *ngIf="!cargando && mascotas.length === 0" class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg shadow-sm">
-    <div class="flex items-center">
-      <div class="text-xl">🐾</div>
-      <div class="ml-3">
-        <p class="text-sm text-yellow-700 font-medium">
-          {{ errorMensaje || 'Aún no tienes mascotas registradas en VitalVet.' }}
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="!cargando && mascotas.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let mascota of mascotas" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition">
-
-      <div class="relative h-48 bg-gray-200">
-        <img [src]="mascota.fotoUrl || 'assets/images/default-pet.png'"
-             (error)="manejarErrorImagen(mascota)"
-             [alt]="mascota.nombreMascota"
-             class="w-full h-full object-cover">
-        <span [class]="mascota.activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-              class="absolute top-3 right-3 text-xs font-semibold px-2.5 py-0.5 rounded-full border">
-          {{ mascota.activo ? 'Activo' : 'Inactivo' }}
-        </span>
+  <div *ngIf="!cargando && mascotas.length > 0" class="pet-grid">
+    <div *ngFor="let mascota of mascotas" class="pet-card">
+      <div class="card-image">
+        <img [src]="mascota.fotoUrl || 'assets/images/default-pet.png'" (error)="manejarErrorImagen(mascota)" [alt]="mascota.nombreMascota">
+        <span class="badge" [class.active]="mascota.activo">{{ mascota.activo ? 'Activo' : 'Inactivo' }}</span>
       </div>
 
-      <div class="p-5">
-        <div class="flex justify-between items-start mb-2">
-          <h2 class="text-xl font-bold text-gray-900">{{ mascota.nombreMascota }}</h2>
-          <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">
-            {{ mascota.codigoMascota }}
-          </span>
+      <div class="card-body">
+        <div class="card-header">
+          <h3>{{ mascota.nombreMascota }}</h3>
+          <span class="pet-code">{{ mascota.codigoMascota }}</span>
+        </div>
+        <p class="pet-meta">{{ mascota.nombreEspecie }} — <strong>{{ mascota.nombreRaza }}</strong></p>
+
+        <div class="stats-box">
+          <div><label>Sexo</label><span>{{ mascota.sexo }}</span></div>
+          <div><label>Peso</label><span>{{ mascota.pesoActual | number:'1.2-2' }} kg</span></div>
         </div>
 
-        <p class="text-sm text-gray-500 mb-4">{{ mascota.nombreEspecie }} — <span class="font-medium text-gray-700">{{ mascota.nombreRaza }}</span></p>
-
-        <div class="grid grid-cols-2 gap-4 bg-gray-50 p-3 rounded-lg text-sm mb-5">
-          <div>
-            <span class="block text-xs text-gray-400 uppercase">Sexo</span>
-            <span class="font-semibold text-gray-700">{{ mascota.sexo }}</span>
-          </div>
-          <div>
-            <span class="block text-xs text-gray-400 uppercase">Peso Actual</span>
-            <span class="font-semibold text-gray-700">{{ mascota.pesoActual | number:'1.2-2' }} kg</span>
-          </div>
-        </div>
-
-        <div class="flex gap-2">
-          <a [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'historial']"
-             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center text-sm font-medium py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1">
-            📋 Ver Historial
-          </a>
-
-          <a [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'carnet']"
-             class="flex-1 bg-teal-600 hover:bg-teal-700 text-white text-center text-sm font-medium py-2 rounded-lg transition shadow-sm flex items-center justify-center gap-1">
-            🛡️ Ver Vacunas
-          </a>
-
-          <button (click)="abrirFormularioEdicion(mascota.idMascota)"
-                  class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-lg transition">
-            ✏️
-          </button>
+        <div class="card-actions">
+          <a class="btn-blue" [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'historial']">📋 Historial</a>
+          <a class="btn-teal" [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'carnet']">🛡️ Vacunas</a>
+          <button class="btn-icon" (click)="abrirFormularioEdicion(mascota.idMascota)">✏️</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="mostrarModalCarnet" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col animate-fade-in">
-
-      <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-teal-600 text-white">
-        <h3 class="text-lg font-bold flex items-center gap-2">
-          <span>📋</span> Carnet Clínico: {{ carnetSeleccionado?.nombreMascota || 'Mascota' }}
-        </h3>
-        <button (click)="cerrarModal()" class="text-white hover:text-gray-200 text-xl font-bold">&times;</button>
+  <div *ngIf="mostrarModalCarnet" class="modal-overlay">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="flex justify-between items-center mb-6">
+        <h3 style="color: #0f766e;">Carnet: {{ carnetSeleccionado?.nombreMascota }}</h3>
+        <button (click)="cerrarModal()" class="close-btn">&times;</button>
       </div>
-
-      <div class="p-6 overflow-y-auto flex-1">
-        <div *ngIf="cargandoCarnet" class="flex flex-col justify-center items-center py-12">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600"></div>
-          <p class="text-sm text-gray-500 mt-3">Consultando historial biológico...</p>
-        </div>
-
-        <div *ngIf="!cargandoCarnet && carnetSeleccionado">
-          <div class="mb-6 p-4 bg-teal-50 rounded-xl flex items-center gap-4">
-            <img [src]="carnetSeleccionado.fotoUrl || 'assets/images/default-pet.png'"
-                 (error)="manejarErrorImagen(carnetSeleccionado)"
-                 [alt]="carnetSeleccionado.nombreMascota"
-                 class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm">
-            <div>
-              <h4 class="font-bold text-teal-900 text-lg">{{ carnetSeleccionado.nombreMascota }}</h4>
-              <p class="text-xs text-teal-700">{{ carnetSeleccionado.nombreEspecie }} • {{ carnetSeleccionado.nombreRaza }}</p>
-            </div>
-          </div>
-
-          <h4 class="font-bold text-gray-700 mb-3 text-sm uppercase tracking-wider">Historial de Vacunas Aplicadas</h4>
-
-          <div *ngIf="carnetSeleccionado.vacunas.length === 0" class="text-center py-8 text-gray-400 bg-gray-50 rounded-lg border border-dashed">
-            No registra aplicaciones de vacunas en el sistema.
-          </div>
-
-          <div *ngIf="carnetSeleccionado.vacunas.length > 0" class="overflow-x-auto border border-gray-100 rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-              <thead class="bg-gray-50 text-gray-600 uppercase text-xs font-semibold">
-              <tr>
-                <th class="px-4 py-3">Vacuna</th>
-                <th class="px-4 py-3">Dosis</th>
-                <th class="px-4 py-3">Fecha Aplicación</th>
-                <th class="px-4 py-3">Próxima Dosis</th>
-              </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100 text-gray-700">
-              <tr *ngFor="let vacuna of carnetSeleccionado.vacunas" class="hover:bg-gray-50">
-                <td class="px-4 py-3 font-medium text-gray-900">{{ vacuna.nombreVacuna }}</td>
-                <td class="px-4 py-3">{{ vacuna.dosis }}</td>
-                <td class="px-4 py-3">{{ vacuna.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
-                <td class="px-4 py-3 text-red-600 font-medium">
-                  {{ vacuna.proximaDosis ? (vacuna.proximaDosis | date:'dd/MM/yyyy') : 'N/A' }}
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
-        <button (click)="cerrarModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg text-sm transition">
-          Cerrar Carnet
-        </button>
-      </div>
-
+      <button class="btn-cancel" (click)="cerrarModal()">Cerrar Carnet</button>
     </div>
   </div>
 
-  <app-mascota-modal
-    *ngIf="mostrarModalFormulario()"
-    [idMascota]="idMascotaSeleccionada()"
-    (cerrar)="mostrarModalFormulario.set(false)"
-    (exito)="mostrarModalFormulario.set(false); cargarMascotas()">
-  </app-mascota-modal>
-
+  <app-mascota-modal *ngIf="mostrarModalFormulario()" [idMascota]="idMascotaSeleccionada()" (cerrar)="mostrarModalFormulario.set(false)" (exito)="mostrarModalFormulario.set(false); cargarMascotas()"></app-mascota-modal>
 </div>

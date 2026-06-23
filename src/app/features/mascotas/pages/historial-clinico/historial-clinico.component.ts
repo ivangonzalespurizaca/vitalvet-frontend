@@ -8,7 +8,8 @@ import { HistorialClinicoResponseDTO } from '../../../../core/interfaces/histori
   selector: 'app-historial-clinico',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './historial-clinico.component.html'
+  templateUrl: './historial-clinico.component.html',
+  styleUrls: ['./historial-clinico.component.css']
 })
 export class HistorialClinicoComponent implements OnInit {
   private route = inject(ActivatedRoute);

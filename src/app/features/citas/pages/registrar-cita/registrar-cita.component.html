@@ -83,3 +83,43 @@
     </button>
   </form> 
 </div>
+
+@if (mostrarModalPago) {
+  <div class="modal-overlay" [formGroup]="formulario" (click)="mostrarModalPago = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Paso 2: Confirmar Pago</h3>
+      
+      <div class="section">
+        <h4>DETALLES DE PAGO</h4>
+        <div class="info-grid">
+          <p><strong>Total:</strong> <span style="color: #0f766e; font-weight: bold;">S/ {{ montoFijo | number:'1.2-2' }}</span></p>
+        </div>
+
+<div class="form-group" style="margin-top: 1rem;">
+  <label>Tipo de Comprobante</label>
+  <select formControlName="tipoDocumento">
+    <option value="BOLETA">Boleta</option>
+    <option value="FACTURA">Factura</option>
+    <option value="RECIBO_INTERNO">Recibo Interno</option>
+  </select>
+</div>
+
+<div class="form-group" style="margin-top: 1rem;">
+  <label>Método de Pago</label>
+  <select formControlName="metodoPago">
+    <option value="EFECTIVO">Efectivo</option>
+    <option value="TARJETA_DEBITO">Tarjeta Débito</option>
+    <option value="TARJETA_CREDITO">Tarjeta Crédito</option>
+    <option value="TRANSFERENCIA">Transferencia</option>
+    <option value="YAPE_PLIN">Yape/Plin</option>
+  </select>
+</div>
+      </div>
+
+      <div class="modal-actions" style="display: flex; gap: 10px; margin-top: 1.5rem;">
+        <button class="btn-cancel" (click)="mostrarModalPago = false" style="flex: 1;">Cancelar</button>
+        <button class="btn-primary" (click)="confirmarCita()" style="flex: 1;">Pagar y Confirmar</button>
+      </div>
+    </div>
+  </div>
+}

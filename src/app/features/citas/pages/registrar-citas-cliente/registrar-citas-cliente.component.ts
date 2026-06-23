@@ -21,6 +21,8 @@ export class RegistrarCitaClienteComponent implements OnInit {
   private authService = inject(AuthService);
   private horarioService = inject(HorarioService);
 
+  numeroTarjeta: string = '';
+  expiraTarjeta: string = '';
   formulario!: FormGroup;
   mostrarModalPago = false;
   mascotas: any[] = [];
@@ -34,18 +36,21 @@ export class RegistrarCitaClienteComponent implements OnInit {
     this.cargarDatosIniciales();
   }
 
-  iniciarFormulario() {
-    this.formulario = this.fb.group({
-      idVeterinario: ['', Validators.required],
-      fecha: ['', Validators.required],
-      hora: ['', Validators.required],
-      idMascota: ['', Validators.required],
-      motivo: [''],
-      // Campos fijos para el pago interno
-      tipoDocumento: ['BOLETA'],
-      metodoPago: ['TARJETA_DEBITO']
-    });
-  }
+iniciarFormulario() {
+  this.formulario = this.fb.group({
+    idVeterinario: ['', Validators.required],
+    fecha: ['', Validators.required],
+    hora: ['', Validators.required],
+    idMascota: ['', Validators.required],
+    motivo: [''],
+    tipoDocumento: ['BOLETA', Validators.required],
+    metodoPago: ['TARJETA_DEBITO', Validators.required],
+    // NUEVOS CAMPOS:
+    numeroTarjeta: [''],
+    expira: [''],
+    cvc: ['']
+  });
+}
 
   cargarDatosIniciales() {
     this.vetService.listarVeterinarios('').subscribe(res => this.veterinarios = res.data);
@@ -88,27 +93,50 @@ export class RegistrarCitaClienteComponent implements OnInit {
     return vet ? `${vet.nombres} ${vet.apellidos}` : 'No seleccionado';
   }
 
+// Reemplaza estas funciones por estas versiones simples
+formatearTarjeta(event: any) {
+  // Solo permitimos números, el resto lo dejamos fluir natural
+  let value = event.target.value.replace(/\D/g, '');
+  this.formulario.patchValue({ numeroTarjeta: value }, { emitEvent: false });
+}
+
+formatearFecha(event: any) {
+  let value = event.target.value.replace(/\D/g, '');
+  this.formulario.patchValue({ expira: value }, { emitEvent: false });
+}
+
  confirmarCita() {
   const form = this.formulario.value;
-  let horaRaw = form.hora; // Ejemplo esperado: "03:00 p. m." o "09:00 a. m."
+  if (!form.hora) {
+    alert("Por favor selecciona un horario");
+    return;
+  }
+
+  // 1. Normalización total: quitamos puntos, espacios extra y convertimos a minúsculas
+  const horaRaw = form.hora.toLowerCase().replace(/\s+/g, '').replace(/\./g, '');
   
-  // 1. Extraemos solo los números de la hora y los minutos
+  // 2. Extraer horas y minutos. Buscamos números antes y después de los dos puntos
   const match = horaRaw.match(/(\d{1,2}):(\d{2})/);
-  let hInt = parseInt(match[1]);
-  const m = match[2];
-
-  // 2. Detectamos si es PM y no es 12
-  const isPM = horaRaw.toLowerCase().includes('p. m.');
-  if (isPM && hInt !== 12) {
-    hInt += 12;
-  }
-  // 3. Caso especial: 12 a. m. es 00:00
-  if (!isPM && hInt === 12) {
-    hInt = 0;
+  if (!match) {
+    alert("Formato de hora no reconocido");
+    return;
   }
 
-  // 4. Formateamos a HH:mm:ss
-  const horaFormateada = `${hInt.toString().padStart(2, '0')}:${m}:00`;
+  let horas = parseInt(match[1], 10);
+  const minutos = match[2];
+  
+  // 3. Detectar si es PM (si contiene 'p')
+  const esPM = horaRaw.includes('p');
+
+  // 4. Conversión lógica a 24 horas
+  if (esPM && horas < 12) {
+    horas += 12;
+  } else if (!esPM && horas === 12) {
+    horas = 0;
+  }
+
+  // 5. Formatear a HH:mm:ss
+  const horaFormateada = `${horas.toString().padStart(2, '0')}:${minutos}:00`;
 
   const request = {
     ...form,
@@ -117,7 +145,7 @@ export class RegistrarCitaClienteComponent implements OnInit {
     montoTotal: this.montoFijo
   };
 
-  console.log("Payload FINAL enviado al servidor:", JSON.stringify(request, null, 2));
+  console.log("Payload enviado al servidor:", request);
 
   this.citaService.registrarCita(request).subscribe({
     next: () => {
@@ -125,7 +153,10 @@ export class RegistrarCitaClienteComponent implements OnInit {
       this.mostrarModalPago = false;
       this.formulario.reset();
     },
-    error: (err) => alert('Error al reservar: ' + (err.error?.mensaje || 'Error desconocido'))
+    error: (err) => {
+      console.error(err);
+      alert('Error al reservar: ' + (err.error?.mensaje || 'Error desconocido'));
+    }
   });
 }
 }

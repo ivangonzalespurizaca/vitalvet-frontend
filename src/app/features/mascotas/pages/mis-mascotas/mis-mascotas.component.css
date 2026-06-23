@@ -1,8 +1,31 @@
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
-}
+/* --- Estructura --- */
+.container { max-width: 1450px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.header h2 { font-size: 1.8rem; color: #1e293b; font-weight: 800; }
 
-.animate-fade-in {
-  animation: fadeIn 0.18s ease-out forwards;
-}
+/* --- Grid de Tarjetas --- */
+.pet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+.pet-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; transition: 0.3s ease; }
+.pet-card:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.08); transform: translateY(-5px); }
+
+.card-image { position: relative; height: 180px; }
+.card-image img { width: 100%; height: 100%; object-fit: cover; }
+.badge { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 20px; font-size: 12px; background: #ff5252; color: white; font-weight: 700; }
+.badge.active { background: #4caf50; }
+
+.card-body { padding: 1.5rem; }
+.card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; }
+.pet-code { font-size: 0.75rem; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+.pet-meta { color: #64748b; font-size: 0.9rem; margin-bottom: 1rem; }
+
+.stats-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 1rem 0; }
+.stats-box label { display: block; font-size: 10px; color: #888; text-transform: uppercase; }
+
+/* --- Botones --- */
+.btn-primary { background: #0f766e; color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.card-actions { display: flex; gap: 8px; }
+.btn-blue { background: #0f766e; color: white; padding: 0.7rem; border-radius: 8px; text-decoration: none; text-align: center; flex: 1; font-size: 0.85rem; font-weight: 600; }
+.btn-teal { background: #14b8a6; color: white; padding: 0.7rem; border-radius: 8px; text-decoration: none; text-align: center; flex: 1; font-size: 0.85rem; font-weight: 600; }
+.btn-icon { background: #f1f5f9; border: none; padding: 0.7rem 1rem; border-radius: 8px; cursor: pointer; }
+.btn-cancel { width: 100%; padding: 0.9rem; background: #f1f5f9; border: none; border-radius: 10px; cursor: pointer; margin-top: 1rem; font-weight: 600; color: #475569; }
+.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }

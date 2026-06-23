@@ -29,3 +29,47 @@ select, input, textarea { padding: 12px; border: 1px solid #e2e8f0; border-radiu
 .modal-content { background: white; padding: 2.5rem; border-radius: 20px; width: 450px; }
 .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
 .btn-cancel { flex: 1; padding: 0.9rem; background: #f1f5f9; border: none; border-radius: 10px; cursor: pointer; }
+
+.turnos-box { 
+  background: #fff; 
+  padding: 1rem; 
+  border-radius: 12px; 
+  border: 1px solid #e2e8f0; 
+  margin-bottom: 10px;
+}
+.turnos-title { 
+  color: #0f766e; 
+  font-size: 0.7rem; 
+  margin: 0 0 10px 0; 
+  text-transform: uppercase; 
+  font-weight: 700;
+}
+.badge-pagada { 
+  background: #dcfce7; 
+  color: #065f46; 
+  padding: 0.4rem 0.8rem; 
+  border-radius: 8px; 
+  font-size: 0.75rem; 
+  font-weight: 700; 
+}
+
+/* Ajuste para el modal y los inputs */
+.modal-content { 
+  background: white; padding: 2rem; border-radius: 20px; 
+  width: 90%; max-width: 400px; /* Reducido ligeramente para mejor encaje */
+}
+
+.card-simulation {
+  background: #f8fafc;
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin: 1rem 0;
+  box-sizing: border-box; /* IMPORTANTE: evita que el padding expanda el elemento */
+}
+
+/* Forzamos que los inputs no se salgan del contenedor */
+.card-simulation input {
+  width: 100%;
+  box-sizing: border-box;
+}

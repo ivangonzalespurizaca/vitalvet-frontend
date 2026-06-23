@@ -16,6 +16,19 @@
         </select>
       </div>
 
+      @if (horariosVeterinario.length > 0) {
+    <div class="turnos-box full-width">
+        <h4 class="turnos-title">TURNOS SEMANALES DEL ESPECIALISTA</h4>
+        <div class="turnos-grid" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
+            @for (h of horariosVeterinario; track h.idHorario) {
+                <span class="badge-pagada">
+                    {{ h.diaSemana | titlecase }} ({{ h.horaInicio }} - {{ h.horaFin }})
+                </span>
+            }
+        </div>
+    </div>
+  }
+
       <div class="form-group">
         <label>Mascota</label>
         <select formControlName="idMascota">
@@ -58,18 +71,40 @@
   </form>
 </div>
 
+
 @if (mostrarModalPago) {
   <div class="modal-overlay" (click)="mostrarModalPago = false">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h3>Paso 2: Checkout</h3>
       
-      <div class="section">
-        <h4>RESUMEN DE LA CITA</h4>
-        <div class="info-grid">
-          <p><strong>Especialista:</strong> {{ obtenerNombreVeterinarioSeleccionado() }}</p>
-          <p><strong>Mascota:</strong> {{ obtenerNombreMascotaSeleccionada() }}</p>
-          <p><strong>Fecha:</strong> {{ formulario.value.fecha }}</p>
-          <p><strong>Hora:</strong> {{ formulario.value.hora }}</p>
+      <div [formGroup]="formulario">
+        <h4>INFORMACIÓN DE PAGO</h4>
+        
+        <div class="card-simulation">
+          <div class="form-group">
+            <label>Número de Tarjeta</label>
+            <input type="text" formControlName="numeroTarjeta" placeholder="1234567890123456">
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+              <label>Expira</label>
+              <input type="text" formControlName="expira" placeholder="MM/YY">
+            </div>
+            <div class="form-group">
+              <label>CVC</label>
+              <input type="text" formControlName="cvc" placeholder="***">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Tipo de Comprobante</label>
+          <select formControlName="tipoDocumento">
+            <option value="BOLETA">Boleta</option>
+            <option value="FACTURA">Factura</option>
+            <option value="RECIBO_INTERNO">Recibo Interno</option>
+          </select>
         </div>
       </div>
 

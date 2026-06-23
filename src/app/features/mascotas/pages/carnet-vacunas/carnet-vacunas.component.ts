@@ -8,7 +8,8 @@ import { CarnetVacunaDTO } from '../../../../core/interfaces/carnet';
   selector: 'app-carnet-vacunas',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './carnet-vacunas.component.html'
+  templateUrl: './carnet-vacunas.component.html',
+  styleUrls: ['./carnet-vacunas.component.css']
 })
 export class CarnetVacunasComponent implements OnInit {
   private route = inject(ActivatedRoute);

@@ -1,54 +1,37 @@
-<div class="container mx-auto p-6 max-w-5xl">
-
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold text-gray-900">Historial Clínico</h1>
-    <button routerLink="/cliente/mis-mascotas"
-            class="bg-white hover:bg-gray-50 text-gray-700 font-semibold py-1.5 px-4 border border-gray-300 rounded-lg shadow-sm text-sm transition">
-      Volver a Listado de Mascotas
-    </button>
+<div class="historial-container">
+  <div class="header-actions">
+    <h1>Historial Clínico</h1>
+    <button class="btn-back" routerLink="/cliente/mis-mascotas">Volver a Listado de Mascotas</button>
   </div>
 
-  <div *ngIf="historial()" class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-    <div class="flex items-center gap-4">
-      <img [src]="historial()?.fotoUrl || 'assets/images/default-pet.png'"
-           (error)="manejarErrorImagen()"
-           alt="Mascota"
-           class="w-16 h-16 rounded-full object-cover border border-gray-200">
-      <div>
-        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Nombre</span>
-        <h2 class="text-xl font-bold text-gray-900">{{ historial()?.nombreMascota }}</h2>
+  <div *ngIf="historial()" class="profile-card">
+    <div class="profile-main">
+      <img [src]="historial()?.fotoUrl || 'assets/images/default-pet.png'" (error)="manejarErrorImagen()" alt="Mascota">
+      <div class="info-block">
+        <label>Nombre</label>
+        <h2>{{ historial()?.nombreMascota }}</h2>
       </div>
     </div>
-
-    <div>
-      <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider block">Raza / Especie</span>
-      <span class="font-medium text-gray-800">{{ historial()?.nombreRaza }} ({{ historial()?.nombreEspecie }})</span>
+    <div class="info-block">
+      <label>Raza / Especie</label>
+      <span>{{ historial()?.nombreRaza }} ({{ historial()?.nombreEspecie }})</span>
     </div>
-
-    <div>
-      <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider block">Edad / Sexo</span>
-      <span class="font-medium text-gray-800">{{ historial()?.edadTexto }} • {{ historial()?.sexo | titlecase }}</span>
+    <div class="info-block">
+      <label>Edad / Sexo</label>
+      <span>{{ historial()?.edadTexto }} • {{ historial()?.sexo | titlecase }}</span>
     </div>
-
-    <div>
-      <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider block">Código Historial</span>
-      <span class="font-mono font-bold text-gray-900 bg-gray-50 px-2.5 py-1 rounded border border-gray-100">
-        {{ historial()?.codigoMascota }}
-      </span>
+    <div class="info-block">
+      <label>Código Historial</label>
+      <span class="code-box">{{ historial()?.codigoMascota }}</span>
     </div>
   </div>
 
-  <div class="flex flex-col md:flex-row gap-4 mb-8 bg-gray-50 p-3 rounded-xl border border-gray-100">
-    <div class="relative flex-1">
-      <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">🔍</span>
-      <input type="text"
-             (input)="onFiltrarTexto($event)"
-             placeholder="Filtrar por diagnóstico, vacuna, especialista..."
-             class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+  <div class="filter-bar">
+    <div class="search-input">
+      <input type="text" (input)="onFiltrarTexto($event)" placeholder="Filtrar por diagnóstico, vacuna, especialista...">
     </div>
-    <div class="w-full md:w-48">
-      <select (change)="onCambiarTipo($event)"
-              class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-700">
+    <div class="select-input">
+      <select (change)="onCambiarTipo($event)">
         <option value="TODAS">Todas</option>
         <option value="CONSULTAS">Consultas</option>
         <option value="INMUNIZACIONES">Inmunizaciones</option>
@@ -56,86 +39,59 @@
     </div>
   </div>
 
-  <div *ngIf="cargando()" class="flex justify-center items-center h-48">
-    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-  </div>
+  <div *ngIf="cargando()" class="loading-state">Cargando eventos clínicos...</div>
 
-  <div *ngIf="!cargando()" class="relative border-l-2 border-gray-200 ml-4 md:ml-6 space-y-8 pb-6">
-
-    <div *ngIf="eventosFiltrados().length === 0" class="pl-8 text-gray-400 py-4 text-center border border-dashed rounded-xl bg-white">
+  <div *ngIf="!cargando()" class="timeline">
+    <div *ngIf="eventosFiltrados().length === 0" class="empty-state">
       No se registran eventos clínicos para mostrar en este segmento.
     </div>
 
-    <div *ngFor="let evento of eventosFiltrados()" class="relative pl-8 animate-fade-in">
+    <div *ngFor="let evento of eventosFiltrados()" class="timeline-item">
+      <div class="event-dot" [ngClass]="evento.tipo === 'INMUNIZACIÓN' ? 'dot-vacuna' : 'dot-consulta'">
+        {{ evento.tipo === 'CONSULTA MÉDICA' ? '❤️' : '💉' }}
+      </div>
 
-      <span class="absolute -left-[17px] top-1.5 bg-white border-2 rounded-full w-8 h-8 flex items-center justify-center shadow-sm"
-            [class.border-blue-500]="evento.tipo === 'CONSULTA MÉDICA'"
-            [class.border-green-500]="evento.tipo === 'INMUNIZACIÓN'">
-        <span *ngIf="evento.tipo === 'CONSULTA MÉDICA'" class="text-blue-500 text-sm">❤️</span>
-        <span *ngIf="evento.tipo === 'INMUNIZACIÓN'" class="text-green-500 text-sm">💉</span>
-      </span>
-
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
-
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-50 pb-3 mb-4 gap-2">
-          <div class="text-sm text-gray-600">
-            <span class="font-bold text-gray-800">Fecha: {{ evento.fecha }}</span>
-            — Atendido por: <span class="font-semibold text-gray-800">{{ evento.atendidoPor }}</span>
-            <span *ngIf="evento.especialidad" class="text-gray-500"> ({{ evento.especialidad }})</span>
+      <div class="event-card">
+        <div class="event-header">
+          <div class="meta-info">
+            <strong>Fecha: {{ evento.fecha }}</strong> — Atendido por: <strong>{{ evento.atendidoPor }}</strong>
+            <span *ngIf="evento.especialidad"> ({{ evento.especialidad }})</span>
           </div>
-          <span [class]="evento.tipo === 'CONSULTA MÉDICA' ? 'text-blue-600 bg-blue-50 border-blue-100' : 'text-green-600 bg-green-50 border-green-100'"
-                class="text-xs font-bold tracking-wider px-2.5 py-0.5 rounded border self-start sm:self-center uppercase font-mono">
+          <span class="type-badge" [ngClass]="evento.tipo === 'CONSULTA MÉDICA' ? 'consulta' : 'inmunizacion'">
             {{ evento.tipo }}
           </span>
         </div>
 
         <div *ngIf="evento.tipo === 'CONSULTA MÉDICA'">
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="bg-gray-50 border border-gray-100 text-xs px-3 py-1 rounded-md text-gray-600 font-medium">
-              ⚖️ Peso: {{ evento.peso }} Kg
-            </span>
-            <span class="bg-gray-50 border border-gray-100 text-xs px-3 py-1 rounded-md text-gray-600 font-medium">
-              🌡️ Temp: {{ evento.temperatura }} °C
-            </span>
-            <span class="bg-gray-50 border border-gray-100 text-xs px-3 py-1 rounded-md text-gray-600 font-medium">
-              📋 Motivo: {{ evento.motivo }}
-            </span>
+          <div class="vitals-row">
+            <span class="vital-tag">⚖️ Peso: {{ evento.peso }} Kg</span>
+            <span class="vital-tag">🌡️ Temp: {{ evento.temperatura }} °C</span>
+            <span class="vital-tag">📋 Motivo: {{ evento.motivo }}</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Diagnóstico Clínico</h4>
-              <div class="bg-blue-50/40 border border-blue-100/50 rounded-lg p-3 text-sm text-gray-700 leading-relaxed">
-                {{ evento.diagnosticoClinico }}
-              </div>
+          <div class="details-grid">
+            <div class="detail-box">
+              <h4>Diagnóstico Clínico</h4>
+              <p>{{ evento.diagnosticoClinico }}</p>
             </div>
-            <div>
-              <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Recomendaciones / Tratamiento</h4>
-              <div class="bg-gray-50 border border-gray-100 rounded-lg p-3 text-sm text-gray-700 leading-relaxed">
-                {{ evento.recomendacionesTratamiento }}
-              </div>
+            <div class="detail-box">
+              <h4>Tratamiento</h4>
+              <p>{{ evento.recomendacionesTratamiento }}</p>
             </div>
           </div>
         </div>
 
-        <div *ngIf="evento.tipo === 'INMUNIZACIÓN'" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-          <div class="md:col-span-2">
-            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Vacuna Aplicada</h4>
-            <div class="bg-green-50/40 border border-green-100/50 rounded-lg p-3 text-sm text-gray-700">
-              <span class="font-bold text-gray-900">{{ evento.nombreVacuna }}</span> — {{ evento.descripcionVacuna }}
-            </div>
+        <div *ngIf="evento.tipo === 'INMUNIZACIÓN'" class="immunization-grid">
+          <div class="detail-box">
+            <h4>Vacuna Aplicada</h4>
+            <p><strong>{{ evento.nombreVacuna }}</strong> — {{ evento.descripcionVacuna }}</p>
           </div>
-          <div>
-            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Detalle de Dosis</h4>
-            <div class="bg-gray-50 border border-gray-100 rounded-lg p-3 text-sm flex justify-between md:flex-col gap-2">
-              <div class="text-gray-600">Nro. Dosis: <span class="font-bold text-gray-800">{{ evento.nroDosis }}</span></div>
-              <div class="text-gray-600">Próxima: <span class="font-bold text-orange-600">{{ evento.proximaFecha }}</span></div>
-            </div>
+          <div class="detail-box">
+            <h4>Detalle de Dosis</h4>
+            <p>Nro. Dosis: <strong>{{ evento.nroDosis }}</strong> | Próxima: <strong>{{ evento.proximaFecha }}</strong></p>
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>

@@ -2,9 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VacunaService } from '../../../../core/services/vacuna.service'; // Para el catálogo
-import { MascotasResponse, CarnetVacunaDTO} from '../../../../core/interfaces/vacuna-gestion';
+import { MascotasResponse} from '../../../../core/interfaces/vacuna-gestion';
 import { VacunacionService } from '../../../../core/services/vacunacion.service';
 import { VacunaDTO } from '../../../../core/interfaces/vacuna';
+import { CarnetVacunaDTO } from '../../../../core/interfaces/carnet';
 
 @Component({
   standalone: true,
@@ -18,7 +19,7 @@ export class VacunacionComponent implements OnInit {
 
   dni = '';
   resultado: MascotasResponse | null = null;
-  carnet: CarnetVacunaDTO | null = null;
+  carnet: CarnetVacunaDTO  | null = null;
   idMascotaSeleccionada: number | null = null;
   
   // Catálogos para el formulario
