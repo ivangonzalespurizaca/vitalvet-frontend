@@ -10,6 +10,10 @@ export class MascotaService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.restUrl}/api/paciente/mascota`;
 
+  listarMisMascotas(): Observable<ApiResponse<MascotaResponseDTO[]>> {
+    return this.http.get<ApiResponse<MascotaResponseDTO[]>>(`${this.apiUrl}/mis-mascotas`);
+  }
+
   listarPorCliente(idCliente: number): Observable<ApiResponse<MascotaResponseDTO[]>> {
     return this.http.get<ApiResponse<MascotaResponseDTO[]>>(`${this.apiUrl}/cliente/${idCliente}`);
   }

@@ -13,7 +13,7 @@ export class ConsultaService {
 
   registrarConsulta(idMascota: number, data: ConsultaRequestDTO): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(
-      `${this.apiUrl}/consulta/mascota/${idMascota}/registrar`, 
+      `${this.apiUrl}/consulta/mascota/${idMascota}/registrar`,
       data
     );
   }

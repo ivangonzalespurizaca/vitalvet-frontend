@@ -6,10 +6,11 @@ export interface VacunaAplicadaDTO {
 
 export interface ConsultaRequestDTO {
   idCita: number;
-  idVeterinario?: number; 
+  idVeterinario?: number;
   pesoActual: number;
   temperatura: number;
   diagnostico: string;
   recomendaciones: string;
   vacunas: VacunaAplicadaDTO[];
 }
+

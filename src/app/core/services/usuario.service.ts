@@ -13,4 +13,6 @@ export class UsuarioService {
   actualizarPerfil(data: PerfilRequest): Observable<ApiResponse<{ perfil: any, token: string }>> {
     return this.http.put<ApiResponse<{ perfil: any, token: string }>>(`${this.apiUrl}/actualizar`, data);
   }
+
+
 }

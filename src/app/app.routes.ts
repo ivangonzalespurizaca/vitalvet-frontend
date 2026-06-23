@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
-  { 
-    path: '', 
-    redirectTo: 'login', 
-    pathMatch: 'full' 
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   // =========================
   // RUTAS PÚBLICAS
@@ -22,9 +22,9 @@ export const routes: Routes = [
     path: 'reset-password',
     loadComponent: () => import('./features/auth/pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
   },
-  { 
-    path: '404', 
-    loadComponent: () => import('./shared/pages/not-found/not-found.component').then(m => m.NotFoundComponent) 
+  {
+    path: '404',
+    loadComponent: () => import('./shared/pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   },
 
   // =========================
@@ -67,6 +67,24 @@ export const routes: Routes = [
         data: { titulo: 'Panel Principal', roles: ['CLIENTE'] }
       },
       {
+        path: 'cliente/mis-mascotas',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/mascotas/pages/mis-mascotas/mis-mascotas.component').then(m => m.MisMascotasComponent),
+        data: { titulo: 'Mis Mascotas', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-mascotas/:id/carnet',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/mascotas/pages/carnet-vacunas/carnet-vacunas.component').then(m => m.CarnetVacunasComponent),
+        data: { titulo: 'Carnet de Vacunación', roles: ['CLIENTE'] }
+      },
+      {
+        path: 'cliente/mis-mascotas/:id/historial',
+        canActivate: [roleGuard],
+        loadComponent: () => import('./features/mascotas/pages/historial-clinico/historial-clinico.component').then(m => m.HistorialClinicoComponent),
+        data: { titulo: 'Historial Clínico', roles: ['CLIENTE'] }
+      },
+      {
         path: 'perfil',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/profile/pages/perfil/perfil.component').then(m => m.PerfilComponent),
@@ -78,14 +96,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/clientes/pages/clientes-list/clientes-list.component').then(m => m.ClientesListComponent),
         data: { titulo: 'Directorio de Clientes', roles: ['ADMINISTRADOR'] }
       },
-      { 
-        path: 'veterinarios', 
+      {
+        path: 'veterinarios',
         canActivate: [roleGuard],
-        loadComponent: () => import('./features/veterinarios/pages/veterinarios-list/veterinarios-list.component').then(m => m.VeterinariosListComponent), 
+        loadComponent: () => import('./features/veterinarios/pages/veterinarios-list/veterinarios-list.component').then(m => m.VeterinariosListComponent),
         data: { titulo: 'Listado de Veterinarios', roles: ['ADMINISTRADOR'] }
       },
       {
-        path: 'veterinarios/horarios/:id', 
+        path: 'veterinarios/horarios/:id',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/veterinarios/pages/horarios-config/horarios-config.component').then(m => m.HorariosConfigComponent),
         data: { titulo: 'Configuración de Horarios', roles: ['ADMINISTRADOR'] }

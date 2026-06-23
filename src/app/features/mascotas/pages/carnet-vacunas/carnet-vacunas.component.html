@@ -1,0 +1,89 @@
+<div class="container mx-auto p-6 max-w-5xl">
+
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Carnet de Vacunas: {{ carnet()?.nombreMascota }}</h1>
+  </div>
+
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+    <div class="relative w-full md:w-80">
+      <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">🔍</span>
+      <input type="text"
+             (input)="onBuscar($event)"
+             placeholder="Buscar por nombre de vacuna..."
+             class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div class="flex gap-2 w-full md:w-auto bg-gray-100 p-1 rounded-lg">
+      <button (click)="filtroEstado.set('TODAS')"
+              [class]="filtroEstado() === 'TODAS' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'"
+              class="flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition">
+        Todas
+      </button>
+      <button (click)="filtroEstado.set('APLICADA')"
+              [class]="filtroEstado() === 'APLICADA' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'"
+              class="flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition">
+        Aplicadas
+      </button>
+      <button (click)="filtroEstado.set('POR APLICAR')"
+              [class]="filtroEstado() === 'POR APLICAR' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'"
+              class="flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition">
+        Por Aplicar
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="cargando()" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+  </div>
+
+  <div *ngIf="!cargando()" class="space-y-4">
+    <div *ngIf="vacunasFiltradas().length === 0" class="text-center py-12 bg-white rounded-xl border border-dashed text-gray-400">
+      No se encontraron vacunas bajo los criterios seleccionados.
+    </div>
+
+    <div *ngFor="let vacuna of vacunasFiltradas()"
+         [class]="vacuna.estado === 'APLICADA' ? 'border-l-4 border-purple-500' : 'border-l-4 border-green-500'"
+         class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition hover:shadow-md">
+
+      <div class="flex justify-between items-start mb-2">
+        <div class="flex items-center gap-3">
+          <h3 class="text-lg font-bold text-gray-900">{{ vacuna.nombreVacuna }}</h3>
+          <span [class]="vacuna.estado === 'APLICADA' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'"
+                class="text-xs px-2.5 py-0.5 rounded-full font-semibold">
+            {{ vacuna.dosis }}
+          </span>
+        </div>
+        <span [class]="vacuna.estado === 'APLICADA' ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-green-100 text-green-800 border-green-200'"
+              class="text-xs font-bold px-3 py-1 rounded-full border">
+          {{ vacuna.estado }}
+        </span>
+      </div>
+
+      <p class="text-sm text-gray-600 mb-4">
+        {{ vacuna.descripcion || 'Prevención e inmunización biológica regular provista para la protección activa del paciente.' }}
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-50 text-sm">
+        <div>
+          <span class="text-gray-400 block text-xs uppercase tracking-wider">
+            {{ vacuna.estado === 'APLICADA' ? 'Fecha de Aplicación' : 'Fecha Programada' }}
+          </span>
+          <span class="font-semibold text-green-600">{{ vacuna.fechaAplicacion | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div>
+          <span class="text-gray-400 block text-xs uppercase tracking-wider">
+            {{ vacuna.estado === 'APLICADA' ? 'Clínica / Especialista' : 'Veterinario Asignado' }}
+          </span>
+          <span class="font-bold text-gray-800">Por definir en consulta</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-end mt-6">
+    <button routerLink="/cliente/mis-mascotas"
+            class="bg-white hover:bg-gray-50 text-gray-700 font-semibold py-2 px-5 border border-gray-300 rounded-lg shadow-sm text-sm transition">
+      Volver al Listado de Mascotas
+    </button>
+  </div>
+</div>
