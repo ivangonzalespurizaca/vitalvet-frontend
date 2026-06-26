@@ -1,8 +1,16 @@
 <div class="container">
-  <div class="header">
-    <h2>Gestión de Clientes</h2>
-    <button class="btn-primary" (click)="abrirModalRegistro()">+ Registrar Cliente</button>
-  </div>
+<div class="header">
+    <div class="header-title">
+        <h2>Clientes</h2>
+        <span class="badge-pagada">
+            {{ clientes.length }} registrados
+        </span>
+    </div>
+
+    <button class="btn-primary" (click)="abrirModalRegistro()">
+        + Registrar Cliente
+    </button>
+</div>
 
   <div class="controls-bar">
     <div class="search-container" style="position: relative; width: 350px;">
@@ -34,10 +42,15 @@
             </td>
             <td>{{ cliente.dni }}</td>
             <td>{{ cliente.celular || 'No registrado' }}</td>
-            <td><span class="badge-pagada">{{ cliente.totalMascotas }} mascotas</span></td>
+            <td>
+              <span class="badge-pagada">
+                {{ cliente.totalMascotas }} {{ cliente.totalMascotas === 1 ? 'mascota' : 'mascotas' }}
+              </span>
+            </td>
             <td>
               <button class="btn-outline" (click)="abrirModalEdicion(cliente.idPersona)">Editar</button>
               <button class="btn-outline" (click)="abrirModalMascotas(cliente)">Ver Mascotas</button>
+              <button class="btn-outline" >Registrar Cita</button>
             </td>
           </tr>
         }

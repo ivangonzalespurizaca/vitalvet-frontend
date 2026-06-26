@@ -1,170 +1,139 @@
-<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #fafafa; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  
-  <div style="width: 100%; max-width: 550px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 3rem 4rem; border: 1px solid #eaeaea;">
-    
-    <div style="text-align: center; margin-bottom: 2.5rem;">
-      <h1 style="margin: 0; font-size: 2.2rem; font-weight: 700; color: #111;">VITAL VET</h1>
-      <p style="margin: 0.5rem 0 0; color: #555; font-size: 0.9rem;">Cuidando a los que más amamos</p>
-    </div>
+<div class="login-container">
+  <div class="login-card">
+    <img src="https://res.cloudinary.com/dfid8iuf3/image/upload/v1782138519/vitalvetlogo2_Mesa_de_trabajo_1_ijr8op.png"
+      alt="Logo Vital Vet" class="login-logo">
+    <p>Cuidando a los que más amamos</p>
 
-    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 3rem;">
-      <div [style.background]="pasoActual >= 1 ? (pasoActual === 1 ? '#8b5cf6' : '#222') : '#fff'" 
-           [style.color]="'#fff'" 
-           style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; z-index: 1;">1</div>
-      <div style="height: 1px; width: 80px; background: #d1d5db; margin: 0 -5px;"></div>
-      <div [style.background]="pasoActual >= 2 ? (pasoActual === 2 ? '#8b5cf6' : '#222') : '#fff'" 
-           [style.color]="pasoActual >= 2 ? '#fff' : '#111'" 
-           [style.border]="pasoActual >= 2 ? '1px solid transparent' : '1px solid #d1d5db'" 
-           style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; z-index: 1;">2</div>
-      <div style="height: 1px; width: 80px; background: #d1d5db; margin: 0 -5px;"></div>
-      <div [style.background]="pasoActual === 3 ? '#8b5cf6' : '#fff'" 
-           [style.color]="pasoActual === 3 ? '#fff' : '#111'" 
-           [style.border]="pasoActual === 3 ? '1px solid transparent' : '1px solid #d1d5db'" 
-           style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; z-index: 1;">3</div>
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2.5rem; gap: 10px;">
+      <div [style.background]="pasoActual >= 1 ? '#0f766e' : '#e2e8f0'"
+        style="width: 12px; height: 12px; border-radius: 50%;"></div>
+      <div [style.background]="pasoActual >= 2 ? '#0f766e' : '#e2e8f0'"
+        style="width: 12px; height: 12px; border-radius: 50%;"></div>
+      <div [style.background]="pasoActual === 3 ? '#0f766e' : '#e2e8f0'"
+        style="width: 12px; height: 12px; border-radius: 50%;"></div>
     </div>
 
     <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
 
       @if (pasoActual === 1) {
-        <div formGroupName="datosCliente">
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Correo Electrónico</label>
-            <input type="email" formControlName="email" 
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; outline: none; box-sizing: border-box;">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 0.5rem;">
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Contraseña</label>
-              <input type="password" formControlName="contrasenia" 
-                     style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; outline: none; box-sizing: border-box;">
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Confirmar Contraseña</label>
-              <input type="password" formControlName="confirmarContrasenia" 
-                     style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; outline: none; box-sizing: border-box;">
-            </div>
-          </div>
-          @if (contraseniaNoCoincide) {
-            <span style="color: #ef4444; font-size: 0.8rem; display: block; margin-bottom: 1.5rem;">Las contraseñas no coinciden.</span>
-          } @else {
-            <div style="margin-bottom: 2rem;"></div> 
-          }
+      <div formGroupName="datosCliente">
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" formControlName="email">
+          @if (registroForm.get('datosCliente.email')?.hasError('required') &&
+          registroForm.get('datosCliente.email')?.touched) { <small class="error-message">El correo electrónico es
+            obligatorio.</small> }
+          @if (registroForm.get('datosCliente.email')?.hasError('email') &&
+          registroForm.get('datosCliente.email')?.touched) { <small class="error-message">Ingresa un correo electrónico
+            válido.</small> }
         </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" formControlName="contrasenia">
+            @if (contraseniaControl?.hasError('required') && contraseniaControl?.touched) { <small
+              class="error-message">La contraseña es obligatoria.</small> }
+            @else if (contraseniaControl?.hasError('minlength') && contraseniaControl?.touched) { <small
+              class="error-message">Mínimo 6 caracteres.</small> }
+          </div>
+          <div class="form-group">
+            <label>Confirmar Contraseña</label>
+            <input type="password" formControlName="confirmarContrasenia">
+            @if (registroForm.get('datosCliente.confirmarContrasenia')?.hasError('required') &&
+            registroForm.get('datosCliente.confirmarContrasenia')?.touched) { <small class="error-message">Debes
+              confirmar.</small> }
+            @else if (contraseniaNoCoincide) { <small class="error-message">Las contraseñas no coinciden.</small> }
+          </div>
+        </div>
+      </div>
       }
 
       @if (pasoActual === 2) {
-        <div formGroupName="datosCliente">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Nombres</label>
-              <input type="text" formControlName="nombres" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Apellidos</label>
-              <input type="text" formControlName="apellidos" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
-            </div>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">DNI / Documento</label>
-              <input type="text" formControlName="dni" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Celular</label>
-              <input type="text" formControlName="celular" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
-            </div>
-          </div>
-          <div style="margin-bottom: 2.5rem;">
-            <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Género</label>
-            <select formControlName="genero" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
-              <option value="MASCULINO">MASCULINO</option>
-              <option value="FEMENINO">FEMENINO</option>
-              <option value="NO_ESPECIFICADO">NO ESPECIFICADO</option>
-            </select>
-          </div>
+      <div formGroupName="datosCliente">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group"><label>Nombres</label><input type="text" formControlName="nombres"></div>
+          <div class="form-group"><label>Apellidos</label><input type="text" formControlName="apellidos"></div>
         </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>DNI</label>
+            <input type="text" formControlName="dni" maxlength="8">
+
+            @if (registroForm.get('datosCliente.dni')?.hasError('required') &&
+            registroForm.get('datosCliente.dni')?.touched) {
+            <small class="error-message">El DNI es obligatorio.</small>
+            }
+
+            @if (registroForm.get('datosCliente.dni')?.hasError('pattern') &&
+            registroForm.get('datosCliente.dni')?.touched) {
+            <small class="error-message">El DNI debe tener 8 dígitos exactos.</small>
+            }
+          </div>
+          <div class="form-group"><label>Celular</label><input type="text" formControlName="celular"></div>
+        </div>
+        <div class="form-group">
+          <label>Género</label>
+          <select formControlName="genero" class="form-select">
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMENINO">Femenino</option>
+            <option value="NO_ESPECIFICADO">No especificado</option>
+          </select>
+        </div>
+      </div>
       }
 
       @if (pasoActual === 3) {
-        <div formGroupName="datosMascota">
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Nombre de tu Mascota</label>
-            <input type="text" formControlName="nombreMascota" placeholder="Ej. Firulais" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
+      <div formGroupName="datosMascota">
+        <div class="form-group">
+          <label>Nombre de tu Mascota</label>
+          <input type="text" formControlName="nombreMascota">
+          @if (registroForm.get('datosMascota.nombreMascota')?.hasError('required') &&
+          registroForm.get('datosMascota.nombreMascota')?.touched) { <small class="error-message">Nombre
+            obligatorio.</small> }
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Especie</label>
+            <select formControlName="idEspecie" class="form-select">
+              <option [ngValue]="null">Seleccione...</option>
+              @for (especie of especies; track especie.idEspecie) { <option [value]="especie.idEspecie">{{
+                especie.nombreEspecie }}</option> }
+            </select>
           </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-            
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Especie</label>
-              <select formControlName="idEspecie" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
-                <option [ngValue]="null" disabled selected>Seleccione una especie...</option>
-                @for (especie of especies; track especie.idEspecie) {
-                  <option [value]="especie.idEspecie">{{ especie.nombreEspecie }}</option>
-                }
-              </select>
-            </div>
-
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Raza</label>
-              <select formControlName="idRaza" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
-                <option [ngValue]="null" disabled selected>Seleccione una raza...</option>
-                @for (raza of razasFiltradas; track raza.idRaza) {
-                  <option [value]="raza.idRaza">{{ raza.nombreRaza }}</option>
-                }
-                @if (razasFiltradas.length === 0 && registroForm.get('datosMascota.idEspecie')?.value) {
-                  <option disabled>No hay razas registradas</option>
-                }
-              </select>
-            </div>
-            
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem;">
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Sexo</label>
-              <select formControlName="sexo" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background-color: #fff; box-sizing: border-box;">
-                <option value="HEMBRA">Hembra</option>
-                <option value="MACHO">Macho</option>
-              </select>
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 0.4rem; color: #444; font-size: 0.9rem;">Fecha de Nacimiento</label>
-              <input type="date" formControlName="fechaNacimiento" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box;">
-            </div>
+          <div class="form-group">
+            <label>Raza</label>
+            <select formControlName="idRaza" class="form-select">
+              <option [ngValue]="null">Seleccione...</option>
+              @for (raza of razasFiltradas; track raza.idRaza) { <option [value]="raza.idRaza">{{ raza.nombreRaza }}
+              </option> }
+            </select>
           </div>
         </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group"><label>Sexo</label><select formControlName="sexo" class="form-select">
+              <option value="HEMBRA">Hembra</option>
+              <option value="MACHO">Macho</option>
+            </select></div>
+          <div class="form-group"><label>Fecha de Nacimiento</label><input type="date" formControlName="fechaNacimiento"
+              [max]="fechaMaxima"></div>
+        </div>
+      </div>
       }
 
-      <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-        @if (pasoActual > 1) {
-          <button type="button" (click)="pasoAnterior()" 
-                  style="flex: 1; padding: 0.85rem; background: #fff; color: #444; border: 1px solid #d1d5db; border-radius: 6px; font-weight: 600; cursor: pointer;">
-            Anterior
-          </button>
-        }
-        @if (pasoActual < 3) {
-          <button type="button" (click)="siguientePaso()" 
-                  [disabled]="pasoActual === 1 ? paso1Invalido : paso2Invalido"
-                  style="flex: 1; padding: 0.85rem; background: #222; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;"
-                  [style.opacity]="(pasoActual === 1 ? paso1Invalido : paso2Invalido) ? '0.5' : '1'">
-            Siguiente
-          </button>
-        }
-        @if (pasoActual === 3) {
-          <button type="submit" [disabled]="registroForm.invalid" 
-                  style="flex: 1; padding: 0.85rem; background: #222; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;"
-                  [style.opacity]="registroForm.invalid ? '0.5' : '1'">
-            Finalizar Registro
-          </button>
-        }
+      <div style="display: flex; gap: 10px; margin-top: 1rem;">
+        @if (pasoActual > 1) { <button type="button" (click)="pasoAnterior()" class="btn-cancel">Anterior</button> }
+        @if (pasoActual < 3) { <button type="button" (click)="siguientePaso()" class="btn-confirm"
+          [disabled]="pasoActual === 1 ? paso1Invalido : paso2Invalido">Siguiente</button>
+          }
+          @else {
+          <button type="submit" [disabled]="registroForm.invalid" class="btn-login">Finalizar Registro</button>
+          }
       </div>
     </form>
 
-    <div style="text-align: center; border-top: 1px solid #eee; padding-top: 1.5rem;">
-      <p style="margin: 0; font-size: 0.85rem; color: #666;">
-        ¿Ya tienes cuenta? <a routerLink="/login" style="color: #111; font-weight: 700; text-decoration: none; cursor: pointer;">Iniciar Sesión</a>
-      </p>
+    <div class="login-footer" style="margin-top: 1.5rem;">
+      <a routerLink="/login">¿Ya tienes cuenta? Iniciar Sesión</a>
     </div>
-
   </div>
 </div>

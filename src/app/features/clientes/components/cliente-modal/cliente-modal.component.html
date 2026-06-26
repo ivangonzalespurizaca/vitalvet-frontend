@@ -1,97 +1,132 @@
 <div class="modal-overlay">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    
+
     <div class="modal-header">
       <h2>{{ esModoEdicion ? 'Editar Cliente' : 'Registro Rápido de Cliente y Mascota' }}</h2>
       <button class="btn-close" (click)="cancelar()">×</button>
     </div>
 
     @if (cargando && esModoEdicion && !formulario.get('datosCliente.nombres')?.value) {
-      <div class="loading-state">
-        <p>Cargando datos del cliente...</p>
-      </div>
+    <div class="loading-state">
+      <p>Cargando datos del cliente...</p>
+    </div>
     } @else {
-      <form [formGroup]="formulario" (ngSubmit)="guardar()">
-        
-        <div formGroupName="datosCliente" class="seccion-form">
-          <h3 class="section-title">1. DATOS DEL PROPIETARIO</h3>
-          <div class="grid-form">
-            <div class="form-group">
-              <label>DNI</label>
-              <input type="text" formControlName="dni" placeholder="Ej. 78954415">
-            </div>
-            <div class="form-group">
-              <label>Teléfono Celular</label>
-              <input type="text" formControlName="celular" placeholder="Opcional">
-            </div>
-            <div class="form-group">
-              <label>Nombres</label>
-              <input type="text" formControlName="nombres">
-            </div>
-            <div class="form-group">
-              <label>Apellidos</label>
-              <input type="text" formControlName="apellidos">
-            </div>
-            <div class="form-group">
-              <label>Género</label>
-              <select formControlName="genero">
-                <option value="" disabled>Seleccione...</option>
-                <option value="MASCULINO">Masculino</option>
-                <option value="FEMENINO">Femenino</option>
-              </select>
-            </div>
+    <form [formGroup]="formulario" (ngSubmit)="guardar()">
+
+      <div formGroupName="datosCliente" class="seccion-form">
+        <h3 class="section-title">1. DATOS DEL PROPIETARIO</h3>
+        <div class="grid-form">
+          <div class="form-group">
+            <label>DNI</label>
+            <input type="text" formControlName="dni" maxlength="8">
+            @if (formulario.get('datosCliente.dni')?.touched &&
+            formulario.get('datosCliente.dni')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            } @else if (formulario.get('datosCliente.dni')?.touched && formulario.get('datosCliente.dni')?.invalid) {
+            <small class="error-message">DNI inválido (8 dígitos).</small>
+            }
+          </div>
+          <div class="form-group">
+            <label>Teléfono Celular</label>
+            <input type="text" formControlName="celular" placeholder="Opcional">
+          </div>
+          <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" formControlName="nombres">
+            @if (formulario.get('datosCliente.nombres')?.touched &&
+            formulario.get('datosCliente.nombres')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" formControlName="apellidos">
+            @if (formulario.get('datosCliente.apellidos')?.touched &&
+            formulario.get('datosCliente.apellidos')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
+          </div>
+          <div class="form-group">
+            <label>Género</label>
+            <select formControlName="genero">
+              <option value="" disabled>Seleccione...</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMENINO">Femenino</option>
+              <option value="NO_ESPECIFICADO">No Especificado</option>
+            </select>
+            @if (formulario.get('datosCliente.genero')?.touched &&
+            formulario.get('datosCliente.genero')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
           </div>
         </div>
+      </div>
 
-        @if (!esModoEdicion) {
-          <div formGroupName="datosMascota" class="seccion-form mascota-section">
-            <h3 class="section-title">2. DATOS DE LA MASCOTA</h3>
-            <div class="grid-form">
-              <div class="form-group">
-                <label>Nombre de la Mascota</label>
-                <input type="text" formControlName="nombreMascota" placeholder="Ej. Firulais">
-              </div>
-
-              <div class="form-group">
-                <label>Sexo</label>
-                <select formControlName="sexo">
-                  <option value="" disabled>Seleccione...</option>
-                  <option value="MACHO">Macho</option>
-                  <option value="HEMBRA">Hembra</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Especie</label>
-                <select formControlName="idEspecie">
-                  <option [ngValue]="null" disabled>Seleccione especie...</option>
-                  @for (e of especies; track e.idEspecie) {
-                    <option [value]="e.idEspecie">{{ e.nombreEspecie }}</option>
-                  }
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Raza</label>
-                <select formControlName="idRaza">
-                  <option [ngValue]="null" disabled>Seleccione raza...</option>
-                  @for (r of razasFiltradas; track r.idRaza) {
-                    <option [value]="r.idRaza">{{ r.nombreRaza }}</option>
-                  }
-                </select>
-              </div>
-            </div>
+      @if (!esModoEdicion) {
+      <div formGroupName="datosMascota" class="seccion-form mascota-section">
+        <h3 class="section-title">2. DATOS DE LA MASCOTA</h3>
+        <div class="grid-form">
+          <div class="form-group">
+            <label>Nombre de la Mascota</label>
+            <input type="text" formControlName="nombreMascota" placeholder="Ej. Firulais">
+            @if (formulario.get('datosMascota.nombreMascota')?.touched &&
+            formulario.get('datosMascota.nombreMascota')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
           </div>
-        }
 
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
-<button type="submit" class="btn-primary" [disabled]="cargando">
-  {{ cargando ? 'Procesando...' : (esModoEdicion ? 'Actualizar Cliente' : 'Registrar Todo') }}
-</button>
+          <div class="form-group">
+            <label>Sexo</label>
+            <select formControlName="sexo">
+              <option value="" disabled>Seleccione...</option>
+              <option value="MACHO">Macho</option>
+              <option value="HEMBRA">Hembra</option>
+            </select>
+            @if (formulario.get('datosMascota.sexo')?.touched &&
+            formulario.get('datosMascota.sexo')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Especie</label>
+            <select formControlName="idEspecie">
+              <option [ngValue]="null" disabled>Seleccione especie...</option>
+              @for (e of especies; track e.idEspecie) {
+              <option [value]="e.idEspecie">{{ e.nombreEspecie }}</option>
+              }
+            </select>
+            @if (formulario.get('datosMascota.idEspecie')?.touched &&
+            formulario.get('datosMascota.idEspecie')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Raza</label>
+            <select formControlName="idRaza">
+              <option [ngValue]="null" disabled>Seleccione raza...</option>
+              @for (r of razasFiltradas; track r.idRaza) {
+              <option [value]="r.idRaza">{{ r.nombreRaza }}</option>
+              }
+            </select>
+            @if (formulario.get('datosMascota.idRaza')?.touched &&
+            formulario.get('datosMascota.idRaza')?.hasError('required')) {
+            <small class="error-message">El campo es obligatorio.</small>
+            }
+          </div>
         </div>
+      </div>
+      }
 
-      </form>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="cargando || formulario.invalid">
+          {{ cargando ? 'Procesando...' : (esModoEdicion ? 'Actualizar Cliente' : 'Registrar Todo') }}
+        </button>
+      </div>
+
+    </form>
     }
   </div>
 </div>

@@ -19,8 +19,6 @@ export class MascotasListModalComponent implements OnInit {
 
   mascotas: MascotaResponseDTO[] = [];
   cargando = false;
-
-  // Variables para el modal hijo (Formulario)
   mostrarFormulario = false;
 
   ngOnInit() {

@@ -1,6 +1,8 @@
 <div class="container" *ngIf="!cargando && datos">
   <header class="dashboard-header">
-    <h1>Panel del Veterinario</h1>
+    @if(usuario){
+      <h1>¡Bienvenido(a), {{ usuario.nombres }}!</h1>
+    }
     <p>Gestiona tu agenda y pacientes para hoy.</p>
   </header>
 

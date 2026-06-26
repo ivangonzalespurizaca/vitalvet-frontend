@@ -1,11 +1,11 @@
 .perfil-page {
-  min-height: 100vh;
+  min-height: 70vh;
   padding: 2rem;
   background: #ffffff;
 }
 
 .perfil-card {
-  max-width: 1250px;
+  max-width: 1200px;
   margin: 0 auto;
   background: white;
   border-radius: 24px;
@@ -15,7 +15,7 @@
 
 /* HEADER: Diseño claro y minimalista */
 .profile-header {
-  background: #f1f5f9;
+  background: white;
   color: #1e293b;
   padding: 2rem 2.5rem;
   display: flex;
@@ -36,7 +36,7 @@
   height: 100px;
   border-radius: 50%;
   overflow: hidden;
-  border: 4px solid white;
+  border: 4px solid rgb(180, 158, 158);
   background: white;
   flex-shrink: 0;
 }

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { VeterinarioService } from '../../../../core/services/veterinario.service';
 import { VeterinarioResponse } from '../../../../core/interfaces/veterinario-response';
 import { VeterinarioModalComponent } from '../veterinario-modal/veterinario-modal.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-veterinarios-list',
@@ -16,6 +17,20 @@ import { VeterinarioModalComponent } from '../veterinario-modal/veterinario-moda
 })
 export class VeterinariosListComponent implements OnInit {
   private vService = inject(VeterinarioService);
+  private swalToast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+
+  
   mostrarModal = false;
   veterinarioIdSeleccionado: number | null = null;
   
@@ -47,27 +62,59 @@ export class VeterinariosListComponent implements OnInit {
     this.veterinarioIdSeleccionado = id; // ID real = Editar
     this.mostrarModal = true;
   }
+  async cambiarEstado(vet: VeterinarioResponse) {
 
-  cambiarEstado(vet: any) {
-    const accion = vet.activo ? 'desactivar' : 'activar';
-    const confirmacion = confirm(`¿Estás seguro que deseas ${accion} al veterinario ${vet.nombres}?`);
-    
-    if (!confirmacion) return;
+  const accion = vet.activo ? 'desactivar' : 'activar';
 
-    const request$ = vet.activo 
-      ? this.vService.desactivar(vet.idVeterinario) 
-      : this.vService.activar(vet.idVeterinario);
+  const result = await Swal.fire({
+    title: `¿${vet.activo ? 'Desactivar' : 'Activar'} veterinario?`,
+    text: `Se ${accion}á a ${vet.nombres} ${vet.apellidos}.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#0f766e',
+    cancelButtonColor: '#6b7280',
+    confirmButtonText: 'Sí',
+    cancelButtonText: 'Cancelar'
+  });
 
-    request$.subscribe({
-      next: () => {
-        alert(`Veterinario ${accion}do correctamente.`);
-        this.cargarVeterinarios(); // Recarga la lista para ver el cambio
-      },
-      error: (err) => {
-        alert(err.error?.mensaje || `Error al ${accion} veterinario`);
-      }
-    });
-  }
+  if (!result.isConfirmed) return;
+
+  const request$ = vet.activo
+    ? this.vService.desactivar(vet.idVeterinario)
+    : this.vService.activar(vet.idVeterinario);
+
+  request$.subscribe({
+    next: (res) => {
+
+      this.swalToast.fire({
+        icon: 'success',
+        title: res.mensaje || `Veterinario ${accion}do correctamente.`
+      });
+
+      this.cargarVeterinarios();
+    },
+
+    error: (err) => {
+
+      this.swalToast.fire({
+        icon: 'error',
+        title: err.error?.mensaje || `Error al ${accion} veterinario.`
+      });
+
+    }
+  });
+
+}
+
+  obtenerIniciales(vet: VeterinarioResponse): string {
+  const nombre = vet.nombres?.trim() || '';
+  const apellido = vet.apellidos?.trim() || '';
+
+  const inicialNombre = nombre.charAt(0).toUpperCase();
+  const inicialApellido = apellido.charAt(0).toUpperCase();
+
+  return `${inicialNombre}${inicialApellido}`;
+}
 
   onOperacionExitosa() {
     this.mostrarModal = false;

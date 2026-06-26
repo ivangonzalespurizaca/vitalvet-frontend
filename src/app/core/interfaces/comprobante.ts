@@ -9,6 +9,13 @@ export interface ComprobanteDTO {
     montoSubtotal: number;
     montoImpuesto: number;
     dniCliente: string;
+    idCita: number;
+    codigoCita: string;
+    motivo: string;
+    idMascota: number;
+    nombreMascota: string;
+    especieMascota: string;
+    razaMascota: string;
 }
 
 export interface ComprobanteAdminResponse {

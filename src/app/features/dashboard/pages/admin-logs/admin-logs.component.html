@@ -1,15 +1,11 @@
 <div class="logs-container">
 
   <div class="filtros-header">
-    
+
     <div class="filter-group">
       <label>Buscar por Usuario</label>
       <div class="input-search-container">
-        <input
-          type="text"
-          placeholder="Buscar por ID"
-          [(ngModel)]="filtros.usuarioOrId"
-          (ngModelChange)="buscar()">
+        <input type="text" placeholder="Buscar por ID" [(ngModel)]="filtros.usuarioOrId" (ngModelChange)="buscar()">
       </div>
     </div>
 
@@ -35,10 +31,7 @@
 
     <div class="filter-group">
       <label>Fecha de Registro</label>
-      <input
-        type="date"
-        [(ngModel)]="filtros.fecha"
-        (ngModelChange)="buscar()">
+      <input type="date" [(ngModel)]="filtros.fecha" (ngModelChange)="buscar()">
     </div>
 
     <div class="filter-actions">
@@ -49,6 +42,13 @@
 
   </div>
 
+
+  <td class="cell-actions">
+    <button class="btn-ver-soap" (click)="verDetalleSoap()" title="Ver XML SOAP">
+      📋 Ver Comentarios del Servicio
+    </button>
+  </td>
+
   <div class="table-responsive">
     <table class="custom-table">
       <thead>
@@ -58,12 +58,12 @@
           <th>TABLA AFECTADA</th>
           <th>ACCIÓN SQL</th>
           <th>DESCRIPCIÓN</th>
-          <th>ACCIONES</th> </tr>
+        </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let log of logs">
-          
+
           <td class="cell-date">
             <span class="date-day">{{ log.fecha | date:'dd/MM/yyyy' }}</span>
             <span class="date-time">{{ log.fecha | date:'HH:mm:ss' }}</span>
@@ -95,7 +95,7 @@
             {{ log.descripcion }}
           </td>
 
-          
+
 
         </tr>
 
@@ -110,21 +110,13 @@
 
 </div>
 
-<td class="cell-actions">
-            <button 
-              class="btn-ver-soap" 
-              (click)="verDetalleSoap()"
-              title="Ver XML SOAP">
-              📋 Ver Comentarios
-            </button>
-          </td>
 
 
 <div class="modal-overlay" *ngIf="mostrarModalSoap">
   <div class="modal-content">
-    
+
     <div class="modal-header">
-      <h3>💬 Comentarios del Servidor SOAP</h3>
+      <h3>💬 Comentarios acerca del Servicio</h3>
       <button class="btn-cerrar-modal" (click)="cerrarModal()">&times;</button>
     </div>
 

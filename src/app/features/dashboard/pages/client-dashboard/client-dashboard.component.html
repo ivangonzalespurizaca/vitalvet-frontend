@@ -1,50 +1,60 @@
-<div class="dashboard-container" *ngIf="!cargando && datos">
+<div class="container" *ngIf="!cargando && datos">
   
-  <div class="header-card">
+  <header class="dashboard-header">
     <h1>¡Bienvenido(a), {{ datos.nombreCliente }}!</h1>
     <p>Gestiona la salud y citas de tus mascotas desde aquí.</p>
-  </div>
+  </header>
 
   <div class="stats-grid">
     <div class="stat-card">
       <small>Mascotas</small>
-      <h3>{{ datos.cantidadMascotas }}</h3>
+      <div class="stat-value">{{ datos.cantidadMascotas }}</div>
     </div>
     <div class="stat-card">
       <small>Próximas Citas</small>
-      <h3>{{ datos.proximasCitas.length }}</h3>
+      <div class="stat-value">{{ datos.proximasCitas.length }}</div>
     </div>
     <div class="stat-card">
       <small>Alertas de Vacunas</small>
-      <h3>{{ datos.vacunasProximas.length }}</h3>
+      <div class="stat-value">{{ datos.vacunasProximas.length }}</div>
     </div>
   </div>
 
-  <div class="sections">
-    <section>
+  <div class="dashboard-sections">
+    <section class="content-card">
       <h2>🗓️ Próximas Citas</h2>
-      <div class="card-item" *ngFor="let cita of datos.proximasCitas">
-        <div class="info-content">
-          <strong>{{ cita.nombreMascota }}</strong>
-          <small>{{ cita.fecha }} | {{ cita.hora }} | {{ cita.motivo }}</small>
-        </div>
-        <span class="badge" [ngClass]="cita.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">
-          {{ cita.estado }}
-        </span>
+      <div class="list-container">
+        @for (cita of datos.proximasCitas; track cita.fecha) {
+          <div class="card-item">
+            <div class="info-content">
+              <strong>{{ cita.nombreMascota }}</strong>
+              <small>{{ cita.fecha }} | {{ cita.hora }} | {{ cita.motivo }}</small>
+            </div>
+            <span class="badge" [ngClass]="cita.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">
+              {{ cita.estado }}
+            </span>
+          </div>
+        } @empty {
+          <p class="empty-msg">No hay citas pendientes.</p>
+        }
       </div>
-      <p *ngIf="datos.proximasCitas.length === 0" class="empty-msg">No hay citas pendientes.</p>
     </section>
 
-    <section>
+    <section class="content-card">
       <h2>💉 Vacunas Próximas</h2>
-      <div class="card-item" *ngFor="let v of datos.vacunasProximas">
-        <div class="info-content">
-          <strong>{{ v.nombreVacuna }}</strong>
-          <small>{{ v.nombreMascota }} | Vence: {{ v.fechaVencimiento }}</small>
-        </div>
-        <span class="badge badge-alerta">{{ v.nivelAlerta }}</span>
+      <div class="list-container">
+        @for (v of datos.vacunasProximas; track v.nombreVacuna) {
+          <div class="card-item">
+            <div class="info-content">
+              <strong>{{ v.nombreVacuna }}</strong>
+              <small>{{ v.nombreMascota }} | Vence: {{ v.fechaVencimiento }}</small>
+            </div>
+            <span class="badge badge-alerta">{{ v.nivelAlerta }}</span>
+          </div>
+        } @empty {
+          <p class="empty-msg">Todas las vacunas están al día.</p>
+        }
       </div>
-      <p *ngIf="datos.vacunasProximas.length === 0" class="empty-msg">Todas las vacunas están al día.</p>
     </section>
   </div>
 </div>

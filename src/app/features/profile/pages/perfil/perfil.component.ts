@@ -5,6 +5,7 @@ import { AuthService, CustomJwtPayload } from '../../../../core/services/auth.se
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { MediaService } from '../../../../core/services/media.service';
 import { PerfilRequest } from '../../../../core/interfaces/perfil-request';
+import Swal from 'sweetalert2';
 // Ajusta la ruta de tus servicios e interfaces según la estructura de tu proyecto
 
 @Component({
@@ -19,6 +20,18 @@ export class PerfilComponent implements OnInit {
   private authService = inject(AuthService);
   private usuarioService = inject(UsuarioService);
   private mediaService = inject(MediaService);
+
+  private toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   usuario: CustomJwtPayload | null = null;
   perfilForm!: FormGroup;
@@ -83,7 +96,7 @@ export class PerfilComponent implements OnInit {
         if (respMedia?.success && respMedia.data?.urlFoto) {
            urlFotoFinal = respMedia.data.urlFoto;
         } else {
-           alert('Hubo un problema al subir la imagen a la nube.');
+           this.toast.fire({ icon: 'error', title: 'Problema al subir la imagen.' });
            this.cargando = false;
            return;
         }
@@ -98,28 +111,20 @@ export class PerfilComponent implements OnInit {
 
       this.usuarioService.actualizarPerfil(request).subscribe({
         next: (response: any) => { 
-          console.log("Respuesta del backend:", response);
-          alert('¡Perfil actualizado con éxito!');
+          this.toast.fire({ icon: 'success', title: '¡Perfil actualizado!' });
           
           this.fotoUrlActual = urlFotoFinal;
           this.archivoSeleccionado = null;
 
-          // 🌟 LA CLAVE ESTÁ AQUÍ: Accedemos a response.data.token
-          if (response && response.data && response.data.token) {
-            console.log("Token recibido:", response.data.token); // Verifica que el token exista aquí
-            
-            // Guarda el token en el localStorage (ajusta 'token' si usas otra llave)
+          if (response?.data?.token) {
             this.authService.setToken(response.data.token); 
-            
-            // Recarga para que los componentes lean el nuevo token
-            window.location.reload();
-          } else {
-            console.error("No se encontró el token en la respuesta. Estructura recibida:", response);
+            setTimeout(() => window.location.reload(), 3000); // 🌟 Pequeña espera para que se lea el toast antes del reload
           }
+
         },
         error: (err) => {
           console.error(err);
-          alert('Error al actualizar el perfil.');
+          this.toast.fire({ icon: 'error', title: 'Error al actualizar perfil.' });
         },
         complete: () => {
           this.cargando = false;
@@ -128,7 +133,7 @@ export class PerfilComponent implements OnInit {
 
     } catch (error) {
        console.error("Error en el proceso de guardado:", error);
-       alert('Ocurrió un error inesperado al procesar los cambios.');
+       this.toast.fire({ icon: 'error', title: 'Ocurrió un error inesperado.' });
        this.cargando = false;
     }
   }

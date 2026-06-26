@@ -1,6 +1,9 @@
 <div class="container" *ngIf="!cargando && datos">
   <header class="dashboard-header">
-    <h1>Panel Administrativo</h1>
+    @if(usuario){
+      <h1>¡Bienvenido(a), {{ usuario.nombres }}!</h1>
+    }
+
     <p>Resumen general de la clínica al día de hoy.</p>
   </header>
 
@@ -20,7 +23,7 @@
   </div>
 
   <section class="content-card">
-    <h2>Últimos Pagos Recibidos</h2>
+    <h2>💵 Últimos Pagos Recibidos</h2>
     <table class="citas-table">
       <thead>
         <tr>
@@ -32,12 +35,12 @@
       </thead>
       <tbody>
         @for (pago of datos.ultimosPagos; track pago.codigoComprobante) {
-          <tr>
-            <td><strong>{{ pago.nombreCliente }}</strong></td>
-            <td>{{ pago.codigoComprobante }}</td>
-            <td><span class="badge">{{ pago.metodoPago }}</span></td>
-            <td><strong>{{ pago.montoTotal | currency:'PEN':'S/ ' }}</strong></td>
-          </tr>
+        <tr>
+          <td><strong>{{ pago.nombreCliente }}</strong></td>
+          <td>{{ pago.codigoComprobante }}</td>
+          <td><span class="badge">{{ pago.metodoPago }}</span></td>
+          <td><strong>{{ pago.montoTotal | currency:'PEN':'S/ ' }}</strong></td>
+        </tr>
         }
       </tbody>
     </table>

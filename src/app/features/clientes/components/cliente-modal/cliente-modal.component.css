@@ -79,16 +79,27 @@
 }
 
 .btn-primary {
-  padding: 10px 20px; background: #0f766e; border: none;
-  border-radius: 10px; color: white; font-weight: 600; 
-  cursor: pointer; pointer-events: auto !important; /* Fuerza habilitación */
+  padding: 10px 20px;
+  background: #0f766e;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 /* Elimina el efecto visual de bloqueo */
 .btn-primary:disabled {
-  background-color: #0f766e !important;
-  opacity: 0.8;
-  cursor: pointer !important;
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.mascota-section {
+  margin-top: 2.5rem; /* Separación clara */
+  padding-top: 2rem;
+  border-top: 2px dashed #e5e7eb; /* Línea divisoria visual */
 }
 
 .loading-state { text-align: center; padding: 40px; color: #6b7280; }

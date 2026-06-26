@@ -5,11 +5,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CatalogoService } from '../../../../core/services/catalogo.service';
 import { Especie, Raza } from '../../../../core/interfaces/catalogos';
+import Swal from 'sweetalert2';
 
 export const passwordsMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('contrasenia')?.value;
   const confirmPassword = control.get('confirmarContrasenia')?.value;
-  
+
   if (password && confirmPassword && password !== confirmPassword) {
     return { passwordsMismatch: true };
   }
@@ -20,16 +21,28 @@ export const passwordsMatchValidator: ValidatorFn = (control: AbstractControl): 
   selector: 'app-registro',
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
-  templateUrl: './registro.component.html'
+  templateUrl: './registro.component.html',
+  styleUrl: './registro.component.css'
 })
 export class RegistroComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private catalogoService = inject(CatalogoService);
   private router = inject(Router);
+  private toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   pasoActual = 1;
-
+  fechaMaxima = new Date().toISOString().split('T')[0];
   especies: Especie[] = [];
   todasLasRazas: Raza[] = [];
   razasFiltradas: Raza[] = [];
@@ -38,14 +51,14 @@ export class RegistroComponent implements OnInit {
     datosCliente: this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       contrasenia: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarContrasenia: ['', [Validators.required]], 
+      confirmarContrasenia: ['', [Validators.required]],
       nombres: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
-      dni: ['', [Validators.required, Validators.minLength(8)]],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       celular: [''],
       genero: ['MASCULINO', [Validators.required]]
     }, { validators: passwordsMatchValidator }),
-    
+
     datosMascota: this.fb.group({
       nombreMascota: ['', [Validators.required]],
       idEspecie: [null as number | null, [Validators.required]], // 👈 Temporal para filtrar
@@ -74,11 +87,11 @@ export class RegistroComponent implements OnInit {
   // 2. Filtro en cascada
   private escucharCambiosDeEspecie(): void {
     const idRazaControl = this.registroForm.get('datosMascota.idRaza');
-    
+
     this.registroForm.get('datosMascota.idEspecie')?.valueChanges.subscribe(idEspecie => {
       // Al cambiar especie, reseteamos la raza seleccionada
       idRazaControl?.setValue(null);
-      
+
       if (idEspecie) {
         // Filtramos buscando las razas que coincidan con la especie
         this.razasFiltradas = this.todasLasRazas.filter(r => r.idEspecie === Number(idEspecie));
@@ -110,42 +123,49 @@ export class RegistroComponent implements OnInit {
       delete payload.datosMascota.idEspecie;
 
       this.authService.registrar(payload).subscribe({
-        next: (res: any) => { 
-          console.log('Registro exitoso, iniciando sesión automáticamente...');
+        next: (res: any) => {
+          // 🌟 Éxito en el registro
+          this.toast.fire({ icon: 'success', title: 'Registro exitoso. Iniciando sesión...' });
 
           this.authService.login(credenciales).subscribe({
             next: (loginRes) => {
-              alert('¡Bienvenido a Vital Vet!');
               this.router.navigate(['/cliente/dashboard']);
             },
             error: (loginErr) => {
-              console.error('Error en login automático:', loginErr);
-              alert('Registro exitoso, pero hubo un problema al iniciar sesión. Por favor, inicia sesión manualmente.');
+              // 🌟 Error en login automático
+              this.toast.fire({ icon: 'info', title: 'Cuenta creada, por favor inicia sesión.' });
               this.router.navigate(['/login']);
             }
           });
         },
         error: (err: HttpErrorResponse) => {
-          const mensajeError = err.error?.mensaje || 'Error inesperado de conexión.';
-          alert(mensajeError);
+          // 🌟 Error en el registro
+          const mensajeError = err.error?.mensaje || 'Error al registrar usuario.';
+          this.toast.fire({ icon: 'error', title: mensajeError });
         }
       });
     } else {
       this.registroForm.markAllAsTouched();
+      // 🌟 Alerta de formulario incompleto
+      this.toast.fire({ icon: 'warning', title: 'Por favor, completa los campos correctamente.' });
     }
   }
 
   get contraseniaNoCoincide() {
-    return this.registroForm.get('datosCliente')?.hasError('passwordsMismatch') && 
-           this.registroForm.get('datosCliente.confirmarContrasenia')?.touched;
+    return this.registroForm.get('datosCliente')?.hasError('passwordsMismatch') &&
+      this.registroForm.get('datosCliente.confirmarContrasenia')?.touched;
   }
 
   get paso1Invalido(): boolean {
     const grupo = this.registroForm.get('datosCliente');
-    return grupo?.get('email')?.invalid || 
-           grupo?.get('contrasenia')?.invalid || 
-           grupo?.get('confirmarContrasenia')?.invalid || 
-           grupo?.hasError('passwordsMismatch') || false;
+    return grupo?.get('email')?.invalid ||
+      grupo?.get('contrasenia')?.invalid ||
+      grupo?.get('confirmarContrasenia')?.invalid ||
+      grupo?.hasError('passwordsMismatch') || false;
+  }
+
+  get contraseniaControl() {
+    return this.registroForm.get('datosCliente.contrasenia');
   }
 
   get paso2Invalido(): boolean {

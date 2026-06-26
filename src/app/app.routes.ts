@@ -52,13 +52,13 @@ export const routes: Routes = [
         path: 'admin/dashboard',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/dashboard/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
-        data: { titulo: 'Panel Administrativo', roles: ['ADMINISTRADOR'] }
+        data: { titulo: 'Panel Principal', roles: ['ADMINISTRADOR'] }
       },
       {
         path: 'veterinario/dashboard',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/dashboard/pages/vet-dashboard/vet-dashboard.component').then(m => m.VetDashboardComponent),
-        data: { titulo: 'Panel de Veterinario', roles: ['VETERINARIO'] }
+        data: { titulo: 'Panel Principal', roles: ['VETERINARIO'] }
       },
       {
         path: 'cliente/dashboard',
@@ -112,7 +112,7 @@ export const routes: Routes = [
         path: 'admin/citas',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/citas/pages/citas-list/citas-list.component').then(m => m.CitasListComponent),
-        data: { titulo: 'Citas Médicas', roles: ['ADMINISTRADOR'] }
+        data: { titulo: 'Gestión de Citas Médicas', roles: ['ADMINISTRADOR'] }
       },
       {
         path: 'admin/citas/registrar',

@@ -1,68 +1,168 @@
 <div class="container">
   <div class="header">
-    <h2>Planificación de Horarios</h2>
-    <button class="btn-secondary" routerLink="/veterinarios">Volver al Listado</button>
+    <div class="header-title">
+      <h2>Horarios</h2>
+        <span class="badge-pagada">
+            {{ horarios.length }} registrados
+        </span>
+    </div>
+
+    <button class="btn-secondary" routerLink="/veterinarios">
+      ← Volver al Listado
+    </button>
   </div>
 
   @if (veterinarioData) {
-    <div class="datos-vet">
+
+    <!-- Información -->
+    <div class="info-card">
       <h3>Datos del Veterinario</h3>
+
       <div class="grid-fields">
-        <input readonly [value]="veterinarioData.dni" placeholder="DNI">
-        <input readonly [value]="veterinarioData.nombreCompleto" placeholder="Nombre">
-        <input readonly [value]="veterinarioData.especialidad" placeholder="Especialidad">
+
+        <div class="field">
+          <label>DNI</label>
+          <input readonly [value]="veterinarioData.dni">
+        </div>
+
+        <div class="field">
+          <label>Nombre</label>
+          <input readonly [value]="veterinarioData.nombreCompleto">
+        </div>
+
+        <div class="field">
+          <label>Especialidad</label>
+          <input readonly [value]="veterinarioData.especialidad">
+        </div>
+
       </div>
     </div>
 
     <div class="main-layout">
-      <div class="tabla-horarios">
-        <table>
+
+      <!-- Tabla -->
+      <div class="table-card">
+
+        <div class="card-header">
+          <h3>Horarios Registrados</h3>
+        </div>
+
+        <table class="horarios-table">
           <thead>
-            <tr><th>DÍA</th><th>ENTRADA</th><th>SALIDA</th><th>ACCIÓN</th></tr>
+            <tr>
+              <th>DÍA</th>
+              <th>ENTRADA</th>
+              <th>SALIDA</th>
+              <th>ACCIÓN</th>
+            </tr>
           </thead>
-            <tbody>
+
+          <tbody>
+
             @if (horarios.length > 0) {
-                @for (h of horarios; track h.idHorario) {
+
+              @for (h of horarios; track h.idHorario) {
                 <tr>
-                    <td>{{ h.diaSemana }}</td>
-                    <td>{{ h.horaInicio }}</td>
-                    <td>{{ h.horaFin }}</td>
-                    <td>
-                    <button (click)="eliminar(h.idHorario)" class="btn-danger">Eliminar</button>
-                    </td>
+                  <td>{{ h.diaSemana }}</td>
+                  <td>{{ h.horaInicio }}</td>
+                  <td>{{ h.horaFin }}</td>
+
+                  <td>
+<button
+  class="btn-danger"
+  [disabled]="cargando"
+  (click)="eliminar(h.idHorario)">
+  Eliminar
+</button>
+                  </td>
                 </tr>
-                }
+              }
+
             } @else {
-                <tr>
-                <td colspan="4" class="text-center-message">
-                    No hay horarios disponibles para este veterinario.
+
+              <tr>
+                <td colspan="4" class="empty-message">
+                  No existen horarios registrados.
                 </td>
-                </tr>
+              </tr>
+
             }
-            </tbody>
+
+          </tbody>
         </table>
+
       </div>
 
-      <form [formGroup]="formulario" (ngSubmit)="guardarHorario()" class="form-horario">
+      <!-- Formulario -->
+      <div class="form-card">
+
         <h3>Nuevo Horario</h3>
-        
-        <select formControlName="diaSemana">
-          <option value="" disabled>Seleccione día...</option>
-          @for (d of dias; track d) { <option [value]="d">{{ d }}</option> }
-        </select>
 
-        <label>Hora de Entrada</label>
-        <select formControlName="hourStart">
-          @for (h of hours; track h) { <option [value]="h">{{ h }}:00</option> }
-        </select>
+        <form
+          [formGroup]="formulario"
+          (ngSubmit)="guardarHorario()">
 
-        <label>Hora de Salida</label>
-        <select formControlName="hourEnd">
-          @for (h of hours; track h) { <option [value]="h">{{ h }}:00</option> }
-        </select>
+          <div class="form-group">
 
-        <button type="submit" class="btn-primary">Guardar Horario</button>
-      </form>
+            <label>Día</label>
+
+            <select formControlName="diaSemana">
+              <option value="" disabled>Seleccione...</option>
+
+              @for (d of dias; track d) {
+                <option [value]="d">
+                  {{ d }}
+                </option>
+              }
+
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Hora de Entrada</label>
+
+            <select formControlName="hourStart">
+
+              @for (h of hours; track h) {
+                <option [value]="h">
+                  {{ h }}:00
+                </option>
+              }
+
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Hora de Salida</label>
+
+            <select formControlName="hourEnd">
+
+              @for (h of hours; track h) {
+                <option [value]="h">
+                  {{ h }}:00
+                </option>
+              }
+
+            </select>
+
+          </div>
+
+<button
+  type="submit"
+  class="btn-primary"
+  [disabled]="cargando || formulario.get('diaSemana')?.invalid">
+  Guardar Horario
+</button>
+
+        </form>
+
+      </div>
+
     </div>
+
   }
 </div>

@@ -1,6 +1,14 @@
 <div class="container">
   <div class="header">
-    <h2>Lista de Comprobantes de Pago</h2>
+
+    <div class="header-title">
+      <h2>Pagos de Cita</h2>
+      <span class="badge-pagada">
+        {{ comprobantes.length }} registrados
+      </span>
+    </div>
+
+
   </div>
 
   <form [formGroup]="filtroForm" class="controls-bar">
@@ -30,45 +38,134 @@
     </thead>
     <tbody>
       @for (c of comprobantes; track c.idComprobante) {
-        <tr>
-          <td><strong>{{ c.codigoComprobante }}</strong><br><small style="color: #64748b;">{{ c.tipoComprobante }}</small></td>
-          <td><strong>{{ c.nombreCliente }}</strong><br><small style="color: #64748b;">DNI: {{ c.dniCliente }}</small></td>
-          <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}<br><small style="color: #64748b;">{{ c.fechaPago | date:'shortTime' }}</small></td>
-          <td><span class="badge-pagada">{{ c.metodoPago }}</span></td>
-          <td><strong>{{ c.montoTotal | currency:'PEN':'S/ ' }}</strong></td>
-          <td><button class="btn-outline" (click)="verDetalle(c.idComprobante)">Detalle</button></td>
-        </tr>
+      <tr>
+        <td><strong>{{ c.codigoComprobante }}</strong><br><small style="color: #64748b;">{{ c.tipoComprobante }}</small>
+        </td>
+        <td><strong>{{ c.nombreCliente }}</strong><br><small style="color: #64748b;">DNI: {{ c.dniCliente }}</small>
+        </td>
+        <td>{{ c.fechaPago | date:'dd/MM/yyyy' }}<br><small style="color: #64748b;">{{ c.fechaPago | date:'shortTime'
+            }}</small></td>
+        <td><span class="badge-pagada">{{ c.metodoPago }}</span></td>
+        <td><strong>{{ c.montoTotal | currency:'PEN':'S/ ' }}</strong></td>
+        <td><button class="btn-outline" (click)="verDetalle(c.idComprobante)">Detalle</button></td>
+      </tr>
       } @empty {
-        <tr><td colspan="6" class="text-center">No hay comprobantes encontrados.</td></tr>
+      <tr>
+        <td colspan="6" class="text-center">No hay comprobantes encontrados.</td>
+      </tr>
       }
     </tbody>
   </table>
 
   <div class="footer-stats">
-    <p>Comprobantes Emitidos: <strong>{{ stats.emitidos }}</strong></p>
     <p>Total Recaudado: <strong>{{ stats.total | currency:'PEN':'S/ ' }}</strong></p>
   </div>
 </div>
 
 @if (selectedComprobante) {
-  <div class="modal-overlay" (click)="cerrarModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <h3>Detalle del Comprobante</h3>
-      <div class="ticket-body">
-        <div class="info-grid">
-          <p><strong>Cliente:</strong> {{ selectedComprobante.nombreCliente }}</p>
-          <p><strong>DNI:</strong> {{ selectedComprobante.dniCliente }}</p>
-          <p><strong>Fecha:</strong> {{ selectedComprobante.fechaPago | date:'dd/MM/yyyy' }}</p>
-          <p><strong>Tipo:</strong> {{ selectedComprobante.tipoComprobante }}</p>
+<div class="modal-overlay" (click)="cerrarModal()">
+
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2>Detalle del Comprobante</h2>
+      <span class="codigo-cita">{{ selectedComprobante.codigoComprobante }}</span>
+    </div>
+
+    <!-- Cliente -->
+    <div class="section">
+
+      <h3 class="section-title">Datos del Cliente</h3>
+
+      <div class="info-row">
+        <div>
+          <label>Cliente</label>
+          <span>{{ selectedComprobante.nombreCliente }}</span>
         </div>
-        <hr class="dashed-line">
-        <div class="info-grid">
-          <p><strong>Subtotal:</strong> {{ selectedComprobante.montoSubtotal | currency:'PEN':'S/ ' }}</p>
-          <p><strong>IGV:</strong> {{ selectedComprobante.montoImpuesto | currency:'PEN':'S/ ' }}</p>
-          <p class="full-width total-row"><strong>TOTAL:</strong> {{ selectedComprobante.montoTotal | currency:'PEN':'S/ ' }}</p>
+
+        <div>
+          <label>DNI</label>
+          <span>{{ selectedComprobante.dniCliente}}</span>
         </div>
       </div>
-      <button class="btn-cancel" (click)="cerrarModal()">Cerrar</button>
+
     </div>
+
+    <!-- Cita -->
+    <div class="section">
+
+      <h3 class="section-title">INFORMACIÓN DE LA CITA</h3>
+
+      <div class="info-row">
+        <div>
+          <label>Código</label>
+          <span>{{selectedComprobante.codigoCita}}</span>
+        </div>
+
+        <div>
+          <label>Fecha</label>
+          <span>{{selectedComprobante.fechaPago | date:'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div>
+          <label>Mascota</label>
+          <span>{{selectedComprobante.nombreMascota}}</span>
+        </div>
+
+        <div>
+          <label>Especie</label>
+          <span>{{selectedComprobante.especieMascota}}</span>
+        </div>
+      </div>
+
+      <div class="info-simple">
+        <label>Motivo</label>
+        <span>{{selectedComprobante.motivo}}</span>
+      </div>
+
+    </div>
+
+    <h3 class="section-title">INFORMACIÓN DE PAGO</h3>
+
+    <!-- Pago -->
+    <div class="info-row">
+      <div>
+        <label>Comprobante</label>
+        <span>{{selectedComprobante.tipoComprobante}}</span>
+      </div>
+
+      <div>
+        <label>Método</label>
+        <span>{{selectedComprobante.metodoPago}}</span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div>
+        <label>Subtotal</label>
+        <span>{{selectedComprobante.montoSubtotal | currency:'PEN':'S/ '}}</span>
+      </div>
+
+      <div>
+        <label>IGV</label>
+        <span>{{selectedComprobante.montoImpuesto | currency:'PEN':'S/ '}}</span>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <span>Total Pagado</span>
+      <strong>{{selectedComprobante.montoTotal | currency:'PEN':'S/ '}}</strong>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cerrarModal()">
+        Cerrar
+      </button>
+    </div>
+
   </div>
+
+</div>
 }

@@ -1,6 +1,6 @@
 /* --- Reutilizamos estilos globales --- */
 .container {
-  max-width: 1450px;
+  max-width: 1250px;
   margin: 2rem auto;
   padding: 2.5rem;
   background: #ffffff;
@@ -9,6 +9,11 @@
 }
 
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.header-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
 .header h2 { font-size: 1.6rem; color: #1e293b; }
 
 .controls-bar { margin-bottom: 2rem; }
@@ -27,12 +32,12 @@
   font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
   border-bottom: 2px solid #f1f5f9;
 }
-.citas-table td { padding: 1.2rem 1rem; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+.citas-table td { padding: 1.2rem 1rem; border-bottom: 1px solid #f1f5f9; }
 .citas-table tr:hover { background: #f8fafc; }
 
 /* --- Elementos específicos --- */
 .avatar-sm {
-  width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+  width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
 }
 
 /* Badges unificados */
@@ -50,3 +55,34 @@
   margin-right: 0.5rem;
 }
 .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+td:last-child{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.avatar-sm,
+.avatar-placeholder{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
+
+.avatar-sm{
+  object-fit:cover;
+}
+
+.avatar-placeholder{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border: 2px solid rgb(180, 158, 158);
+  background: white;
+  color: #0f766e;
+
+  font-weight:700;
+  font-size:.9rem;
+
+  user-select:none;
+}
