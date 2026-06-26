@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AdminLogsService } from '../../../../core/services/admin-logs.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { ComentariosSoapService } from '../../../../core/services/comentario-soap.service';
+import { VeterinarioService } from '../../../../core/services/veterinario.service';
 
 @Component({
   selector: 'app-admin-logs',
@@ -32,7 +33,8 @@ export class AdminLogsComponent implements OnInit {
   constructor(
     private adminLogsService: AdminLogsService,
     private clienteService: ClienteService ,
-    private soapService: ComentariosSoapService// Corregido a minúscula por convención de buenas prácticas
+    private soapService: ComentariosSoapService,
+    private veterinarioService: VeterinarioService
   ) {}
 
   ngOnInit(): void {
@@ -75,28 +77,51 @@ export class AdminLogsComponent implements OnInit {
 }
 
   completarNombresDeUsuarios(): void {
-    this.logs.forEach(log => {
-      // Validamos que exista el idUsuario en el registro del log
-      if (log.idUsuario) {
-        this.clienteService.obtenerPorId(log.idUsuario).subscribe({
-          next: (res) => {
-            // Estructura de tu API: res.success y res.data
-            if (res.success && res.data) {
-              log.nombreCompleto = `${res.data.nombres} ${res.data.apellidos}`;
-            } else {
-              log.nombreCompleto = 'Usuario no encontrado';
-            }
-          },
-          error: (err) => {
-            console.error(`Error al traer cliente con ID ${log.idUsuario}`, err);
-            log.nombreCompleto = 'Error al cargar';
+  this.logs.forEach(log => {
+    
+    // 1. Validar si el ID es nulo o no existe (Evita el "Sin ID de Usuario")
+    if (log.idUsuario === null || log.idUsuario === undefined) {
+      log.nombreCompleto = 'Sin ID de Usuario';
+      return; // Saltamos al siguiente log
+    }
+
+    // 2. Clasificar el módulo para saber a qué microservicio llamar
+    const esModuloVeterinario = log.modulo === 'CITAS' || log.modulo === 'HORARIO';
+
+    if (esModuloVeterinario) {
+      // 🩺 Llamada al servicio de Veterinarios
+      this.veterinarioService.obtenerPorId(log.idUsuario).subscribe({
+        next: (res) => {
+          if (res.success && res.data) {
+            log.nombreCompleto = `${res.data.nombres} ${res.data.apellidos}`;
+          } else {
+            log.nombreCompleto = 'Veterinario no encontrado';
           }
-        });
-      } else {
-        log.nombreCompleto = 'Sin ID de Usuario';
-      }
-    });
-  }
+        },
+        error: (err) => {
+          console.error(`Error al traer veterinario con ID ${log.idUsuario}`, err);
+          log.nombreCompleto = 'Error al cargar';
+        }
+      });
+    } else {
+      // 👥 Llamada al servicio de Clientes/Usuarios (Para MASCOTAS y USUARIOS)
+      this.clienteService.obtenerPorId(log.idUsuario).subscribe({
+        next: (res) => {
+          if (res.success && res.data) {
+            log.nombreCompleto = `${res.data.nombres} ${res.data.apellidos}`;
+          } else {
+            log.nombreCompleto = 'Usuario no encontrado';
+          }
+        },
+        error: (err) => {
+          console.error(`Error al traer cliente con ID ${log.idUsuario}`, err);
+          log.nombreCompleto = 'Error al cargar';
+        }
+      });
+    }
+
+  });
+}
 
   limpiarFiltros(): void {
     this.filtros = {

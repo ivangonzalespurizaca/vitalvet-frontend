@@ -13,9 +13,10 @@
       <label>Tabla Afectada</label>
       <select [(ngModel)]="filtros.modulo" (ngModelChange)="buscar()">
         <option value="">Todas</option>
-        <option value="MASCOTAS">Mascota</option>
-        <option value="CLIENTES">Cliente</option>
-        <option value="COMPROBANTE">Comprobante Pago</option>
+        <option value="MASCOTAS">Mascotas</option>
+        <option value="USUARIOS">Usuarios</option>
+        <option value="CITAS">Citas</option>
+        <option value="HORARIO">Horarios</option>
       </select>
     </div>
 
@@ -24,8 +25,8 @@
       <select [(ngModel)]="filtros.accion" (ngModelChange)="buscar()">
         <option value="">Todas</option>
         <option value="REGISTRO">Registro</option>
-        <option value="ACTUALIZAR">UPDATE</option>
-        <option value="DELETE">DELETE</option>
+        <option value="ACTUALIZACION">Actualización</option>
+        <option value="DELETE">Eliminación</option>
       </select>
     </div>
 
@@ -42,12 +43,11 @@
 
   </div>
 
-
-  <td class="cell-actions">
+  <div class="actions-container" style="margin-bottom: 15px;">
     <button class="btn-ver-soap" (click)="verDetalleSoap()" title="Ver XML SOAP">
       📋 Ver Comentarios del Servicio
     </button>
-  </td>
+  </div>
 
   <div class="table-responsive">
     <table class="custom-table">
@@ -71,8 +71,10 @@
 
           <td>
             <div *ngIf="log.nombreCompleto; else cargandoUser">
-              <span class="user-name">{{ log.nombreCompleto }}</span>
-              <span class="user-id">ID: {{ log.idUsuario }}</span>
+              <span class="user-name" [style.color]="log.nombreCompleto.includes('Error') || log.nombreCompleto.includes('no encontrado') ? '#dc2626' : 'inherit'">
+                {{ log.nombreCompleto }}
+              </span>
+              <span class="user-id" *ngIf="log.idUsuario">ID: {{ log.idUsuario }}</span>
             </div>
             <ng-template #cargandoUser>
               <span class="loading-text">Cargando...</span>
@@ -80,13 +82,22 @@
           </td>
 
           <td>
-            <span class="badge-pill tab-pill">
+            <span class="badge-pill tab-pill" [ngClass]="{
+              'badge-mascotas': log.modulo === 'MASCOTAS',
+              'badge-usuarios': log.modulo === 'USUARIOS',
+              'badge-citas': log.modulo === 'CITAS',
+              'badge-horario': log.modulo === 'HORARIO'
+            }">
               {{ log.modulo }}
             </span>
           </td>
 
           <td>
-            <span class="badge-pill action-pill">
+            <span class="badge-pill action-pill" [ngClass]="{
+              'badge-registro': log.accion === 'REGISTRO',
+              'badge-actualizacion': log.accion === 'ACTUALIZACION',
+              'badge-delete': log.accion === 'DELETE'
+            }">
               {{ log.accion }}
             </span>
           </td>
@@ -95,12 +106,10 @@
             {{ log.descripcion }}
           </td>
 
-
-
         </tr>
 
         <tr *ngIf="logs.length === 0">
-          <td colspan="6" class="no-records">
+          <td colspan="5" class="no-records">
             No existen registros
           </td>
         </tr>
@@ -109,8 +118,6 @@
   </div>
 
 </div>
-
-
 
 <div class="modal-overlay" *ngIf="mostrarModalSoap">
   <div class="modal-content">
