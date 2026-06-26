@@ -1,47 +1,191 @@
 <div class="container">
   <div class="search-box">
-    <input [(ngModel)]="dni" placeholder="Buscar por DNI...">
-    <button class="btn-primary" (click)="buscar()">Buscar</button>
+    <label>Cliente</label>
+    <div class="cliente-search">
+      <input type="text"
+        [value]="clienteSeleccionado ? clienteSeleccionado.nombres + ' ' + clienteSeleccionado.apellidos + ' - DNI: ' + clienteSeleccionado.dni : ''"
+        placeholder="Seleccione un cliente"
+        readonly>
+      <button type="button" class="btn-outline" (click)="abrirModalClientes()">
+        🔍 Buscar
+      </button>
+    </div>
   </div>
 
-  <div class="owner-info" *ngIf="resultado">
-    <h4>Propietario: {{ resultado.nombres }} {{ resultado.apellidos }}</h4>
-    <p>DNI: {{ resultado.dni }} | Celular: {{ resultado.celular }}</p>
-  </div>
-
+  @if(cliente){
   <div class="layout">
+
     <div class="pets-list">
       <h3>Mascotas Registradas</h3>
-      <div *ngFor="let m of resultado?.mascotas" class="pet-card" (click)="cargarCarnet(m)">
-        <strong>{{ m.nombreMascota }}</strong>
-        <p>{{ m.nombreRaza }}</p>
+      @for(m of mascotas; track m.idMascota){
+      <div class="pet-card" (click)="cargarCarnet(m)">
+        <strong>{{m.nombreMascota}}</strong>
+        <p>{{m.nombreRaza}}</p>
       </div>
+      }
     </div>
 
-    <div class="carnet-section" *ngIf="carnet">
-      <h3>Carnet Clínico: {{ carnet.nombreMascota }}</h3>
+    @if(carnet){
+    <div class="carnet-section">
+
+      <h3>Carnet Clínico: {{carnet.nombreMascota}}</h3>
+
       <table class="citas-table">
         <thead>
-          <tr><th>VACUNA</th><th>DOSIS</th><th>FECHA</th><th>ESTADO</th></tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let v of carnet.vacunas">
-            <td>{{ v.nombreVacuna }}</td>
-            <td>{{ v.dosis }}</td>
-            <td>{{ v.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
-            <td><span class="badge-pagada">{{ v.estado }}</span></td>
+          <tr>
+            <th>VACUNA</th>
+            <th>DOSIS</th>
+            <th>FECHA</th>
+            <th>ESTADO</th>
+            <th>ACCIONES</th>
           </tr>
+        </thead>
+
+        <tbody>
+          @for(v of carnet.vacunas; track v.idAplicacion){
+          <tr>
+            <td>{{v.nombreVacuna}}</td>
+            <td>{{v.dosis}}</td>
+            <td>{{v.fechaAplicacion | date:'dd/MM/yyyy'}}</td>
+            <td>
+              <span class="badge-pagada" [class.badge-programada]="v.estado==='PROGRAMADA'">
+                {{v.estado}}
+              </span>
+            </td>
+            <td>
+              @if(v.estado==='PROGRAMADA'){
+              <button type="button" class="btn-primary btn-small" (click)="confirmarAplicacion(v.idAplicacion)">
+                Confirmar
+              </button>
+              } @else {
+              <span style="color:#94a3b8;">—</span>
+              }
+            </td>
+          </tr>
+          }
         </tbody>
       </table>
 
-      <div class="register-form">
-        <select [(ngModel)]="nuevaVacuna.idVacuna">
-          <option *ngFor="let v of catalogoVacunas" [value]="v.idVacuna">{{v.nombreVacuna}}</option>
-        </select>
-        <input [(ngModel)]="nuevaVacuna.dosisTipo" placeholder="Dosis">
-        <input type="date" [(ngModel)]="nuevaVacuna.fecha">
-        <button class="btn-primary" (click)="registrar()">Aplicar</button>
-      </div>
+<form class="register-form" [formGroup]="formulario">
+
+<div class="field">
+
+  <select formControlName="idVacuna">
+
+    <option [ngValue]="0">
+      Seleccione vacuna
+    </option>
+
+    @for(v of catalogoVacunas; track v.idVacuna){
+
+      <option [ngValue]="v.idVacuna">
+        {{v.nombreVacuna}}
+      </option>
+
+    }
+
+  </select>
+
+  @if(formulario.get('idVacuna')?.touched &&
+      formulario.get('idVacuna')?.invalid){
+
+    <small class="error-text">
+      Seleccione una vacuna.
+    </small>
+
+  }
+
+</div>
+
+  <div class="field">
+    <input formControlName="dosisTipo" placeholder="Dosis">
+
+    @if(formulario.get('dosisTipo')?.touched &&
+        formulario.get('dosisTipo')?.invalid){
+      <small class="error-text">
+        @if(formulario.get('dosisTipo')?.errors?.['required']){
+          La dosis es obligatoria.
+        }
+        @if(formulario.get('dosisTipo')?.errors?.['minlength']){
+          Debe tener al menos 2 caracteres.
+        }
+      </small>
+    }
+  </div>
+
+  <div class="field">
+    <input type="date" formControlName="fecha">
+
+    @if(formulario.get('fecha')?.touched &&
+        formulario.get('fecha')?.hasError('required')){
+      <small class="error-text">
+        Seleccione una fecha.
+      </small>
+    }
+  </div>
+
+  <button
+    type="button"
+    class="btn-primary"
+    (click)="registrar()"
+    [disabled]="formulario.invalid">
+    Aplicar
+  </button>
+
+</form>
+
     </div>
+    }
+
+  </div>
+  }
+
+</div>
+
+@if(mostrarModalClientes){
+<div class="modal-overlay">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Buscar Cliente</h2>
+      <button class="btn-close" (click)="mostrarModalClientes=false">
+        ×
+      </button>
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="criterioCliente"
+        (input)="buscarClientes()"
+        placeholder="Buscar por DNI, nombre o apellido">
+    </div>
+
+    <table class="clientes-table">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Cliente</th>
+          <th>Mascotas</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(c of clientes; track c.idPersona){
+        <tr>
+          <td>{{c.dni}}</td>
+          <td>{{c.nombres}} {{c.apellidos}}</td>
+          <td>{{c.totalMascotas}}</td>
+          <td>
+            <button class="btn-primary" (click)="seleccionarCliente(c)">
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
   </div>
 </div>
+}

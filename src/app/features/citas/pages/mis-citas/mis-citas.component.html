@@ -1,6 +1,12 @@
 <div class="container">
   <div class="header">
-    <h2>Citas Médicas</h2>
+        <div class="header-title">
+      <h2>Citas Médicas</h2>
+
+      <span class="badge-pagada">
+        {{ citas.length }} registradas
+      </span>
+    </div>
     <button class="btn-primary" routerLink="/cliente/mis-citas/registrar">Registrar Cita Presencial</button>
   </div>
 
@@ -65,36 +71,95 @@
 </div>
 
 @if (mostrarModalDetalle && detalleSeleccionado) {
-  <div class="modal-overlay">
-    <div class="modal-content">
-      <h3>Cita: {{ detalleSeleccionado.codigoCita }}</h3>
+<div class="modal-overlay" (click)="cerrarDetalle()">
 
-      <div class="section">
-        <h4>INFORMACIÓN DEL SERVICIO</h4>
-        <div class="info-grid">
-          <p><strong>Mascota:</strong> {{ detalleSeleccionado.nombreMascota }}</p>
-          <p><strong>Médico:</strong> {{ detalleSeleccionado.nombreMedico }}</p>
-          <p><strong>Fecha:</strong> {{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</p>
-          <p><strong>Motivo:</strong> {{ detalleSeleccionado.motivo }}</p>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2>Detalle de la Cita</h2>
+      <button class="btn-close" (click)="cerrarDetalle()">×</button>
+    </div>
+
+    <div class="codigo-cita">
+      {{ detalleSeleccionado.codigoCita }}
+    </div>
+
+    <div class="section">
+      <h3 class="section-title">1. INFORMACIÓN DEL SERVICIO</h3>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Mascota</label>
+          <span>{{ detalleSeleccionado.nombreMascota }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Médico</label>
+          <span>{{ detalleSeleccionado.nombreMedico }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Fecha</label>
+          <span>{{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</span>
+        </div>
+
+
+    <div class="info-item">
+      <label>Hora</label>
+      <span>{{ detalleSeleccionado.hora }}</span>
+    </div>
+
+
+        <div class="info-item full-width">
+          <label>Motivo</label>
+          <span>{{ detalleSeleccionado.motivo }}</span>
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <h4>CONSTANTES Y DIAGNÓSTICO</h4>
-        @if (detalleSeleccionado.consulta) {
-          <div class="info-grid">
-            <p><strong>Peso:</strong> {{ detalleSeleccionado.consulta.pesoActual }} Kg</p>
-            <p><strong>Temp:</strong> {{ detalleSeleccionado.consulta.temperatura }} C</p>
-            <p class="full-width"><strong>Diagnóstico:</strong> {{ detalleSeleccionado.consulta.diagnostico }}</p>
-          </div>
-        } @else {
-          <p class="empty-msg">Consulta no registrada o pendiente de atención.</p>
-        }
+    <div class="section consulta-section">
+      <h3 class="section-title">2. CONSTANTES Y DIAGNÓSTICO</h3>
+
+      @if (detalleSeleccionado.consulta) {
+
+      <div class="info-grid">
+
+        <div class="info-item">
+          <label>Peso</label>
+          <span>{{ detalleSeleccionado.consulta.pesoActual }} Kg</span>
+        </div>
+
+        <div class="info-item">
+          <label>Temperatura</label>
+          <span>{{ detalleSeleccionado.consulta.temperatura }} °C</span>
+        </div>
+
+        <div class="info-item full-width">
+          <label>Diagnóstico</label>
+          <span>{{ detalleSeleccionado.consulta.diagnostico }}</span>
+        </div>
+
       </div>
 
-      <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+      } @else {
+
+      <div class="empty-msg">
+        Consulta no registrada o pendiente de atención.
+      </div>
+
+      }
+
     </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cerrarDetalle()">
+        Cerrar
+      </button>
+    </div>
+
   </div>
+
+</div>
 }
 
 @if (mostrarModalCalificar && citaACalificar) {

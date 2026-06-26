@@ -1,6 +1,13 @@
 /* --- Reutilización de estilos Globales --- */
-.container { max-width: 1400px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.container { max-width: 1250px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 .header { margin-bottom: 2rem; }
+
+.header-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
 
 .controls-bar { display: flex; justify-content: space-between; margin-bottom: 2rem; gap: 1rem; }
 .controls-bar input { padding: 0.85rem 1.2rem; border: 1px solid #e2e8f0; border-radius: 12px; width: 350px; }
@@ -21,8 +28,88 @@
 .badge-completada { background: #e0f2fe; color: #075985; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
 /* --- Modal --- */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.modal-content { background: white; padding: 2.5rem; border-radius: 20px; width: 500px; }
-.btn-cancel { width: 100%; padding: 0.9rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; font-weight: 700; color: #475569; margin-top: 1rem; }
-.section h4 { color: #0f766e; font-size: 0.7rem; margin-bottom: 1rem; text-transform: uppercase; font-weight: 800; }
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* --- Modal Overlay & Content --- */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  width: 90%; max-width: 600px; max-height: 90vh;
+  overflow-y: auto; background: #fff;
+  border-radius: 20px; padding: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  animation: modalFadeIn .3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Títulos y Secciones --- */
+.modal-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.4rem;
+  color: #111827;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 15px;
+}
+
+.section { margin-bottom: 24px; }
+
+.section h4 {
+  font-size: 0.75rem;
+  color: #0f766e;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  border-left: 3px solid #0f766e;
+  padding-left: 8px;
+}
+
+/* --- Grid de Información --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Estilo para los párrafos de datos */
+.info-grid p {
+  margin: 0;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  border-radius: 10px;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.info-grid p strong {
+  display: block;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+/* --- Botón --- */
+.btn-cancel {
+  width: 100%;
+  padding: 12px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-cancel:hover { background: #e2e8f0; }

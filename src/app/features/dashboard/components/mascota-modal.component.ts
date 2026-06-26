@@ -6,6 +6,7 @@ import { CatalogoService } from '../../../core/services/catalogo.service';
 import { MediaService } from '../../../core/services/media.service'; // Importa el servicio de media
 import { Especie, Raza } from '../../../core/interfaces/catalogos';
 import { MascotaRequestDTO } from '../../../core/interfaces/mascota-response';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mascota-modal',
@@ -19,6 +20,17 @@ export class MascotaModalComponent implements OnInit {
   private mascotaService = inject(MascotaService);
   private catalogoService = inject(CatalogoService);
   private mediaService = inject(MediaService); // Inyecta MediaService
+  private swalToast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   @Input() idMascota: number | null = null;
   @Output() cerrar = new EventEmitter<void>();
@@ -27,6 +39,7 @@ export class MascotaModalComponent implements OnInit {
   formulario!: FormGroup;
   cargandoDatos = signal<boolean>(false);
   guardando = signal<boolean>(false);
+  fechaMaxima = new Date().toISOString().split('T')[0];
 
   imagenPreview = signal<string | null>(null);
   imagenArchivo: File | null = null; // Almacena el archivo para el upload
@@ -38,10 +51,6 @@ export class MascotaModalComponent implements OnInit {
   ngOnInit(): void {
     this.iniciarFormulario();
     this.cargarCatalogos();
-
-    if (this.idMascota) {
-      this.cargarDatosMascota();
-    }
   }
 
   private iniciarFormulario(): void {
@@ -60,14 +69,30 @@ export class MascotaModalComponent implements OnInit {
     });
   }
 
-  private cargarCatalogos(): void {
-    this.catalogoService.obtenerEspeciesActivas().subscribe(res => {
-      if (res.success) this.especies = res.data;
-    });
-    this.catalogoService.obtenerTodasLasRazasActivas().subscribe(res => {
-      if (res.success) this.todasLasRazas = res.data;
-    });
-  }
+private cargarCatalogos(): void {
+
+  this.catalogoService.obtenerEspeciesActivas().subscribe(res => {
+    if (res.success) {
+      this.especies = res.data;
+    }
+  });
+
+  this.catalogoService.obtenerTodasLasRazasActivas().subscribe(res => {
+
+    if (res.success) {
+
+      this.todasLasRazas = res.data;
+
+      // recién aquí
+      if (this.idMascota) {
+        this.cargarDatosMascota();
+      }
+
+    }
+
+  });
+
+}
 
   private filtrarRazas(idEspecie: number): void {
     const controlRaza = this.formulario.get('idRaza');
@@ -102,10 +127,13 @@ export class MascotaModalComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      if (file.size > 2 * 1024 * 1024) {
-        alert('La imagen es muy pesada (máx 2MB).');
-        return;
-      }
+if (file.size > 2 * 1024 * 1024) {
+  this.swalToast.fire({
+    icon: 'warning',
+    title: 'La imagen no puede superar los 2 MB.'
+  });
+  return;
+}
       this.imagenArchivo = file; // Guardamos el archivo real
       const reader = new FileReader();
       reader.onload = () => this.imagenPreview.set(reader.result as string);
@@ -159,15 +187,30 @@ export class MascotaModalComponent implements OnInit {
         : this.mascotaService.registrarMascota(data);
 
       observable.subscribe({
-        next: () => this.exito.emit(),
+        next: (resp) => {
+          this.guardando.set(false);
+          this.swalToast.fire({
+            icon: 'success',
+            title: resp.mensaje
+          });
+
+          this.exito.emit();
+        },
+
         error: (err) => {
           this.guardando.set(false);
-          alert(err.error?.mensaje || 'Error al guardar');
+          this.swalToast.fire({
+            icon: 'error',
+            title: err.error?.mensaje || 'Ocurrió un error al guardar la mascota.'
+          });
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       this.guardando.set(false);
-      alert('Ocurrió un error al procesar el registro.');
+      this.swalToast.fire({
+        icon: 'error',
+        title: error?.message || 'Ocurrió un error al procesar la solicitud.'
+      });
     }
   }
 }

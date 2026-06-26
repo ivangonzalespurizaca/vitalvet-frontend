@@ -1,34 +1,161 @@
-<div class="header-info">
-  <h2>Consulta Médica: {{ nombreMascota }}</h2>
-  <p><strong>Motivo:</strong> {{ motivoConsulta }}</p>
-</div>
-
-<form [formGroup]="form" (ngSubmit)="guardar()">
-  <input formControlName="pesoActual" placeholder="Peso (KG)" type="number">
-  <input formControlName="temperatura" placeholder="Temperatura (C)" type="number">
-  <textarea formControlName="diagnostico" placeholder="Diagnóstico"></textarea>
-  <textarea formControlName="recomendaciones" placeholder="Recomendaciones"></textarea>
-
-  <hr>
-  <h3>Aplicar Vacunas</h3>
-
-  <div formArrayName="vacunas">
-    <div *ngFor="let v of vacunasControls; let i = index" [formGroupName]="i" class="vacuna-row">
-      
-      <select formControlName="idVacuna">
-        <option [ngValue]="null" disabled>Seleccionar vacuna</option>
-        <option *ngFor="let cat of vacunasDisponibles" [value]="cat.idVacuna">
-          {{ cat.nombreVacuna }}
-        </option>
-      </select>
-
-      <input formControlName="nroDosis" placeholder="Dosis Tipo">
-      <input formControlName="proximaDosis" type="date" placeholder="Fecha">
-      
-      <button type="button" class="btn-remove" (click)="quitarVacuna(i)">Quitar</button>
+<div class="container">
+  <div class="header">
+    <div class="header-title">
+      <h2>Consulta Médica</h2>
     </div>
   </div>
 
-  <button type="button" (click)="agregarVacuna()">+ Agregar Vacuna</button>
-  <button type="submit" [disabled]="form.invalid">Guardar Consulta</button>
-</form>
+  <div class="info-card">
+    <div class="field">
+      <label>Paciente</label>
+      <input readonly [value]="nombreMascota">
+    </div>
+    <div class="field">
+      <label>Motivo</label>
+      <input readonly [value]="motivoConsulta">
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 class="section-title">Registro de Consulta</h3>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="grid-fields two-columns">
+        <div class="form-group">
+          <label>Peso (KG)</label>
+          <input type="number" formControlName="pesoActual" placeholder="0.00">
+          @if(form.get('pesoActual')?.touched &&
+          form.get('pesoActual')?.invalid){
+          <small class="error">
+            El peso es obligatorio.
+          </small>
+          }
+        </div>
+        <div class="form-group">
+
+          <label>Temperatura (°C)</label>
+
+          <input type="number" formControlName="temperatura" placeholder="0.00">
+
+          @if(form.get('temperatura')?.touched &&
+          form.get('temperatura')?.invalid){
+
+          <small class="error">
+
+            Debe estar entre 30°C y 45°C.
+
+          </small>
+
+          }
+
+        </div>
+      </div>
+
+      <div class="form-group">
+
+        <label>Diagnóstico</label>
+
+        <textarea rows="3" formControlName="diagnostico"></textarea>
+
+        @if(form.get('diagnostico')?.touched &&
+        form.get('diagnostico')?.invalid){
+
+        <small class="error">
+          Debe ingresar al menos 10 caracteres.
+        </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Recomendaciones</label>
+
+        <textarea rows="3" formControlName="recomendaciones"></textarea>
+
+        @if(form.get('recomendaciones')?.touched &&
+        form.get('recomendaciones')?.invalid){
+
+        <small class="error">
+          Ingrese las recomendaciones.
+        </small>
+
+        }
+
+      </div>
+
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+      <h3 class="section-title">Aplicar Vacunas</h3>
+      <div formArrayName="vacunas" class="vacunas-container" style="margin-bottom: 20px;">
+        <div *ngFor="let v of vacunasControls; let i = index" [formGroupName]="i" class="vacuna-row">
+
+          <!-- Vacuna -->
+          <div class="vacuna-field">
+
+            <select formControlName="idVacuna">
+              <option [ngValue]="null">Seleccione...</option>
+
+              <option *ngFor="let cat of vacunasDisponibles" [value]="cat.idVacuna">
+
+                {{ cat.nombreVacuna }}
+
+              </option>
+            </select>
+
+            @if(v.get('idVacuna')?.touched && v.get('idVacuna')?.invalid){
+            <small class="error">
+              Seleccione una vacuna.
+            </small>
+            }
+
+          </div>
+
+          <!-- Dosis -->
+          <div class="vacuna-field">
+
+            <input formControlName="nroDosis" placeholder="Dosis">
+
+            @if(v.get('nroDosis')?.touched && v.get('nroDosis')?.invalid){
+            <small class="error">
+              Ingrese la dosis.
+            </small>
+            }
+
+          </div>
+
+          <!-- Próxima dosis -->
+          <div class="vacuna-field">
+
+            <input type="date" formControlName="proximaDosis">
+
+            @if(v.get('proximaDosis')?.touched && v.get('proximaDosis')?.invalid){
+            <small class="error">
+              Seleccione la fecha.
+            </small>
+            }
+
+          </div>
+
+          <button type="button" class="btn-danger" (click)="quitarVacuna(i)">
+
+            Eliminar
+
+          </button>
+
+        </div>
+      </div>
+
+      <button type="button" class="btn-secondary" style="width: 100%;" (click)="agregarVacuna()">
+        + Agregar Vacuna
+      </button>
+
+      <button type="submit" class="btn-primary" [disabled]="form.invalid">
+
+        Guardar Consulta
+
+      </button>
+    </form>
+  </div>
+</div>

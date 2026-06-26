@@ -1,117 +1,417 @@
 <div class="container">
-  <div class="header">
+
+  <div class="header-actions">
+    <button routerLink="/cliente/mis-citas" class="btn-outline">
+      ← Volver al listado
+    </button>
+  </div>
+
+  <div class="header" style="margin-top:1rem;">
     <h2>Reservar Nueva Cita</h2>
   </div>
 
   <form [formGroup]="formulario" class="form-container">
+
     <div class="grid-layout">
-      
+
+      <!-- Veterinario -->
       <div class="form-group">
         <label>Veterinario</label>
+
         <select formControlName="idVeterinario" (change)="cargarHorariosVeterinario(); cargarSlots()">
-            <option value="" disabled>Seleccione especialista...</option>
-            @for (v of veterinarios; track v.idVeterinario) {
-                <option [value]="v.idVeterinario">{{v.nombres}} {{v.apellidos}} - {{v.especialidad}}</option>
-            }
+
+          <option value="" disabled>
+            Seleccione especialista...
+          </option>
+
+          @for (v of veterinarios; track v.idVeterinario) {
+
+          <option [value]="v.idVeterinario">
+            {{v.nombres}} {{v.apellidos}}
+            - {{v.especialidad}}
+          </option>
+
+          }
+
         </select>
+        @if(formulario.get('idVeterinario')?.touched &&
+        formulario.get('idVeterinario')?.hasError('required')){
+
+        <small class="error-text">
+          Seleccione un veterinario.
+        </small>
+
+        }
       </div>
+
+      <!-- Turnos -->
 
       @if (horariosVeterinario.length > 0) {
-    <div class="turnos-box full-width">
-        <h4 class="turnos-title">TURNOS SEMANALES DEL ESPECIALISTA</h4>
-        <div class="turnos-grid" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
-            @for (h of horariosVeterinario; track h.idHorario) {
-                <span class="badge-pagada">
-                    {{ h.diaSemana | titlecase }} ({{ h.horaInicio }} - {{ h.horaFin }})
-                </span>
-            }
+
+      <div class="turnos-box full-width">
+
+        <h4 class="turnos-title">
+          TURNOS SEMANALES
+        </h4>
+
+        <div class="turnos-grid">
+
+          @for(h of horariosVeterinario; track h.idHorario){
+
+          <span class="badge-pagada">
+            {{h.diaSemana | titlecase}}
+            ({{h.horaInicio}} - {{h.horaFin}})
+          </span>
+
+          }
+
         </div>
-    </div>
-  }
+
+      </div>
+
+      }
+
+      <!-- Mascota -->
 
       <div class="form-group">
+
         <label>Mascota</label>
+
         <select formControlName="idMascota">
-          <option value="" disabled>Mis mascotas...</option>
-          @for (m of mascotas; track m.idMascota) {
-            <option [value]="m.idMascota">{{m.nombreMascota}} ({{m.nombreRaza}})</option>
+
+          <option value="" disabled>
+            Seleccione mascota...
+          </option>
+
+          @for(m of mascotas; track m.idMascota){
+
+          <option [value]="m.idMascota">
+
+            {{m.nombreMascota}}
+            ({{m.nombreRaza}})
+
+          </option>
+
           }
+
         </select>
+        @if(formulario.get('idMascota')?.touched &&
+        formulario.get('idMascota')?.hasError('required')){
+
+        <small class="error-text">
+          Seleccione una mascota.
+        </small>
+
+        }
+
       </div>
+
+      <!-- Fecha -->
 
       <div class="form-group">
-        <label>Fecha de Cita</label>
-        <input type="date" formControlName="fecha" (change)="cargarSlots()">
+
+        <label>Fecha</label>
+
+        <input type="date" formControlName="fecha" [min]="fechaMinima" (change)="cargarSlots()">
+        @if(formulario.get('fecha')?.touched &&
+        formulario.get('fecha')?.hasError('required')){
+
+        <small class="error-text">
+          Seleccione una fecha.
+        </small>
+
+        }
+
       </div>
 
-      <div class="form-group full-width">
-        <label>Motivo</label>
-        <textarea formControlName="motivo" rows="2" placeholder="Breve motivo de la consulta..."></textarea>
-      </div>
+      <!-- Motivo -->
 
       <div class="form-group full-width">
-        <label>Horarios Disponibles</label>
-        <div class="slots-container">
-          @for (s of slots; track s.hora) {
-            <button type="button" 
-                    [class.selected]="formulario.value.hora === s.hora"
-                    [disabled]="!s.disponible"
-                    (click)="formulario.patchValue({hora: s.hora})" 
-                    class="btn-slot">
-              {{ s.hora }}
-            </button>
+
+        <label>Motivo de la Consulta</label>
+
+        <textarea formControlName="motivo" rows="3" placeholder="Describe brevemente el motivo...">
+
+        </textarea>
+        @if(formulario.get('motivo')?.touched &&
+        formulario.get('motivo')?.invalid){
+
+        <small class="error-text">
+
+          @if(formulario.get('motivo')?.errors?.['required']){
+          El motivo es obligatorio.
           }
-        </div>
+
+          @if(formulario.get('motivo')?.errors?.['minlength']){
+          Debe contener al menos 8 caracteres.
+          }
+
+          @if(formulario.get('motivo')?.errors?.['maxlength']){
+          Máximo 250 caracteres.
+          }
+
+        </small>
+
+        }
+
       </div>
+
+      <!-- Horarios -->
+
+      <div class="form-group full-width">
+
+        <label>Horarios Disponibles</label>
+
+        <div class="slots-container">
+
+          @for(s of slots; track s.hora){
+
+          <button type="button" class="btn-slot" [class.selected]="formulario.value.hora===s.hora"
+            [disabled]="!s.disponible" (click)="formulario.patchValue({hora:s.hora})">
+
+            {{s.hora}}
+
+          </button>
+
+          }
+
+        </div>
+
+      </div>
+
     </div>
 
-    <button type="button" class="btn-primary" (click)="mostrarModalPago = true">
-      Reservar y Pagar S/ {{montoFijo}}
-    </button>
+    <div class="form-actions">
+
+<button
+    type="button"
+    class="btn-primary"
+    (click)="mostrarModalPago = true"
+    [disabled]="!puedeReservar()">
+
+    Reservar Cita
+
+</button>
+
+    </div>
+
   </form>
+
 </div>
 
+@if(mostrarModalPago){
 
-@if (mostrarModalPago) {
-  <div class="modal-overlay" (click)="mostrarModalPago = false">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <h3>Paso 2: Checkout</h3>
-      
-      <div [formGroup]="formulario">
-        <h4>INFORMACIÓN DE PAGO</h4>
-        
-        <div class="card-simulation">
-          <div class="form-group">
-            <label>Número de Tarjeta</label>
-            <input type="text" formControlName="numeroTarjeta" placeholder="1234567890123456">
-          </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="form-group">
-              <label>Expira</label>
-              <input type="text" formControlName="expira" placeholder="MM/YY">
-            </div>
-            <div class="form-group">
-              <label>CVC</label>
-              <input type="text" formControlName="cvc" placeholder="***">
-            </div>
-          </div>
-        </div>
+<div class="modal-overlay" (click)="mostrarModalPago=false">
 
-        <div class="form-group" style="margin-top: 1rem;">
-          <label>Tipo de Comprobante</label>
-          <select formControlName="tipoDocumento">
-            <option value="BOLETA">Boleta</option>
-            <option value="FACTURA">Factura</option>
-            <option value="RECIBO_INTERNO">Recibo Interno</option>
-          </select>
-        </div>
-      </div>
+  <div class="modal-content" (click)="$event.stopPropagation()">
 
-      <div class="modal-actions">
-        <button class="btn-cancel" (click)="mostrarModalPago = false">Cancelar</button>
-        <button class="btn-primary" style="width: 100%;" (click)="confirmarCita()">Pagar y Confirmar</button>
-      </div>
+    <div class="modal-header">
+
+      <h2>Confirmar Reserva</h2>
+
     </div>
+
+    <div class="codigo-cita">
+
+      <strong>
+
+        Paso 2 de 2 · Pago Online
+
+      </strong>
+
+    </div>
+
+    <!-- Resumen -->
+
+    <div class="section">
+
+      <h3 class="section-title">
+
+        RESUMEN DE LA CITA
+
+      </h3>
+
+      <div class="info-grid">
+
+        <div class="info-item">
+
+          <label>Mascota</label>
+
+          <span>{{obtenerNombreMascotaSeleccionada()}}</span>
+
+        </div>
+
+        <div class="info-item">
+
+          <label>Veterinario</label>
+
+          <span>{{obtenerNombreVeterinarioSeleccionado()}}</span>
+
+        </div>
+
+        <div class="info-item">
+
+          <label>Fecha</label>
+
+          <span>{{formulario.value.fecha | date:'dd/MM/yyyy'}}</span>
+
+        </div>
+
+        <div class="info-item">
+
+          <label>Hora</label>
+
+          <span>{{formulario.value.hora}}</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Pago -->
+
+    <div class="consulta-section">
+
+      <h3 class="section-title">
+
+        DATOS DE PAGO
+
+      </h3>
+
+      <div class="total-box">
+
+        <span>Total a pagar</span>
+
+        <strong>
+
+          S/ {{montoFijo | number:'1.2-2'}}
+
+        </strong>
+
+      </div>
+
+      <div [formGroup]="formulario">
+
+        <div class="form-group">
+
+          <label>Número de Tarjeta</label>
+
+          <input type="text" formControlName="numeroTarjeta" placeholder="1234 5678 9012 3456">
+          @if(formulario.get('numeroTarjeta')?.touched &&
+          formulario.get('numeroTarjeta')?.invalid){
+
+          <small class="error-text">
+
+            @if(formulario.get('numeroTarjeta')?.errors?.['required']){
+            El número de tarjeta es obligatorio.
+            }
+
+            @if(formulario.get('numeroTarjeta')?.errors?.['pattern']){
+            Debe contener 16 dígitos.
+            }
+
+          </small>
+
+          }
+
+        </div>
+
+        <div class="info-grid">
+
+          <div class="form-group">
+
+            <label>Expira</label>
+
+            <input type="text" formControlName="expira" placeholder="MM/AA">
+            @if(formulario.get('expira')?.touched &&
+            formulario.get('expira')?.invalid){
+
+            <small class="error-text">
+
+              @if(formulario.get('expira')?.errors?.['required']){
+              La fecha de expiración es obligatoria.
+              }
+
+              @if(formulario.get('expira')?.errors?.['pattern']){
+              Formato válido: MM/AA.
+              }
+
+            </small>
+
+            }
+
+          </div>
+
+          <div class="form-group">
+
+            <label>CVC</label>
+
+            <input type="password" formControlName="cvc" placeholder="***">
+            @if(formulario.get('cvc')?.touched &&
+            formulario.get('cvc')?.invalid){
+
+            <small class="error-text">
+
+              @if(formulario.get('cvc')?.errors?.['required']){
+              El CVC es obligatorio.
+              }
+
+              @if(formulario.get('cvc')?.errors?.['pattern']){
+              Debe contener 3 dígitos.
+              }
+
+            </small>
+
+            }
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Tipo de Comprobante</label>
+
+          <select formControlName="tipoDocumento">
+
+            <option value="BOLETA">Boleta</option>
+
+            <option value="FACTURA">Factura</option>
+
+            <option value="RECIBO_INTERNO">
+              Recibo Interno
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button class="btn-cancel" (click)="mostrarModalPago=false">
+
+        Cancelar
+
+      </button>
+
+<button
+    class="btn-primary"
+    (click)="confirmarCita()"
+    [disabled]="formulario.invalid">
+
+    Pagar y Confirmar
+
+</button>
+
+    </div>
+
   </div>
+
+</div>
+
 }

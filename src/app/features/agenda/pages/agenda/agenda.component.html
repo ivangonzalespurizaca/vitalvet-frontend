@@ -1,19 +1,26 @@
 <div class="container">
+
   <div class="header">
-<div class="container">
-  <div class="header">
-    <div class="date-picker-wrapper">
-      <label>Buscar por Fecha:</label>
-      <input type="date" [(ngModel)]="fechaSeleccionada" (change)="cargarAgenda()">
+
+    <div class="header-text">
+      <h2>Agenda de Consultas</h2>
+      <p class="subtitle">
+        Visualiza las citas programadas para la fecha seleccionada y gestiona la atención de cada paciente.
+      </p>
     </div>
+
+    <div class="date-picker-wrapper">
+      <label>Fecha de atención</label>
+      <input
+        type="date"
+        [(ngModel)]="fechaSeleccionada"
+        (change)="cargarAgenda()">
+    </div>
+
   </div>
 
   <div class="agenda-list">
-    </div>
-</div>
-
-  <div class="agenda-list">
-    @for (b of bloques; track b.hora) {
+      @for (b of bloques; track b.hora) {
       <div class="agenda-item" [class.libre]="b.disponible">
         <div class="hora-col">
           <strong>{{ b.hora }}</strong>
@@ -21,23 +28,88 @@
 
         <div class="contenido-col">
           @if (!b.disponible) {
-            <div class="cita-ocupada">
-              <div>
-                <strong>{{ b.nombreMascota }}</strong> - {{ b.razaMascota }}
-                <p style="margin: 4px 0; color: #64748b;">Dueño: {{ b.nombrePropietario }}</p>
-                <p class="motivo">{{ b.motivoConsulta }}</p>
-              </div>
-              <button [class]="b.hora === '12:00 PM' ? 'btn-primary' : 'btn-outline'">
-                {{ b.hora === '12:00 PM' ? 'Realizar Consulta' : 'Ver Ficha' }}
+          <div class="cita-ocupada">
+            <div>
+              <strong>{{ b.nombreMascota }}</strong> - {{ b.razaMascota }}
+
+              <p class="owner">
+                Dueño: {{ b.nombrePropietario }}
+              </p>
+
+              <p class="motivo">
+                {{ b.motivoConsulta }}
+              </p>
+
+              <span class="estado-badge" [class.estado-pagada]="b.estadoCita === 'PAGADA'"
+                [class.estado-completada]="b.estadoCita === 'COMPLETADA'">
+
+                {{ b.estadoCita }}
+
+              </span>
+            </div>
+
+            <div class="acciones">
+
+              @if(b.estadoCita === 'PAGADA'){
+
+              <button class="btn-outline" (click)="verFicha(b.idCita!)">
+                Ver Ficha
               </button>
+
+              <button class="btn-primary" (click)="realizarConsulta(b)">
+                Atender
+              </button>
+
+              } @else {
+
+              <button class="btn-outline" (click)="verFicha(b.idCita!)">
+                Ver Ficha
+              </button>
+
+              }
+
             </div>
+          </div>
           } @else {
-            <div class="bloque-libre">
-              <span>Espacio disponible</span>
-            </div>
+          <div class="bloque-libre">
+            <span>Espacio disponible</span>
+          </div>
           }
         </div>
       </div>
-    }
+      }
+    </div>
   </div>
-</div>
+
+  @if (mostrarModalDetalle && detalleSeleccionado) {
+  <div class="modal-overlay" (click)="cerrarDetalle()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Cita: {{ detalleSeleccionado.codigoCita }}</h3>
+      
+      <div class="section">
+        <h4>INFORMACIÓN DEL SERVICIO</h4>
+        <div class="info-grid">
+          <p><strong>Mascota:</strong> {{ detalleSeleccionado.nombreMascota }}</p>
+          <p><strong>Médico:</strong> {{ detalleSeleccionado.nombreMedico }}</p>
+          <p><strong>Fecha:</strong> {{ detalleSeleccionado.fecha | date:'dd/MM/yyyy' }}</p>
+          <p class="full-width"><strong>Motivo:</strong> {{ detalleSeleccionado.motivo }}</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4>CONSTANTES Y DIAGNÓSTICO</h4>
+        @if (detalleSeleccionado.consulta) {
+          <div class="info-grid">
+            <p><strong>Peso:</strong> {{ detalleSeleccionado.consulta.pesoActual }} Kg</p>
+            <p><strong>Temp:</strong> {{ detalleSeleccionado.consulta.temperatura }} C</p>
+            <p class="full-width"><strong>Diagnóstico:</strong> {{ detalleSeleccionado.consulta.diagnostico }}</p>
+          </div>
+        } @else {
+          <p style="color: #94a3b8; font-size: 0.9rem;">Consulta no registrada o pendiente.</p>
+        }
+      </div>
+
+      <button class="btn-cancel" (click)="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+}

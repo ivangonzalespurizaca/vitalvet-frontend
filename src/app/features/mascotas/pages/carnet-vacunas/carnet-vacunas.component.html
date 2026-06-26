@@ -1,53 +1,102 @@
 <div class="carnet-container">
+
+  <div class="header-actions">
+    <button class="btn-cancel" routerLink="/cliente/mis-mascotas">
+      ← Volver
+    </button>
+  </div>
+
   <div class="carnet-header">
-    <h1>Carnet de Vacunas: {{ carnet()?.nombreMascota }}</h1>
+    <h1>Carnet de Vacunas</h1>
+    <p class="subtitle">
+      {{ carnet()?.nombreMascota }}
+    </p>
   </div>
 
   <div class="controls-bar">
+
     <div class="search-box">
-      <span>🔍</span>
-      <input type="text" (input)="onBuscar($event)" placeholder="Buscar por nombre de vacuna...">
+      <input
+        type="text"
+        (input)="onBuscar($event)"
+        placeholder="Buscar por nombre de vacuna...">
     </div>
 
     <div class="tabs">
-      <button [class.active]="filtroEstado() === 'TODAS'" (click)="filtroEstado.set('TODAS')">Todas</button>
-      <button [class.active]="filtroEstado() === 'APLICADA'" (click)="filtroEstado.set('APLICADA')">Aplicadas</button>
-      <button [class.active]="filtroEstado() === 'POR APLICAR'" (click)="filtroEstado.set('POR APLICAR')">Por Aplicar</button>
+      <button
+        [class.active]="filtroEstado() === 'TODAS'"
+        (click)="filtroEstado.set('TODAS')">
+        Todas
+      </button>
+
+      <button
+        [class.active]="filtroEstado() === 'APLICADA'"
+        (click)="filtroEstado.set('APLICADA')">
+        Aplicadas
+      </button>
+
+      <button
+        [class.active]="filtroEstado() === 'POR APLICAR'"
+        (click)="filtroEstado.set('POR APLICAR')">
+        Por Aplicar
+      </button>
+
     </div>
+
   </div>
 
-  <div *ngIf="cargando()" class="loading-state">Cargando vacunas...</div>
+  <div *ngIf="cargando()" class="loading-state">
+    Cargando vacunas...
+  </div>
 
   <div *ngIf="!cargando()" class="vacunas-list">
-    <div *ngIf="vacunasFiltradas().length === 0" class="empty-state">
+
+    <div *ngIf="vacunasFiltradas().length===0" class="empty-state">
       No se encontraron vacunas bajo los criterios seleccionados.
     </div>
 
-    <div *ngFor="let vacuna of vacunasFiltradas()" class="vacuna-card" [ngClass]="vacuna.estado.toLowerCase()">
+    <div
+      *ngFor="let vacuna of vacunasFiltradas()"
+      class="vacuna-card"
+      [ngClass]="vacuna.estado.toLowerCase()">
+
       <div class="card-header">
+
         <div class="title-group">
           <h3>{{ vacuna.nombreVacuna }}</h3>
-          <span class="dosis-badge">{{ vacuna.dosis }}</span>
+          <span class="dosis-badge">
+            {{ vacuna.dosis }}
+          </span>
         </div>
-        <span class="status-badge">{{ vacuna.estado }}</span>
+
+        <span class="status-badge">
+          {{ vacuna.estado }}
+        </span>
+
       </div>
 
-      <p class="description">{{ vacuna.descripcion || 'Prevención e inmunización biológica regular.' }}</p>
+      <p class="description">
+        {{ vacuna.descripcion || 'Prevención e inmunización biológica regular.' }}
+      </p>
 
       <div class="info-grid">
+
         <div class="info-item">
-          <label>{{ vacuna.estado === 'APLICADA' ? 'Fecha de Aplicación' : 'Fecha Programada' }}</label>
-          <span class="date">{{ vacuna.fechaAplicacion | date:'dd MMM yyyy' }}</span>
+          <label>
+            {{ vacuna.estado === 'APLICADA'
+              ? 'Fecha de Aplicación'
+              : 'Fecha Programada' }}
+          </label>
+
+          <span class="date">
+            {{ vacuna.fechaAplicacion | date:'dd MMM yyyy' }}
+          </span>
         </div>
-        <div class="info-item">
-          <label>{{ vacuna.estado === 'APLICADA' ? 'Clínica / Especialista' : 'Veterinario' }}</label>
-          <span class="expert">Por definir en consulta</span>
-        </div>
+
       </div>
+
     </div>
+
   </div>
 
-  <div class="footer-actions">
-    <button class="btn-cancel" routerLink="/cliente/mis-mascotas">Volver al Listado de Mascotas</button>
-  </div>
 </div>

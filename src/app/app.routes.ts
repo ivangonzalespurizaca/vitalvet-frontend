@@ -79,12 +79,6 @@ export const routes: Routes = [
         data: { titulo: 'Carnet de Vacunación', roles: ['CLIENTE'] }
       },
       {
-        path: 'cliente/mis-mascotas/:id/historial',
-        canActivate: [roleGuard],
-        loadComponent: () => import('./features/mascotas/pages/historial-clinico/historial-clinico.component').then(m => m.HistorialClinicoComponent),
-        data: { titulo: 'Historial Clínico', roles: ['CLIENTE'] }
-      },
-      {
         path: 'perfil',
         canActivate: [roleGuard],
         loadComponent: () => import('./features/profile/pages/perfil/perfil.component').then(m => m.PerfilComponent),

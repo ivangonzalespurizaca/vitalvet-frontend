@@ -1,7 +1,20 @@
 /* --- Estructura --- */
-.container { max-width: 1450px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.container { max-width: 1250px; margin: 2rem auto; padding: 2.5rem; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-.header h2 { font-size: 1.8rem; color: #1e293b; font-weight: 800; }
+.header h2 { font-size: 1.6rem; color: #1e293b; font-weight: 800; }
+
+.header-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+/* --- Badges --- */
+.badge-pagada { 
+  background: #dcfce7; color: #065f46; 
+  padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; 
+}
+
 
 /* --- Grid de Tarjetas --- */
 .pet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
@@ -29,3 +42,37 @@
 .btn-icon { background: #f1f5f9; border: none; padding: 0.7rem 1rem; border-radius: 8px; cursor: pointer; }
 .btn-cancel { width: 100%; padding: 0.9rem; background: #f1f5f9; border: none; border-radius: 10px; cursor: pointer; margin-top: 1rem; font-weight: 600; color: #475569; }
 .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
+
+.btn-outline{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:.75rem 1.2rem;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  background:#fff;
+  color:#475569;
+  font-weight:600;
+  font-size:.9rem;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.25s;
+  flex:1;
+}
+
+.btn-outline:hover{
+  background:#f8fafc;
+  border-color:#cbd5e1;
+  color:#0f766e;
+}
+
+.card-actions{
+  display:flex;
+  gap:10px;
+  margin-top:1.2rem;
+}
+
+.card-actions .btn-outline,
+.card-actions .btn-primary{
+  flex:1;
+}

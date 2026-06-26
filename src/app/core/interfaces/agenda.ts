@@ -7,4 +7,5 @@ export interface AgendaBloqueResponseDTO {
   nombrePropietario: string | null;
   dniPropietario: string | null;
   motivoConsulta: string | null;
+  estadoCita: 'PAGADA' | 'COMPLETADA';
 }

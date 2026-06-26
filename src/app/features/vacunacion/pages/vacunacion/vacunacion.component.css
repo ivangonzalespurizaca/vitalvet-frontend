@@ -1,29 +1,600 @@
-.container { max-width: 1250px; margin: 2rem auto; padding: 2.5rem; background: #fff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+/*==================================================
+=            CONTENEDOR GENERAL
+==================================================*/
 
-/* Buscador */
-.search-box { display: flex; gap: 10px; margin-bottom: 2rem; }
-.search-box input { padding: 0.8rem 1.2rem; border: 1px solid #e2e8f0; border-radius: 12px; width: 300px; }
+.container{
+    max-width:1250px;
+    margin:2rem auto;
+    padding:2.5rem;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
 
-/* Información Propietario */
-.owner-info { background: #f8fafc; padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem; border-left: 4px solid #0f766e; }
+/*==================================================
+=            BUSCADOR CLIENTE
+==================================================*/
 
-/* Layout */
-.layout { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; }
+.search-box{
+    margin-bottom:2rem;
+}
 
-/* Mascotas */
-.pets-list h3 { font-size: 1.1rem; margin-bottom: 1rem; }
-.pet-card { padding: 1.2rem; margin-bottom: 10px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: 0.2s; }
-.pet-card:hover { border-color: #0f766e; background: #f0fdfa; }
+.search-box label{
+    display:block;
+    margin-bottom:.5rem;
+    font-size:.82rem;
+    font-weight:700;
+    color:#475569;
+    text-transform:uppercase;
+}
 
-/* Carnet */
-.carnet-section h3 { margin-bottom: 1.5rem; color: #1e293b; }
-.citas-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.citas-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; }
+.cliente-search{
+    display:flex;
+    gap:12px;
+}
 
-/* Formulario Registro */
-.register-form { display: flex; gap: 10px; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #f1f5f9; }
-.register-form input, .register-form select { padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1; }
+.cliente-search input{
+    flex:1;
 
-/* Botones y Badges (Reutilizados) */
-.btn-primary { background: #0f766e; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
-.badge-pagada { background: #dcfce7; color: #065f46; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    padding:.9rem 1rem;
+
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+
+    background:white;
+
+    font-size:.95rem;
+
+    transition:.2s;
+}
+
+.cliente-search input:focus{
+    outline:none;
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+}
+
+/*==================================================
+=            CLIENTE
+==================================================*/
+
+.owner-info{
+
+    margin-bottom:2rem;
+
+    background:#f8fafc;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:18px;
+
+    padding:1.4rem 1.6rem;
+}
+
+.owner-info h4{
+
+    margin:0 0 .5rem 0;
+
+    color:#0f766e;
+
+    font-size:1.1rem;
+
+    font-weight:700;
+}
+
+.owner-info p{
+
+    margin:0;
+
+    color:#64748b;
+
+}
+
+/*==================================================
+=            LAYOUT
+==================================================*/
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:320px 1fr;
+
+    gap:2rem;
+
+}
+
+/*==================================================
+=            PANEL IZQUIERDO
+==================================================*/
+
+.pets-list{
+
+    background:white;
+
+    border:1px solid #edf2f7;
+
+    border-radius:20px;
+
+    padding:1.5rem;
+
+}
+
+.pets-list h3{
+
+    margin:0 0 1.3rem;
+
+    color:#1e293b;
+
+    font-size:1rem;
+
+}
+
+/*==================================================
+=            TARJETA MASCOTA
+==================================================*/
+
+.pet-card{
+
+    padding:1rem;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    margin-bottom:1rem;
+
+    transition:.25s;
+
+    background:white;
+}
+
+.pet-card:hover{
+
+    border-color:#0f766e;
+
+    background:#f0fdfa;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 6px 18px rgba(15,118,110,.08);
+
+}
+
+.pet-card strong{
+
+    display:block;
+
+    color:#1e293b;
+
+    margin-bottom:6px;
+
+}
+
+.pet-card p{
+
+    margin:0;
+
+    color:#64748b;
+
+    font-size:.9rem;
+
+}
+
+/*==================================================
+=            PANEL DERECHO
+==================================================*/
+
+.carnet-section{
+
+    background:white;
+
+    border:1px solid #edf2f7;
+
+    border-radius:20px;
+
+    padding:2rem;
+
+}
+
+.carnet-section h3{
+
+    margin-top:0;
+
+    margin-bottom:1.5rem;
+
+    color:#1e293b;
+
+}
+
+/*==================================================
+=            TABLA
+==================================================*/
+
+.citas-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-bottom:2rem;
+
+}
+
+.citas-table th{
+
+    padding:1rem;
+
+    text-align:left;
+
+    font-size:.75rem;
+
+    text-transform:uppercase;
+
+    color:#64748b;
+
+    border-bottom:2px solid #edf2f7;
+
+}
+
+.citas-table td{
+
+    padding:1rem;
+
+    border-bottom:1px solid #edf2f7;
+
+    color:#334155;
+
+}
+
+.citas-table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/*==================================================
+=            BADGES
+==================================================*/
+
+.badge-pagada{
+
+    background:#dcfce7;
+
+    color:#065f46;
+
+    padding:.45rem .9rem;
+
+    border-radius:999px;
+
+    font-size:.75rem;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+=            FORM REGISTRO
+==================================================*/
+
+.register-form{
+
+    margin-top:2rem;
+
+    padding-top:2rem;
+
+    border-top:1px solid #edf2f7;
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr auto;
+
+    gap:16px;
+
+    align-items:end;
+
+}
+
+.register-form select,
+.register-form input{
+
+    width:100%;
+
+    padding:.9rem 1rem;
+
+    border:1px solid #dbe4ee;
+
+    border-radius:12px;
+
+    font-size:.95rem;
+
+    background:white;
+
+    transition:.2s;
+
+}
+
+.register-form select:focus,
+.register-form input:focus{
+
+    outline:none;
+
+    border-color:#0f766e;
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+
+}
+
+/*==================================================
+=            BOTONES
+==================================================*/
+
+.btn-primary{
+
+    background:#0f766e;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:.9rem 1.4rem;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.btn-primary:hover{
+
+    background:#0d665e;
+
+}
+
+.btn-primary:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.btn-outline{
+
+    background:white;
+
+    border:1px solid #dbe4ee;
+
+    color:#475569;
+
+    border-radius:12px;
+
+    padding:.85rem 1.2rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.btn-outline:hover{
+
+    background:#f8fafc;
+
+}
+
+/*==================================================
+=            MODAL
+==================================================*/
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.4);
+
+    backdrop-filter:blur(2px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+}
+
+.modal-content{
+
+    width:92%;
+
+    max-width:850px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding-bottom:1rem;
+
+    margin-bottom:1rem;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+.modal-header h2{
+
+    margin:0;
+
+}
+
+.btn-close{
+
+    border:none;
+
+    background:none;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    color:#64748b;
+
+}
+
+.btn-close:hover{
+
+    color:#ef4444;
+
+}
+
+/*==================================================
+=            TABLA CLIENTES
+==================================================*/
+
+.clientes-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:1rem;
+
+}
+
+.clientes-table th{
+
+    padding:1rem;
+
+    text-align:left;
+
+    font-size:.75rem;
+
+    color:#64748b;
+
+    text-transform:uppercase;
+
+    border-bottom:2px solid #edf2f7;
+
+}
+
+.clientes-table td{
+
+    padding:1rem;
+
+    border-bottom:1px solid #edf2f7;
+
+    color:#334155;
+
+}
+
+.clientes-table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+.badge-programada{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.btn-small{
+
+    padding:.45rem .9rem;
+
+    font-size:.8rem;
+
+}
+
+/*==================================================
+=            RESPONSIVE
+==================================================*/
+
+@media(max-width:1000px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .register-form{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .cliente-search{
+        flex-direction:column;
+    }
+
+    .modal-content{
+        width:96%;
+    }
+
+}
+
+.register-form{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-width:180px;
+}
+
+.field select,
+.field input{
+    width:100%;
+}
+
+.error-text{
+    margin-top:6px;
+    color:#dc2626;
+    font-size:.8rem;
+    font-weight:500;
+    line-height:1.2;
+}
+
+.register-form .btn-primary{
+    align-self:flex-start;
+    margin-top:0;
+}

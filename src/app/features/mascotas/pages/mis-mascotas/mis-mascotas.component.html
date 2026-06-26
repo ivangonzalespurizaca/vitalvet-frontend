@@ -1,52 +1,104 @@
 <div class="container">
-  <div class="header">
-    <h2>Mis Mascotas</h2>
-    <button class="btn-primary" (click)="abrirFormularioRegistro()">➕ Registrar Mascota</button>
-  </div>
 
-  <div *ngIf="cargando" class="loading-state">Cargando tus mascotas...</div>
+  <div class="header">
+
+    <div class="header-title">
+        <h2>Mascotas</h2>
+        <span class="badge-pagada">
+            {{ mascotas.length }} registrada(s)
+        </span>
+    </div>
+
+    <button class="btn-primary" (click)="abrirFormularioRegistro()">
+      + Registrar Mascota
+    </button>
+
+  </div>
+      
+
+  <div *ngIf="cargando" class="loading-state">
+    Cargando tus mascotas...
+  </div>
 
   <div *ngIf="!cargando && mascotas.length === 0" class="empty-state">
     <p>{{ errorMensaje || 'Aún no tienes mascotas registradas.' }}</p>
   </div>
 
   <div *ngIf="!cargando && mascotas.length > 0" class="pet-grid">
+
     <div *ngFor="let mascota of mascotas" class="pet-card">
+
       <div class="card-image">
-        <img [src]="mascota.fotoUrl || 'assets/images/default-pet.png'" (error)="manejarErrorImagen(mascota)" [alt]="mascota.nombreMascota">
-        <span class="badge" [class.active]="mascota.activo">{{ mascota.activo ? 'Activo' : 'Inactivo' }}</span>
+        <img [src]="mascota.fotoUrl || 'assets/images/default-pet.png'" (error)="manejarErrorImagen(mascota)"
+          [alt]="mascota.nombreMascota">
+
+        <span class="badge" [class.active]="mascota.activo">
+          {{ mascota.activo ? 'Activo' : 'Inactivo' }}
+        </span>
       </div>
 
       <div class="card-body">
+
         <div class="card-header">
-          <h3>{{ mascota.nombreMascota }}</h3>
-          <span class="pet-code">{{ mascota.codigoMascota }}</span>
+
+          <div>
+            <h3>{{ mascota.nombreMascota }}</h3>
+            <p class="pet-meta">
+              {{ mascota.nombreEspecie }} 
+            </p>
+            <strong class = "pet-meta">{{ mascota.nombreRaza }}</strong>
+          </div>
+
+          <span class="pet-code">
+            {{ mascota.codigoMascota }}
+          </span>
+
         </div>
-        <p class="pet-meta">{{ mascota.nombreEspecie }} — <strong>{{ mascota.nombreRaza }}</strong></p>
 
         <div class="stats-box">
-          <div><label>Sexo</label><span>{{ mascota.sexo }}</span></div>
-          <div><label>Peso</label><span>{{ mascota.pesoActual | number:'1.2-2' }} kg</span></div>
+
+          <div>
+            <label>Sexo</label>
+            <span>{{ mascota.sexo }}</span>
+          </div>
+
+          <div>
+            <label>Peso</label>
+            <span>{{ mascota.pesoActual | number:'1.2-2' }} kg</span>
+          </div>
+
         </div>
 
         <div class="card-actions">
-          <a class="btn-blue" [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'historial']">📋 Historial</a>
-          <a class="btn-teal" [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'carnet']">🛡️ Vacunas</a>
-          <button class="btn-icon" (click)="abrirFormularioEdicion(mascota.idMascota)">✏️</button>
+
+          <a class="btn-outline" [routerLink]="['/cliente/mis-mascotas', mascota.idMascota, 'carnet']">
+            Ver Carnet
+          </a>
+
+          <button class="btn-primary" (click)="abrirFormularioEdicion(mascota.idMascota)">
+            Editar
+          </button>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
 
   <div *ngIf="mostrarModalCarnet" class="modal-overlay">
-    <div class="modal-content" style="max-width: 700px;">
+    <div class="modal-content" style="max-width:700px;">
       <div class="flex justify-between items-center mb-6">
-        <h3 style="color: #0f766e;">Carnet: {{ carnetSeleccionado?.nombreMascota }}</h3>
+        <h3 style="color:#0f766e;">Carnet: {{ carnetSeleccionado?.nombreMascota }}</h3>
         <button (click)="cerrarModal()" class="close-btn">&times;</button>
       </div>
       <button class="btn-cancel" (click)="cerrarModal()">Cerrar Carnet</button>
     </div>
   </div>
 
-  <app-mascota-modal *ngIf="mostrarModalFormulario()" [idMascota]="idMascotaSeleccionada()" (cerrar)="mostrarModalFormulario.set(false)" (exito)="mostrarModalFormulario.set(false); cargarMascotas()"></app-mascota-modal>
+  <app-mascota-modal *ngIf="mostrarModalFormulario()" [idMascota]="idMascotaSeleccionada()"
+    (cerrar)="mostrarModalFormulario.set(false)" (exito)="mostrarModalFormulario.set(false); cargarMascotas()">
+  </app-mascota-modal>
+
 </div>

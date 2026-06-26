@@ -31,6 +31,17 @@ export class MisComprobantesComponent implements OnInit {
     });
   }
 
+    limpiarFiltros() {
+    // Resetea los valores del formulario a vacío
+    this.filtroForm.reset({
+      tipo: '',
+      inicio: '',
+      fin: ''
+    });
+    // Recarga la lista original
+    this.cargarMisComprobantes();
+  }
+
   cargarMisComprobantes() {
     const { tipo, inicio, fin } = this.filtroForm.value;
     

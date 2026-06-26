@@ -7,84 +7,184 @@
     </div>
 
     @if (cargandoDatos()) {
-      <div class="loading">Cargando información...</div>
+
+    <div class="loading-state">
+      <p>Cargando información...</p>
+    </div>
+
     } @else {
-      <form [formGroup]="formulario" (ngSubmit)="guardar()">
+
+    <form [formGroup]="formulario" (ngSubmit)="guardar()">
+
+      <!-- FOTO -->
+      <div class="seccion-form">
+
+        <h3 class="section-title">1. FOTO DE LA MASCOTA</h3>
 
         <div class="photo-upload-section">
+
           <div class="avatar-preview">
             @if (imagenPreview()) {
-              <img [src]="imagenPreview()" alt="Foto de la mascota">
+            <img [src]="imagenPreview()" alt="Foto">
             } @else {
-              <span class="placeholder-icon">🐾</span>
+            <span class="placeholder-icon">🐾</span>
             }
           </div>
 
-          <input type="file"
-                 #fileInput
-                 accept="image/*"
-                 style="display: none;"
-                 (change)="onFileSelected($event)">
+          <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event)">
 
-          <button type="button" class="btn-upload" (click)="fileInput.click()">
-            Subir Foto
+          <button type="button" class="btn-outline" (click)="fileInput.click()">
+
+            Seleccionar fotografía
+
           </button>
+
         </div>
 
-        <div class="form-group">
-          <label>Nombres</label>
-          <input type="text" formControlName="nombreMascota" placeholder="Nombre de tu mascota">
-        </div>
+      </div>
 
-        <div class="form-row">
+      <!-- DATOS -->
+      <div class="seccion-form">
+
+        <h3 class="section-title">2. INFORMACIÓN DE LA MASCOTA</h3>
+
+        <div class="grid-form">
+
           <div class="form-group">
-            <label>Especie</label>
-            <select formControlName="idEspecie">
-              <option [ngValue]="null">Selecciona Especie</option>
-              @for (e of especies; track e.idEspecie) {
-                <option [value]="e.idEspecie">{{ e.nombreEspecie }}</option>
-              }
-            </select>
+            <label>Nombre</label>
+
+            <input type="text" formControlName="nombreMascota" placeholder="Nombre de la mascota">
+
+            @if(formulario.get('nombreMascota')?.touched &&
+            formulario.get('nombreMascota')?.hasError('required')){
+            <small class="error-message">
+              El nombre es obligatorio.
+            </small>
+            }
+
           </div>
-          <div class="form-group">
-            <label>Raza</label>
-            <select formControlName="idRaza">
-              <option [ngValue]="null">Selecciona Raza</option>
-              @for (r of razasFiltradas; track r.idRaza) {
-                <option [value]="r.idRaza">{{ r.nombreRaza }}</option>
-              }
-            </select>
-          </div>
-        </div>
 
-        <div class="form-row">
           <div class="form-group">
+
             <label>Sexo</label>
+
             <select formControlName="sexo">
-              <option value="">Selecciona Sexo</option>
+              <option value="">Seleccione...</option>
               <option value="MACHO">Macho</option>
               <option value="HEMBRA">Hembra</option>
             </select>
+
+            @if(formulario.get('sexo')?.touched &&
+            formulario.get('sexo')?.hasError('required')){
+            <small class="error-message">
+              Seleccione un sexo.
+            </small>
+            }
+
           </div>
+
           <div class="form-group">
-            <label>Fecha de nacimiento</label>
-            <input type="date" formControlName="fechaNacimiento">
+
+            <label>Especie</label>
+
+            <select formControlName="idEspecie">
+              <option [ngValue]="null">Seleccione...</option>
+
+              @for(e of especies; track e.idEspecie){
+              <option [value]="e.idEspecie">
+                {{e.nombreEspecie}}
+              </option>
+              }
+
+            </select>
+
+            @if(formulario.get('idEspecie')?.touched &&
+            formulario.get('idEspecie')?.hasError('required')){
+            <small class="error-message">
+              Seleccione una especie.
+            </small>
+            }
+
           </div>
+
+          <div class="form-group">
+
+            <label>Raza</label>
+
+            <select formControlName="idRaza">
+              <option [ngValue]="null">Seleccione...</option>
+
+              @for(r of razasFiltradas; track r.idRaza){
+              <option [value]="r.idRaza">
+                {{r.nombreRaza}}
+              </option>
+              }
+
+            </select>
+
+            @if(formulario.get('idRaza')?.touched &&
+            formulario.get('idRaza')?.hasError('required')){
+            <small class="error-message">
+              Seleccione una raza.
+            </small>
+            }
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Fecha de nacimiento</label>
+
+            <input type="date" formControlName="fechaNacimiento" [max]="fechaMaxima">
+
+            @if(formulario.get('fechaNacimiento')?.touched &&
+            formulario.get('fechaNacimiento')?.hasError('required')){
+            <small class="error-message">
+              La fecha es obligatoria.
+            </small>
+            }
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Peso (Kg)</label>
+
+            <input type="number" step="0.1" formControlName="pesoActual">
+
+            @if(formulario.get('pesoActual')?.touched &&
+            formulario.get('pesoActual')?.invalid){
+            <small class="error-message">
+              Ingrese un peso válido.
+            </small>
+            }
+
+          </div>
+
         </div>
 
-        <div class="form-group">
-          <label>Peso Actual (Kg)</label>
-          <input type="number" step="0.1" formControlName="pesoActual" placeholder="0.0">
-        </div>
+      </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn-cancel" (click)="cerrar.emit()">Cancelar</button>
-          <button type="submit" class="btn-submit" [disabled]="guardando()">
-            {{ guardando() ? 'Procesando...' : (idMascota ? 'Actualizar' : 'Registrar') }}
-          </button>
-        </div>
+      <div class="modal-actions">
 
-      </form>
+        <button type="button" class="btn-cancel" (click)="cerrar.emit()">
+
+          Cancelar
+
+        </button>
+
+        <button type="submit" class="btn-primary" [disabled]="guardando() || formulario.invalid">
+
+          {{ guardando()
+          ? 'Procesando...'
+          : (idMascota ? 'Actualizar Mascota' : 'Registrar Mascota') }}
+
+        </button>
+
+      </div>
+
+    </form>
+
     }
 
   </div>

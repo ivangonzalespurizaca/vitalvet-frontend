@@ -6,9 +6,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'; // 👈 Agregado
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CitaService } from '../../../../core/services/cita.service';
 import { CitaPanelResponse, CitaDetalleResponse } from '../../../../core/interfaces/cita';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-mis-citas', 
+  selector: 'app-mis-citas',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule],
   templateUrl: './mis-citas.component.html',
@@ -17,6 +18,17 @@ import { CitaPanelResponse, CitaDetalleResponse } from '../../../../core/interfa
 export class MisCitasComponent implements OnInit {
   private citaService = inject(CitaService);
   private http = inject(HttpClient); // 👈 Inyectamos HttpClient de forma limpia
+  private swalToast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   // Endpoint de tu Backend Spring Boot SOAP
   private soapUrl = 'http://localhost:8098/ws';
@@ -64,14 +76,14 @@ export class MisCitasComponent implements OnInit {
 
   // Variables para el control del modal de calificación
   mostrarModalCalificar: boolean = false;
-  citaACalificar: any = null; 
-  puntuacionSeleccionada: number = 5; 
+  citaACalificar: any = null;
+  puntuacionSeleccionada: number = 5;
   comentarioCalificacion: string = '';
 
   abrirCalificar(cita: any) {
     this.citaACalificar = cita;
-    this.puntuacionSeleccionada = 5; 
-    this.comentarioCalificacion = ''; 
+    this.puntuacionSeleccionada = 5;
+    this.comentarioCalificacion = '';
     this.mostrarModalCalificar = true;
   }
 
@@ -105,19 +117,23 @@ export class MisCitasComponent implements OnInit {
       'SOAPAction': '""'
     });
 
-    
+
     this.http.post(this.soapUrl, soapEnvelope, { headers, responseType: 'text' }).subscribe({
       next: (xmlString) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-        
+
         const resultadoSalida = xmlDoc.getElementsByTagName('ns2:salida')[0]?.textContent;
         const status = parseInt(resultadoSalida || '0', 10);
 
         if (status > 0) {
-          alert(`¡Calificación registrada con éxito! Código: ${status}`);
-          
-        
+
+          this.swalToast.fire({
+            icon: 'success',
+            title: '¡Calificación registrada con éxito!'
+          });
+
+
           const citaModificada = this.citas.find(c => c.idCita === this.citaACalificar.idCita);
           if (citaModificada) {
             // Le añadimos una propiedad dinámica en tiempo de ejecución
@@ -133,7 +149,10 @@ export class MisCitasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error SOAP:', err);
-        alert('Error al conectar con el servidor SOAP.');
+                this.swalToast.fire({
+          icon: 'error',
+          title: err.error?.mensaje || 'Error al Conectar el SOAP.'
+        });
       }
     });
   }

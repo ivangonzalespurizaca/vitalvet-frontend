@@ -1,83 +1,271 @@
-/* Contenedor principal */
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.container{
+    max-width:1250px;
+    margin:2rem auto;
+    padding:2.5rem;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
 }
 
-.header-info {
-  margin-bottom: 25px;
-  border-left: 4px solid #4f46e5;
-  padding-left: 15px;
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:2rem;
 }
 
-.header-info h2 {
-  color: #1e293b;
-  margin: 0;
+.header h2{
+    margin:0;
+    color:#1e293b;
+    font-size:1.6rem;
 }
 
-/* Estilos de formulario */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.header-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
 }
 
-input, textarea, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  box-sizing: border-box; /* Importante para el padding */
+/* =====================================================
+   INFORMACIÓN DEL PACIENTE
+===================================================== */
+
+.info-card{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:1.5rem;
+    margin-bottom:2rem;
+    background:#fafafa;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
 }
 
-textarea {
-  min-height: 100px;
-  resize: vertical;
+.field{
+    display:flex;
+    flex-direction:column;
 }
 
-/* Fila de vacunas */
-.vacuna-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 10px;
-  align-items: center;
-  background: #f8fafc;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+.field label{
+    margin-bottom:6px;
+    font-size:.85rem;
+    color:#64748b;
+    font-weight:600;
 }
 
-/* Botones */
-button {
-  cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
+.field input{
+    width:100%;
+    padding:.9rem 1rem;
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+    background:#f8fafc;
+    color:#334155;
+    box-sizing:border-box;
 }
 
-button[type="submit"] {
-  background: #4f46e5;
-  color: white;
-  margin-top: 10px;
+/* =====================================================
+   FORMULARIO
+===================================================== */
+
+.form-card{
+    width:100%;
+    background:#fff;
+    padding:2rem;
+    border:1px solid #edf2f7;
+    border-radius:18px;
 }
 
-button[type="submit"]:disabled {
-  background: #cbd5e1;
+.section-title{
+    margin:0 0 1.5rem;
+    padding-left:10px;
+    border-left:4px solid #0f766e;
+    color:#0f766e;
+    text-transform:uppercase;
+    font-size:.9rem;
+    letter-spacing:.5px;
 }
 
-button.btn-remove {
-  background: #ef4444;
-  color: white;
+.grid-fields{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    margin-bottom:1rem;
 }
 
-button:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:1.2rem;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-size:.9rem;
+    color:#475569;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:.9rem 1rem;
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+    font-size:.95rem;
+    font-family:inherit;
+    color:#334155;
+    background:#fff;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    outline:none;
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.15);
+}
+
+/* =====================================================
+   VACUNAS
+===================================================== */
+
+.vacunas-container{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin:18px 0;
+}
+
+.vacuna-row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr auto;
+    gap:12px;
+    align-items:start;
+}
+
+.vacuna-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.vacuna-field .error{
+    margin-top:4px;
+    font-size:.75rem;
+    color:#dc2626;
+}
+.vacuna-row select,
+.vacuna-row input{
+    width:100%;
+    padding:.85rem .9rem;
+    border:1px solid #dbe4ee;
+    border-radius:10px;
+    font-size:.9rem;
+    background:white;
+    transition:.2s;
+    box-sizing:border-box;
+}
+
+.vacuna-row select:focus,
+.vacuna-row input:focus{
+    outline:none;
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.15);
+}
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+.btn-primary{
+    width:100%;
+    margin-top:18px;
+    padding:.95rem;
+    border:none;
+    border-radius:12px;
+    background:#0f766e;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn-primary:hover{
+    background:#115e59;
+}
+
+.btn-primary:disabled{
+    background:#cbd5e1;
+    cursor:not-allowed;
+}
+
+.btn-secondary{
+    width:100%;
+    padding:.9rem;
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+    background:#fff;
+    color:#475569;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn-secondary:hover{
+    background:#f8fafc;
+}
+
+.btn-danger{
+    padding:.75rem 1rem;
+    border:none;
+    border-radius:10px;
+    background:#fee2e2;
+    color:#b91c1c;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.btn-danger:hover{
+    background:#fecaca;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px){
+
+    .info-card{
+        grid-template-columns:1fr;
+    }
+
+    .grid-fields{
+        grid-template-columns:1fr;
+    }
+
+    .vacuna-row{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:1rem;
+    }
+
 }

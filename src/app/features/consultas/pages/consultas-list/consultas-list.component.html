@@ -1,6 +1,11 @@
 <div class="container">
   <div class="header">
-    <h2>Lista de Consultas</h2>
+    <div class="header-title">
+        <h2>Consultas</h2>
+        <span class="badge-pagada">
+            {{ citas.length }} registradas
+        </span>
+    </div>
   </div>
 
   <form [formGroup]="busquedaForm" class="controls-bar">
@@ -13,48 +18,53 @@
     </div>
   </form>
 
-  <table class="citas-table">
-    <thead>
+<table class="citas-table">
+  <thead>
+    <tr>
+      <th>CÓDIGO</th>
+      <th>MASCOTA / DUEÑO</th>
+      <th>MOTIVO / FECHA</th>
+      <th>ESTADO</th>
+      <th>ACCIONES</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (c of citas; track c.idCita) {
       <tr>
-        <th>CÓDIGO</th>
-        <th>HORA</th>
-        <th>MASCOTA / DUEÑO</th>
-        <th>MOTIVO</th>
-        <th>ESTADO</th>
-        <th>ACCIONES</th>
+        <td><strong>{{ c.codigoCita }}</strong></td>
+
+        <td>
+          <strong>{{ c.nombreMascota }} - {{ c.razaMascota }}</strong><br>
+          <small style="color: #64748b;">
+            Prop: {{ c.nombrePropietario }} 
+            <span style="font-weight: 600;">| DNI: {{ c.dniPropietario || 'N/A' }}</span>
+          </small>
+        </td>
+
+        <td>
+          <strong>{{ c.motivo }}</strong><br>
+          <small style="color: #64748b;">
+            {{ c.fecha | date:'dd/MM/yyyy' }} • {{ c.hora }}
+          </small>
+        </td>
+
+        <td>
+          <span [class]="c.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">{{ c.estado }}</span>
+        </td>
+
+        <td>
+          @if (c.estado === 'PAGADA') {
+            <button class="btn-primary" (click)="atenderCita(c)">Atender</button>
+          } @else {
+            <button class="btn-outline" (click)="verFicha(c.idCita)">Ver Ficha</button>
+          }
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      @for (c of citas; track c.idCita) {
-        <tr>
-          <td><strong>{{ c.codigoCita }}</strong></td>
-          <td>{{ c.hora }}</td>
-
-<td>
-  <strong>{{ c.nombreMascota }} - {{ c.razaMascota }}</strong><br>
-  <small style="color: #64748b;">
-    Prop: {{ c.nombrePropietario }} 
-    <span style="font-weight: 600;">| DNI: {{ c.dniPropietario || 'N/A' }}</span>
-  </small>
-</td>
-
-          <td>{{ c.motivo }}</td>
-          <td>
-            <span [class]="c.estado === 'PAGADA' ? 'badge-pagada' : 'badge-completada'">{{ c.estado }}</span>
-          </td>
-          <td>
-            @if (c.estado === 'PAGADA') {
-              <button class="btn-primary" (click)="atenderCita(c)">Atender</button>
-            } @else {
-              <button class="btn-outline" (click)="verFicha(c.idCita)">Ver Ficha</button>
-            }
-          </td>
-        </tr>
-      } @empty {
-        <tr><td colspan="6" class="text-center">No hay consultas registradas.</td></tr>
-      }
-    </tbody>
-  </table>
+    } @empty {
+      <tr><td colspan="5" class="text-center">No hay consultas registradas.</td></tr>
+    }
+  </tbody>
+</table>
 </div>
 
 @if (mostrarModalDetalle && detalleSeleccionado) {
